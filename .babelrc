@@ -1,0 +1,8 @@
+{
+  "presets": [["@babel/preset-env", { "loose": true }], "@babel/preset-react"],
+  "plugins": [
+    "react-hot-loader/babel",
+    //   ['import', { libraryName: 'antd', style: 'css' }], // `style: true` 会加载 less 文件
+    ["@babel/plugin-proposal-class-properties", { "loose": true }]
+  ]
+}
