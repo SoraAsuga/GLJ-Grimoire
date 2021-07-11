@@ -1,5 +1,5 @@
 {
-  "presets": [["@babel/preset-env", { "loose": true }], "@babel/preset-react"],
+  "presets": [["@babel/preset-env", { "loose": true }], "@babel/preset-react", "@babel/preset-typescript"],
   "plugins": [
     "react-hot-loader/babel",
     //   ['import', { libraryName: 'antd', style: 'css' }], // `style: true` 会加载 less 文件

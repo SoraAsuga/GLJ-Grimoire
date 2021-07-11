@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "jsx": "react",
     "esModuleInterop": true,
     "outDir": "./dist/", // 打包到的目录
     "sourceMap": false, // 是否生成sourceMap（用于浏览器调试）
@@ -11,7 +12,7 @@
     "module": "ESNEXT",
     "target": "es5", // 转化成的目标语言
     "baseUrl": "./",
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "allowJs": true,
     "paths": {
       "@/*": ["src/*"]

@@ -5,16 +5,15 @@
     "node": true,
     "es6": true
   },
-  "plugins": ["react", "eslint-plugin-import"],
-  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
-  "parser": "@babel/eslint-parser",
+  "plugins": ["@typescript-eslint", "eslint-plugin-import"],
+  "extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
   "parserOptions": {
-    "ecmaVersion": 2021,
+    "parser": "@typescript-eslint/parser", // Specifies the ESLint parser
+    "ecmaVersion": 2020, // Allows for the parsing of modern ECMAScript features
+    "sourceType": "module", // Allows for the use of imports
     "ecmaFeatures": {
-      "modules": true,
-      "jsx": true
-    },
-    "sourceType": "module"
+      "tsx": true // Allows for the parsing of JSX
+    }
   },
   "rules": {
     "import/order": 2,

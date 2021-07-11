@@ -18,7 +18,7 @@ const commonConfig = {
     type: 'filesystem',
   },
   entry: {
-    index: path.resolve(__dirname, './src/index.jsx'),
+    index: path.resolve(__dirname, './src/index.tsx'),
   },
   output: {
     filename: '[name].[contenthash].js',
