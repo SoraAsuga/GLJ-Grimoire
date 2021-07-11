@@ -14,5 +14,6 @@
   "path-autocomplete.extensionOnImport": true,
   "path-autocomplete.pathMappings": {
     "@": "${folder}/src",
-  }
+  },
+  "liveServer.settings.port": 5501
 }

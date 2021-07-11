@@ -16,6 +16,7 @@
     }
   },
   "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": 0,
     "import/order": 2,
     "quotes": [2, "single"],
     "spaced-comment": ["error", "always", { "exceptions": ["-", "+"] }],
