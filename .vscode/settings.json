@@ -1,0 +1,17 @@
+{
+  "path-autocomplete.excludedItems": {
+    "**/*": {"when": "**/*.{js,jsx,ts,tsx}", "context": "import(?!.*['\"]@\\/.*).*"},
+    "**/*.{css,less,scss,sass,styl,stylus}": {"when": "**"}
+  },
+  "path-autocomplete.transformations": [{
+    "type": "replace",
+    "parameters": ["\\.(js|ts|jsx|tsx|vue)$", ""],
+    "when": {
+        "fileName": "\\.(js|ts|jsx|tsx|vue)$"
+    }
+  }],
+  "path-autocomplete.extensionOnImport": true,
+  "path-autocomplete.pathMappings": {
+    "@": "${folder}/src",
+  }
+}
