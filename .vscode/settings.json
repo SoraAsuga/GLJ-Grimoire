@@ -1,7 +1,8 @@
 {
   "path-autocomplete.excludedItems": {
-    "**/*": {"when": "**/*.{js,jsx,ts,tsx}", "context": "import(?!.*['\"]@\\/.*).*"},
-    "**/*.{css,less,scss,sass,styl,stylus}": {"when": "**"}
+    "**/*.{js,jsx,ts,tsx}": {"when": "**/*.{js,jsx,ts,tsx}"},
+    "**/!(*.{css,less,scss,sass,styl,stylus})": {"when": "**/*.{css,less,scss,sass,styl,stylus}", "context": "import(?!.*['\"]@\\/.*).*"},
+    "**": { "when": "**/*.{js,jsx,ts,tsx}", "isDir": true }
   },
   "path-autocomplete.transformations": [{
     "type": "replace",
