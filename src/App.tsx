@@ -5,19 +5,30 @@ import HomePage from '@/pages/HomePage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Settings from './components/Settings';
+import DemoPage from './demo';
 
 const App: FC = () => {
+  /** 简单的路由嵌套 */
   return (
-    <>
-      <Header></Header>
-      <Settings></Settings>
-      <section className="main-content">
-        <Switch>
-          <Route path="/" component={HomePage} exact strict></Route>
-        </Switch>
-      </section>
-      <Footer></Footer>
-    </>
+    <Switch>
+      <Route path="/demo" component={DemoPage} exact strict></Route>
+      <Route
+        path="/"
+        render={() => (
+          <>
+            <Header></Header>
+            <Settings></Settings>
+            <section className="main-content">
+              {/* 二级路由 */}
+              <Switch>
+                <Route path="/" component={HomePage} exact strict></Route>
+              </Switch>
+            </section>
+            <Footer></Footer>
+          </>
+        )}
+      ></Route>
+    </Switch>
   );
 };
 
