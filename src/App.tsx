@@ -4,7 +4,6 @@ import { Route, Switch } from 'react-router-dom';
 import HomePage from '@/pages/HomePage';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Settings from './components/Settings';
 import DemoPage from './demo';
 
 const App: FC = () => {
@@ -17,7 +16,6 @@ const App: FC = () => {
         render={() => (
           <>
             <Header></Header>
-            <Settings></Settings>
             <section className="main-content">
               {/* 二级路由 */}
               <Switch>

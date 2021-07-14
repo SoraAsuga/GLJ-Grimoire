@@ -52,6 +52,7 @@ const Dialog: FC<IProps> = (props) => {
 
   return (
     // onClose 调用的是 props 传递进来的函数，这是一种子组件调用父组件的方式，还可用于传递数据
+    // 此处 onclick 为点击蒙版退出
     <main className="dialog" onClick={onClose}>
       <div className="dialog__inner" onClick={handleStopPropagation}>
         <header className="dialog__header">

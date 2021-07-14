@@ -11,7 +11,7 @@
   align-items: center;
   border-bottom: 1px solid #4e8dee;
   box-sizing: border-box;
-  
+
   .main-header__logo-container {
     display: flex;
     align-items: center;
@@ -20,7 +20,7 @@
       height: 21px;
       width: 21px;
     }
-    
+
     .main-header__title {
       font-size: 14px;
       color: #4e8dee;
@@ -30,7 +30,7 @@
     }
   }
 
-  
+
   .main-header__settings {
     flex-grow: 0;
     border: 0;
@@ -41,8 +41,8 @@
       outline: none;
     }
   }
-  
-  
+
+
   .main-header__settings-img {
     height: 21px;
     width: 21px;
@@ -58,5 +58,111 @@
       transform: rotate(180deg);
     }
   }
- 
+}
+
+.settings-main {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+
+  .settings-main__menu {
+    position: relative;
+    background-color: white;
+    margin: 20px auto;
+    width: 95vw;
+    max-width: 600px;
+    height: 97vh;
+    border: 1px solid #4e8dee;
+    border-radius: 5px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+
+  .settings-menu__closed {
+    position: absolute;
+    top: -6px;
+    right: 1px;
+    height: 20px;
+    width: 20px;
+
+    .settings-menu__closed-button {
+      height: 20px;
+      width: 20px;
+      background-color: #4e8dee;
+      color: white;
+      font-size: 5px;
+      text-align: center;
+      border-radius: 50%;
+      border-color: #4e8dee;
+      opacity: 0.6;
+      padding: 0;
+      transition-duration: 1s;
+
+      &:focus {
+        outline: none;
+      }
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  .settings-menu__top {
+    display: flex;
+    align-items: center;
+    height: 29px;
+    width: 90%;
+    margin: 20px auto;
+
+    .settings-menu__top-logo {
+      height: 25px;
+      width: 25px;
+      margin: 2px 0;
+    }
+
+    .settings-menu__top-title {
+      color: #4e8dee;
+      font-size: 16px;
+      margin: 0 10px;
+    }
+
+    .settings-menu__top-text {
+      color: #4e8dee;
+      font-size: 14px;
+      margin-left: auto;
+    }
+  }
+
+
+  .settings-menu__content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .settings-menu__content-func {
+      position: relative;
+      width: 95%;
+      height: 100px;
+      border: 1px solid #4e8dee;
+      border-radius: 5px;
+      margin: 20px auto;
+    }
+
+    .settings-menu__content-title {
+      position: absolute;
+      top: -24px;
+      left: 15px;
+      font-size: 18px;
+      color: #4e8dee;
+      background-color: white;
+      padding: 10px;
+    }
+  }
 }
