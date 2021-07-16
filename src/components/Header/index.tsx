@@ -26,7 +26,7 @@ const MainPage: FC = () => {
         </button>
       </header>
 
-      {showSettings && <Settings onClose={handleClose}></Settings>}
+      <Settings show={showSettings} onClose={handleClose}></Settings>
     </>
   );
 };

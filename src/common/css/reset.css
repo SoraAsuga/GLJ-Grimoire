@@ -51,4 +51,10 @@ table {
 button {
   border: 1px solid #ccc;
   background-color: transparent;
+  cursor: pointer;
+}
+
+button:active,
+button:focus {
+  outline: none;
 }
