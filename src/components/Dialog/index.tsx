@@ -7,8 +7,8 @@ import ReactDOM from 'react-dom';
 /** 定义 Dialog 的 props */
 interface IProps {
   title: string | JSX.Element /** 标题：可以传入两种类型，一种是 string，一种是节点 */;
-  onClose: () => void /** "?" 表示可选参数 */;
-  onSubmit?: (result: string) => void /** 没有 "?" 表示必填参数 */;
+  onClose: () => void /** 没有 "?" 表示必填参数 */;
+  onSubmit?: (result: string) => void /** "?" 表示可选参数 */;
   show?: boolean /** 是否展示 Dialog */;
   className?: string /** 样式覆盖 */;
   hasFooter?: boolean /** 是否显示脚部 */;

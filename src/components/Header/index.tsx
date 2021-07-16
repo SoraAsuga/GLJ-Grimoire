@@ -21,9 +21,12 @@ const MainPage: FC = () => {
           <img src={IMG_LOGO} className="main-header__logo" />
           <span className="main-header__title">{WEBSITE_NAME}</span>
         </div>
-        <button className="main-header__settings" onClick={() => setShowSettings(true)}>
-          <img src={IMG_SETTING} className="main-header__settings-img" />
-        </button>
+        <div className="main-header__settings-container">
+          <UserInfo></UserInfo>
+          <button className="main-header__settings" onClick={() => setShowSettings(true)}>
+            <img src={IMG_SETTING} className="main-header__settings-img" />
+          </button>
+        </div>
       </header>
 
       <Settings show={showSettings} onClose={handleClose}></Settings>

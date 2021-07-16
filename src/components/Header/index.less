@@ -29,33 +29,36 @@
       margin-left: 12px;
     }
   }
-
-
-  .main-header__settings {
-    flex-grow: 0;
-    border: 0;
-    padding: 0;
-    margin: 0;
-
-    &:focus {
-      outline: none;
+  .main-header__settings-container {
+    display: flex;
+    
+    .main-header__settings {
+      flex-grow: 0;
+      border: 0;
+      padding: 0;
+      margin: 0;
+  
+      &:focus {
+        outline: none;
+      }
+    }
+  
+  
+    .main-header__settings-img {
+      height: 21px;
+      width: 21px;
+      object-fit: contain;
+      border-radius: 50%;
+      padding: 0;
+      margin: 0;
+      opacity: 0.5;
+      transition-duration: 0.5s;
+  
+      &:hover {
+        opacity: 1;
+        transform: rotate(180deg);
+      }
     }
   }
 
-
-  .main-header__settings-img {
-    height: 21px;
-    width: 21px;
-    object-fit: contain;
-    border-radius: 50%;
-    padding: 0;
-    margin: 0;
-    opacity: 0.5;
-    transition-duration: 0.5s;
-
-    &:hover {
-      opacity: 1;
-      transform: rotate(180deg);
-    }
-  }
 }
