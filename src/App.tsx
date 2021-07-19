@@ -5,6 +5,7 @@ import HomePage from '@/pages/HomePage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import DemoPage from './demo';
+import SkillQuery from './pages/SkillQuery';
 
 const App: FC = () => {
   /** 简单的路由嵌套 */
@@ -20,6 +21,7 @@ const App: FC = () => {
               {/* 二级路由 */}
               <Switch>
                 <Route path="/" component={HomePage} exact strict></Route>
+                <Route path="/SkillQuery" component={SkillQuery} exact strict></Route>
               </Switch>
             </section>
             <Footer></Footer>
