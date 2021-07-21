@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: center;
 
-    .skill-query__selection-button {
+  .skill-query__selection-button {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -16,7 +16,7 @@
     width: 500px;
     border: 1px solid white;
     opacity: 0.6;
-    transition-duration: 0.5s;
+    transition-duration: 0.3s;
 
     &:hover {
       border: 1px solid #4e8dee;
@@ -34,5 +34,133 @@
       margin-top: 30px;
       color: #00327c;
     }
+  }
+
+  .skill-query__choosing-skills {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    background-color: white;
+    height: 90vh;
+    width: 100vw;
+    margin: 40px 0px;
+
+    .choosing-skills__container {
+      width: 600px;
+      height: 400px;
+      overflow: auto;
+
+
+      .choosing-skills__btn {
+        color: #00327c;
+        font-size: 26px;
+        width: 180px;
+        height: 180px;
+        padding: 0;
+        border: 2px solid #4e8eee67;
+        margin: 10px;
+        border-radius: 50%;
+        transition-duration: 0.3s;
+      }
+
+      .choosing-skills__btn:hover {
+        border: 2px solid #4e8eee;
+        background-color: #4e8eee23;
+      }
+
+    }
+
+    .choosing-skills__container::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .skill-query__skill-demonstration {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    background-color: white;
+    width: 100vw;
+    height: calc(100% - 80px);
+    margin: 40px 0;
+
+    .skill-demonstration__list {
+      border-right: 1px solid #4e8eee;
+      height: 100%;
+      min-width: 300px;
+      padding-top: 10px;
+      overflow: scroll;
+
+      .skill-demonstration__btn {
+        color: #00327c;
+        letter-spacing: 15px;
+        font-size: 24px;
+        width: 100%;
+        height: 40px;
+        border: 2px solid #4e8eee9a;
+        border-left: 0;
+        border-right: 0;
+        margin: 1px 0;
+        padding: 0;
+        transition-duration: 0.4s;
+      }
+
+      .skill-demonstration__btn:hover {
+        background-color: #4e8eee2f;
+        border: 2px solid #4e8eee;;
+      }
+
+      .btn__list {
+        height: auto;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 20px;
+      }
+
+      .btn__list > li {
+        color: #00327c;
+        align-items: center;
+        text-align: center;
+        height: 34px;
+        letter-spacing: 5px;
+        font-size: 20px;
+        border: 1px solid #4e8eee;
+        border-radius: 17px;
+        margin: 10px;
+        padding: 2px;
+      }
+
+      .btn__list > li:hover {
+        background-color: #4e8eee42;
+        border: 1px solid #4e8eee;;
+      }
+
+      .weapon {
+
+        overflow: hidden;
+      }
+
+      .buff {}
+
+      .support {}
+
+      .production {}
+
+      .skill-book {}
+
+      .others {}
+    }
+
+    .skill-demonstration__list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .skill-demonstration__show {
+      height: 100%;
+      width: auto;
+      min-width: 600px;
+    }
+
   }
 }
