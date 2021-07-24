@@ -108,7 +108,8 @@
 
       .skill-demonstration__btn:hover {
         background-color: #4e8eee2f;
-        border: 2px solid #4e8eee;;
+        border: 2px solid #4e8eee;
+        ;
       }
 
       .btn__list {
@@ -118,7 +119,7 @@
         margin-bottom: 20px;
       }
 
-      .btn__list > li {
+      .btn__list>li {
         color: #00327c;
         align-items: center;
         text-align: center;
@@ -131,9 +132,10 @@
         padding: 2px;
       }
 
-      .btn__list > li:hover {
+      .btn__list>li:hover {
         background-color: #4e8eee42;
-        border: 1px solid #4e8eee;;
+        border: 1px solid #4e8eee;
+        ;
       }
 
       .weapon {
@@ -157,10 +159,32 @@
     }
 
     .skill-demonstration__show {
+      display: flex;
+      justify-content: center;
       height: 100%;
-      width: auto;
-      min-width: 600px;
-    }
+      width: 100%;
 
+      .skill-demonstration__show-content {
+        height: 100%;
+        width: 50vw;
+        max-width: 800px;
+        background-color: #4e8eee42;
+        padding: auto;
+
+        .show-content__header {
+          margin: 20px 10px 30px;
+
+          .skill-logo {
+
+          }
+
+          .skill-name {
+            font-size: 24px;
+            color: #00327c;
+            margin-left: 20px;
+          }
+        }
+      }
+    }
   }
 }

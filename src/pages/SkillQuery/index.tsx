@@ -72,7 +72,22 @@ export default () => {
             <li>忍术表</li>
           </ul>
         </div>
-        <div className="skill-demonstration__show">这是内容</div>
+        <div className="skill-demonstration__show">
+          <div className="skill-demonstration__show-content">
+            <header className="show-content__header">
+              <div className="skill-logo"></div>
+              <div className="skill-name">威力打击</div>
+            </header>
+            <div className="show-content__attribute">
+              <div className="mp"></div>
+              <div className="range"></div>
+              <div className="type"></div>
+              <div className="combo"></div>
+              <div className="action-time"></div>
+              <div className="chant-time"></div>
+            </div>
+          </div>
+        </div>
       </section>
     </section>
   );

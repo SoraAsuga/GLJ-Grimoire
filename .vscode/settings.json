@@ -15,5 +15,8 @@
   "path-autocomplete.pathMappings": {
     "@": "${folder}/src",
   },
-  "liveServer.settings.port": 5501
+  "liveServer.settings.port": 5501,
+  "cSpell.words": [
+    "scrollbar"
+  ]
 }
