@@ -1,3 +1,4 @@
+import { WEBSITE_NAME } from './common/constance';
 import HomePage from './pages/HomePage';
 import SkillQuery from './pages/SkillQuery';
 
@@ -11,7 +12,7 @@ export interface IRoute {
 
 const routes: IRoute[] = [
   {
-    name: '首页',
+    name: WEBSITE_NAME,
     path: '/',
     component: HomePage,
     hide: true,

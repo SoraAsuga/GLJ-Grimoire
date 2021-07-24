@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
-import { WEBSITE_NAME } from '@/common/constance';
 import IMG_LOGO from '@/common/img/logo.png';
+import routes from '@/route';
+import Breadcrumb from '../Breadcrumb';
 import Settings from './Settings';
 import UserInfo from './UserInfo';
 
@@ -18,7 +19,9 @@ const MainPage: FC = () => {
       <header className="main-header">
         <div className="main-header__logo-container">
           <img src={IMG_LOGO} className="main-header__logo" />
-          <span className="main-header__title">{WEBSITE_NAME}</span>
+          <div className="main-header__title">
+            <Breadcrumb routes={routes}></Breadcrumb>
+          </div>
         </div>
         <div className="main-header__settings-container">
           <UserInfo></UserInfo>
