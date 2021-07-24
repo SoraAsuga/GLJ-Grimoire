@@ -1,3 +1,4 @@
+@import '@/common/css/var.less';
 .settings-menu {
   background-color: rgba(0, 0, 0, 0.2);
   position: fixed;
@@ -5,7 +6,7 @@
   height: 100vh;
 
   .dialog__close-btn {
-    color: #4e8dee;
+    color: @theme-line-color;
   }
 
   .settings-menu__header {
@@ -13,17 +14,15 @@
     align-items: center;
     height: 29px;
     margin: 20px auto;
+    color: @theme-font-color;
 
-    .header__logo {
-      height: 25px;
-      width: 25px;
-      margin: 2px 0;
+    .header__icon {
+      font-size: 18px;
     }
 
     .header__title {
-      color: #4e8dee;
       font-size: 16px;
-      margin: 0 10px;
+      margin-left: 4px;
     }
   }
 
@@ -36,19 +35,20 @@
       position: relative;
       width: 100%;
       height: 100px;
-      border: 1px solid #4e8dee;
+      border: 1px solid @theme-line-color;
       border-radius: 5px;
-      margin: 20px auto;
+      margin-bottom: 20px;
     }
 
     .settings-menu__content-title {
       position: absolute;
-      top: -24px;
+      top: 0;
       left: 15px;
-      font-size: 18px;
-      color: #4e8dee;
+      padding: 0 10px;
+      font-size: 16px;
+      color: @theme-font-color;
+      transform: translateY(-50%);
       background-color: white;
-      padding: 10px;
     }
   }
 }

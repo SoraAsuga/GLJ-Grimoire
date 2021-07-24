@@ -52,6 +52,7 @@ button {
   border: 1px solid #ccc;
   background-color: transparent;
   cursor: pointer;
+  color: inherit;
 }
 
 button:active,

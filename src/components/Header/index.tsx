@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 import { WEBSITE_NAME } from '@/common/constance';
 import IMG_LOGO from '@/common/img/logo.png';
-import IMG_SETTING from '@/common/img/setting.png';
 import Settings from './Settings';
 import UserInfo from './UserInfo';
 
@@ -23,9 +22,10 @@ const MainPage: FC = () => {
         </div>
         <div className="main-header__settings-container">
           <UserInfo></UserInfo>
-          <button className="main-header__settings" onClick={() => setShowSettings(true)}>
-            <img src={IMG_SETTING} className="main-header__settings-img" />
-          </button>
+          <button
+            className="main-header__settings iconfont icon-setting"
+            onClick={() => setShowSettings(true)}
+          ></button>
         </div>
       </header>
 

@@ -1,3 +1,5 @@
+@import '@/common/css/var.less';
+
 .user-info {
   display: flex;
   height: 40px;
@@ -5,15 +7,20 @@
 
   .user-info__avatar {
     object-fit: contain;
-    height: 21px;
-    width: 21px;
+    height: 24px;
+    width: 24px;
+  }
+
+  .user-info__avatar--default {
+    font-size: 20px;
+    line-height: 1;
   }
 
   .user-info__username {
     font-size: 14px;
-    color: #4e8dee;
+    color: @theme-font-color;
     flex-grow: 0;
     padding: 0;
-    margin: 0 48px 0 12px;
+    margin: 0 48px 0 8px;
   }
 }
