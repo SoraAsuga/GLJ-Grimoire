@@ -3,6 +3,7 @@ import Count from './Count';
 import Dialog from './Dialog';
 
 import './index.less';
+import List from './List';
 
 const DemoPage: FC = () => {
   /**
@@ -59,6 +60,11 @@ const DemoPage: FC = () => {
       {renderDialog(showDialog2)}
 
       <Count></Count>
+
+      <p>-------------------------</p>
+      <p>
+        <List></List>
+      </p>
     </section>
   );
 };
