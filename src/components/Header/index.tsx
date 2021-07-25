@@ -20,7 +20,7 @@ const MainPage: FC = () => {
         <div className="main-header__logo-container">
           <img src={IMG_LOGO} className="main-header__logo" />
           <div className="main-header__title">
-            <Breadcrumb routes={routes}></Breadcrumb>
+            <Breadcrumb routes={routes} separator=">"></Breadcrumb>
           </div>
         </div>
         <div className="main-header__settings-container">

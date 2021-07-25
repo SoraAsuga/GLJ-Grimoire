@@ -34,7 +34,7 @@ const routes: IRoute[] = [
   },
   {
     name: '附魔模拟',
-    path: '/RoleSimulation',
+    path: '/EnchantSimulation',
     component: null,
   },
   {

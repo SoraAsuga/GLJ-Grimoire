@@ -8,6 +8,7 @@ import routes, { IRoute } from './route';
 
 const App: FC = () => {
   const renderRoute = (routes: IRoute[]) => {
+    /** 箭头函数无大括号写法，会返回括号内的所有值 */
     return routes.map((route) => (
       <Route
         key={route.path}
