@@ -3,6 +3,8 @@ import React, { FC } from 'react';
 import IMG_SETTING from '@/common/img/setting.png';
 import './index.less';
 import Dialog from '@/components/Dialog';
+import { SettingOutlined } from '@ant-design/icons';
+import { Modal } from 'antd';
 
 interface IProps {
   show: boolean;
@@ -13,16 +15,19 @@ const Settings: FC<IProps> = (props) => {
   const { show, onClose } = props;
 
   return (
-    <Dialog
-      className="settings-menu"
+    <Modal
       title={
         <header className="settings-menu__header">
-          <span className="header__icon iconfont icon-setting"></span>
+          <SettingOutlined />
+          {/* <span className="header__icon iconfont icon-setting"></span> */}
           <div className="header__title">设置</div>
         </header>
       }
-      show={show}
-      onClose={onClose}
+      visible={show}
+      maskClosable
+      onCancel={onClose}
+      footer={null}
+      getContainer={false}
     >
       <section className="settings-menu__content">
         <div className="settings-menu__content-func">
@@ -51,7 +56,21 @@ const Settings: FC<IProps> = (props) => {
           </span>
         </div>
       </section>
-    </Dialog>
+    </Modal>
+    // <Dialog
+    //   className="settings-menu"
+    //   title={
+    //     <header className="settings-menu__header">
+    //       <SettingOutlined />
+    //       {/* <span className="header__icon iconfont icon-setting"></span> */}
+    //       <div className="header__title">设置</div>
+    //     </header>
+    //   }
+    //   show={show}
+    //   onClose={onClose}
+    // >
+
+    // </Dialog>
   );
 };
 

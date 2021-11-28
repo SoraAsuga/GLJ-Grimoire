@@ -2,6 +2,7 @@ import React from 'react';
 
 import IMG_AVATAR from '@/common/img/avatar.png';
 import './index.less';
+import { UserOutlined } from '@ant-design/icons';
 
 interface IProps {
   avatar?: string /* 用户头像，未定义则使用默认头像 */;
@@ -17,7 +18,8 @@ export default (props: IProps) => {
     return avatarUrl ? (
       <img src={avatarUrl} className="user-info__avatar" />
     ) : (
-      <span className="iconfont icon-user user-info__avatar--default"></span>
+      <UserOutlined />
+      // <span className="iconfont icon-user user-info__avatar--default"></span>
     );
   };
 

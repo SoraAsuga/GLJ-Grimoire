@@ -1,10 +1,22 @@
+@import '@/common/css/var.less';
+
 .main-footer {
-  width: 100vw;
+  position: fixed;
+  bottom: 0;
+  height: @main-footer-height;
+  line-height: @main-footer-height;
+  width: 100%;
+  padding: 0 30px;
+
   background-color: white;
-  font-size: 15px;
-  color: #4e8dee;
-  text-align: right;
-  border-top: 1px solid #4e8dee;
+  border-top: 1px solid @theme-color;
   box-sizing: border-box;
-  padding: 12px 15%;
+
+  font-size: 15px;
+  color: @theme-color;
+  text-align: right;
+
+  .main-footer__content {
+    margin: 0 auto;
+  }
 }

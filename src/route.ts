@@ -1,5 +1,7 @@
 import { WEBSITE_NAME } from './common/constance';
 import HomePage from './pages/HomePage';
+import RoleSimulation from './pages/RoleSimulation';
+import EditRole from './pages/RoleSimulation/pages/EditRole';
 import SkillQuery from './pages/SkillQuery';
 
 export interface IRoute {
@@ -25,7 +27,14 @@ const routes: IRoute[] = [
   {
     name: '角色模拟',
     path: '/RoleSimulation',
-    component: null,
+    component: RoleSimulation,
+    children: [
+      {
+        name: '编辑角色',
+        path: '/EditRole',
+        component: EditRole,
+      },
+    ],
   },
   {
     name: '技能模拟',

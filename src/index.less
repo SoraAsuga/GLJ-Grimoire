@@ -1,14 +1,86 @@
 @import '@/common/css/reset.less';
+@import '@/common/css/font.less';
+@import '@/common/css/var.less';
 @import '@/common/iconfont/iconfont.css';
+@import '~antd/dist/antd.css';
+
+body {
+  min-width: 1080px;
+}
 
 #app {
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
+  font-family: 'ltim';
+  background-color: #f6f6f6;
 }
 
 .main-content {
-  display: flex;
+  padding-top: @main-header-height;
+}
+
+// 默认文本颜色
+.default-color {
+  color: #033277;
+}
+
+// 默认图标颜色
+.default-color__icon {
+  color: @theme-color;
+}
+
+// 不显示滚动条
+.el-menu-vertical {
+
+  overflow-x: hidden;
+
+  overflow-y: auto;
+
   flex: 1;
-  padding-top: 40px;
+
+  height: calc(100% - 64px);
+
+  &::-webkit-scrollbar {
+
+    width: 0px;
+
+    background-color: transparent;
+
+    &-track-piece {
+
+      width: 0px;
+
+      background-color: transparent;
+
+    }
+
+    &-thumb {
+
+      width: 0px;
+
+      background-color: transparent;
+
+      cursor: pointer;
+
+      &:hover {
+
+        background-color: transparent;
+
+      }
+
+    }
+
+  }
+
+}
+
+.ant-modal-content {
+  border-radius: 6px;
+
+  .ant-modal-header {
+    border-radius: 6px 6px 0 0;
+  }
+
+  .ant-modal-body {
+    border-radius: 0 0 6px 6px;
+  }
 }

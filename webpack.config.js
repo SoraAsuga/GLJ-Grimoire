@@ -6,7 +6,7 @@ const WebpackBar = require('webpackbar');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
 // const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { merge } = require('webpack-merge');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -28,6 +28,7 @@ const commonConfig = {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@': path.join(__dirname, './src'),
+      '@demo': path.join(__dirname, './src/demo'),
     },
   },
   stats: {
@@ -120,11 +121,11 @@ module.exports = (env, { mode }) => {
         reporter: [
           {
             afterAllDone() {
-              console.log(
-                chalk.bgBlue(` ${chalk.black('INFO')} `) +
-                  chalk.white(' Your App is running at: \n\n') +
-                  chalk.green(`     IPv4:  http://127.0.0.1:${PORT}\n`),
-              );
+              // console.log(
+              //   chalk.bgBlue(` ${chalk.black('INFO')} `) +
+              //     chalk.white(' Your App is running at: \n\n') +
+              //     chalk.green(`     IPv4:  http://127.0.0.1:${PORT}\n`),
+              // );
             },
           },
         ],

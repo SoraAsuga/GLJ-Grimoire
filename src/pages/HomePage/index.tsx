@@ -27,7 +27,7 @@ export default (props) => {
       }
 
       return (
-        <Link key={index} className="main-content__button" to={route.path}>
+        <Link key={index} className="main-content__button default-color" to={route.path}>
           <div>{route.name}</div>
         </Link>
       );

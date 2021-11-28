@@ -1,0 +1,107 @@
+.add-details {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+
+  .add-details__container {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 90%;
+    height: 90%;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+
+    .add-details__header {
+      flex-grow: 0;
+
+      .add-details__close {
+        border: none;
+        margin-top: 5px;
+        margin-left: 5px;
+      }
+    }
+
+    .add-details__set-item {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      width: 100%;
+      margin-top: 10px;
+
+      .set-item__title {
+        flex-grow: 0;
+        width: 80%;
+        font-size: 30px;
+        margin-left: 20px;
+        border: 0;
+
+        &:active,
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .set-item__content-title {
+        color: rgb(94, 94, 94);
+        margin: 20px 0 0 25px;
+      }
+
+      .set-item__date {
+        margin-left: 20px;
+        margin-top: 20px;
+
+        .set-item__date-title {
+          color: rgb(94, 94, 94);
+          margin-bottom: 10px;
+        }
+      }
+
+      .set-item__content {
+        flex-grow: 1;
+        font-size: 20px;
+        margin: 10px 25px;
+        border: 1px solid #096dd9;
+        border-radius: 6px;
+        padding: 6px;
+
+        &:active,
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .set-item__confirm {
+        display: flex;
+
+        .set-item__confirm-div {
+          flex-grow: 1;
+        }
+
+        .set-item__confirm-btn {
+          background-color: #1988ff;
+          color: white;
+          flex-grow: 0;
+          width: 140px;
+          height: 60px;
+          border-radius: 29px;
+          margin: 0 50px 20px 0;
+
+          &:hover {
+            background-color: #6cb3ff;
+          }
+
+          &:active {
+            background-color: #006cdf;
+          }
+        }
+      }
+    }
+  }
+}

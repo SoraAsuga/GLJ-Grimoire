@@ -1,3 +1,4 @@
+import path from 'path-browserify';
 import { IRoute } from '@/route';
 import cls from 'classnames';
 import React, { FC, Fragment, memo, useCallback } from 'react';
@@ -43,6 +44,29 @@ const BreadcrumbSeparator = memo((props: IBreadcrumbSeparatorProps) => {
   return <span className="breadcrumb__separator">{separator}</span>;
 });
 
+/**
+ * 匹配路由
+ * @param pathname 当前路由地址
+ * @param routes 路由配置
+ * @param basename 路由前缀地址
+ */
+function getMatchedRoute(pathname: string, routes: IRoute[], basename = '/') {
+  return routes.reduce((matched: IRoute[], route) => {
+    const routePath = path.join(basename, route.path);
+
+    if (pathname.startsWith(routePath)) {
+      matched.push(route);
+    }
+
+    if (route.children?.length) {
+      /** 将当前路由地址传递给子路由作为前缀地址 */
+      matched.push(...getMatchedRoute(pathname, route.children, routePath));
+    }
+
+    return matched;
+  }, []);
+}
+
 const Breadcrumb = (props: IBreadcrumbProps) => {
   const { routes, separator, className } = props;
   /** 从 React-Router 提供的 useHistory 获取当前路由位置 location */
@@ -72,13 +96,13 @@ const Breadcrumb = (props: IBreadcrumbProps) => {
      *
      * const orderedRoutes = matchedRoutes.sort((pre, next) => pre.path.length - next.path.length);
      * console.log(orderedRoutes); // [{ path: '/' }, { path: '/Skill' }]; path 文本长度短的在前面，这样就按照 父路由 在 子路由 前面的顺序排列好了
-     **/
-    const matchedRoutes = routes.filter((route) => location.pathname.startsWith(route.path));
-    const orderedRoutes = matchedRoutes.sort((pre, next) => pre.path.length - next.path.length);
+     */
 
-    return orderedRoutes.map((route, index) => {
+    const matchedRoutes = getMatchedRoute(location.pathname, routes);
+
+    return matchedRoutes.map((route, index) => {
       /** 是否是最后一项 */
-      const isLastItem = index === orderedRoutes.length - 1;
+      const isLastItem = index === matchedRoutes.length - 1;
 
       return (
         <Fragment key={route.path}>

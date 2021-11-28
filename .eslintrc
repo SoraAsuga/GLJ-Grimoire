@@ -23,6 +23,6 @@
     "spaced-comment": ["error", "always", { "exceptions": ["-", "+"] }],
     "comma-dangle": ["error", "only-multiline"],
     "no-multiple-empty-lines": "off",
-    "no-unused-vars": 1
+    "no-unused-vars": 0
   }
 }

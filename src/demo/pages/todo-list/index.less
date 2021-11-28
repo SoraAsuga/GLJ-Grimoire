@@ -1,0 +1,53 @@
+@import '@demo/assets/styles/vars.less';
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 100%;
+
+  .todo-lis__menu {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+
+    .todo-lis__menu-tabs {
+      width: 100%;
+
+      .todo-lis__menu-unfinished {
+        font-size: 25px;
+        margin-right: 20px;
+      }
+
+      .todo-lis__menu-done {
+        font-size: 25px;
+      }
+    }
+  }
+
+  .todo-list__input-content {
+    @height: 36px;
+    height: @height;
+    line-height: @height;
+
+    border: none;
+
+    font-size: 20px;
+
+    &,
+    &:active,
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .todo-list__content {
+    margin-top: 15px;
+  }
+
+  .todo-list__show {
+    margin-top: 20px;
+    flex-grow: 1;
+  }
+
+}

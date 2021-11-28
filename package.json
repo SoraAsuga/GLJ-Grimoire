@@ -19,10 +19,19 @@
   },
   "homepage": "https://github.com/SoraAsuga/GLJ-Grimoire#readme",
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "antd": "^4.16.13",
     "classnames": "^2.3.1",
+    "nanoid": "^3.1.30",
+    "path-browserify": "^1.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-router-dom": "^5.2.0"
+    "react-redux": "^7.2.6",
+    "react-router-dom": "^5.2.0",
+    "recoil": "^0.5.2",
+    "redux": "^4.1.2",
+    "redux-actions": "^2.6.5",
+    "redux-thunk": "^2.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
@@ -31,6 +40,7 @@
     "@babel/preset-env": "^7.14.4",
     "@babel/preset-react": "^7.13.13",
     "@babel/preset-typescript": "^7.14.5",
+    "@soda/friendly-errors-webpack-plugin": "^1.8.0",
     "@types/copy-webpack-plugin": "^8.0.0",
     "@types/css-minimizer-webpack-plugin": "^3.0.0",
     "@types/friendly-errors-webpack-plugin": "^0.1.3",
@@ -39,6 +49,7 @@
     "@types/react": "^17.0.9",
     "@types/react-dom": "^17.0.6",
     "@types/react-router-dom": "^5.1.8",
+    "@types/redux-actions": "^2.6.2",
     "@types/terser-webpack-plugin": "^5.0.3",
     "@types/webpack-dev-server": "^3.11.4",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
@@ -55,7 +66,6 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "file-loader": "^6.2.0",
-    "friendly-errors-webpack-plugin": "^1.7.0",
     "html-webpack-plugin": "^5.3.1",
     "less": "^4.1.1",
     "less-loader": "^9.0.0",
@@ -66,10 +76,10 @@
     "terser-webpack-plugin": "^5.1.3",
     "typescript": "^4.3.5",
     "url-loader": "^4.1.1",
-    "webpack": "^5.38.1",
+    "webpack": "^5.44.0",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.7.3",
-    "webpackbar": "^5.0.0-3"
+    "webpackbar": "^5.0.2"
   }
 }

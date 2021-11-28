@@ -6,15 +6,19 @@
   left: 0;
   right: 0;
   display: flex;
-  height: 40px;
+  min-width: @min-width;
+  height: @main-header-height;
   margin: 0px;
   padding: 0px 30px;
+
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid @theme-line-color;
   box-sizing: border-box;
   background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
   color: @theme-font-color;
+
+  z-index: 2;
 
   .main-header__logo-container {
     display: flex;
@@ -35,6 +39,7 @@
 
   .main-header__settings-container {
     display: flex;
+    align-items: center;
 
     .main-header__settings {
       font-size: 20px;
