@@ -7,10 +7,12 @@ export interface RoleSimulationItem {
   int: number;
   agi: number;
   vit: number;
-  exAbility?: [string, number];
+  exName?: string;
+  ex?: number;
   outfit?: any[];
   skill?: any[];
   food?: any[];
+  createDate: string;
 }
 
 export interface SkillListItem {

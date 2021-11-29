@@ -1,5 +1,4 @@
-import React, { FC, useState } from 'react';
-import { nanoid } from 'nanoid';
+import React, { FC } from 'react';
 import { useRecoilValue } from 'recoil';
 import { roleSimulationState } from '@/store/role-simulation';
 
