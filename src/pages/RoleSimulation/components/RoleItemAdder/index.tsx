@@ -3,7 +3,7 @@ import { UserAddOutlined } from '@ant-design/icons';
 import { Card } from 'antd';
 import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { nanoid } from 'nanoid';
 
 const RoleItemAdder: FC = () => {
@@ -43,7 +43,7 @@ const RoleItemAdder: FC = () => {
   const handleClickEdit = () => {
     id = nanoid();
     addRole();
-    history.push('/RoleSimulation/EditRole', id);
+    history.push('/RoleSimulation/EditRole');
   };
 
   return (

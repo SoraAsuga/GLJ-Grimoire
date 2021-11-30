@@ -2,11 +2,7 @@ import React, { FC } from 'react';
 
 import './index.less';
 
-interface IProps {
-  id: string;
-}
-
-const RoleData: FC<IProps> = (props) => {
+const RoleData: FC = () => {
   return <section className="role-simulation__page">面板</section>;
 };
 

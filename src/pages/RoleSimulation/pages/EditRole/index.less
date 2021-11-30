@@ -1,31 +1,38 @@
 @import '@/common/css/var.less';
 
-.edit-role__layout {
+.edit-role {
+  display: flex;
+  flex-direction: column;
+
   .edit-role__header {
-    background-color: #f0f2f5;
-
-    .edit-role__menu {
-      background-color: #f0f2f5;
-      max-width: @min-width;
-      margin: auto;
-
-      .edit-role__menu-item {
-        font-size: 20px;
-        padding: 0 40px;
-        margin: auto;
-
-        &:hover {
-          background-color: #dbdee246;
-        }
-      }
-    }
-
-    .edit-role__pages {
+    display: flex;
+    height: 140px;
+    margin: 0 auto;
+    
+    .edit-role__card {
+      max-width: @min-width !important;
+      padding-top: 35px;
     }
   }
 
-  .role-simulation__page {
-    max-width: @min-width;
-    margin: auto;
+  .edit-role__details {
+    display: flex;
+    margin: 0 auto;
+
+    .edit-role__details-content {
+      min-width: @min-width !important;
+      background-color: white;
+
+      .edit-role__details-header {
+        background-color: white;
+        padding: 0 10px;
+
+        .edit-role__details-menu {
+          .edit-role__menu-item {
+            color: @theme-color;
+          }
+        }
+      }
+    }
   }
 }

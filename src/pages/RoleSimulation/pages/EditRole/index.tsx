@@ -1,76 +1,85 @@
-import React, { FC, useState } from 'react';
-import { Layout, Menu, Breadcrumb } from 'antd';
 import {
   UserOutlined,
-  SolutionOutlined,
   SkinOutlined,
   BookOutlined,
   CoffeeOutlined,
+  RadarChartOutlined,
 } from '@ant-design/icons';
+import { Card, Descriptions, Layout, Menu } from 'antd';
+import { Header, Content } from 'antd/lib/layout/layout';
+import React, { FC, useState } from 'react';
 
 import './index.less';
 import RoleAbility from './pages/RoleAbility';
-import RoleData from './pages/roleData';
+import RoleData from './pages/RoleData';
 import RoleEquip from './pages/RoleEquip';
-import RoleSkill from './pages/RoleSkill';
 import RoleFood from './pages/RoleFood';
-const { Header, Content } = Layout;
+import RoleSkill from './pages/RoleSkill';
 
-interface IProps {
-  id: string;
-}
+const EditRole: FC = () => {
+  const [showPages, setShowPages] = useState(<RoleAbility />);
 
-const EditRole: FC<IProps> = (props) => {
-  const { id } = props;
-  const [showPage, setShowPage] = useState('能力');
-  const headerTitle = [
-    { name: '能力', logo: <UserOutlined style={{ fontSize: '18px' }} key={name + 'logo'} /> },
-    { name: '面板', logo: <SolutionOutlined style={{ fontSize: '18px' }} key={name + 'logo'} /> },
-    { name: '装备', logo: <SkinOutlined style={{ fontSize: '18px' }} key={name + 'logo'} /> },
-    { name: '技能', logo: <BookOutlined style={{ fontSize: '18px' }} key={name + 'logo'} /> },
-    { name: '料理', logo: <CoffeeOutlined style={{ fontSize: '18px' }} key={name + 'logo'} /> },
+  const menus = [
+    {
+      name: '能力',
+      icon: <RadarChartOutlined style={{ marginRight: '3px', fontSize: '16px' }} />,
+      page: <RoleAbility />,
+    },
+    {
+      name: '数值',
+      icon: <UserOutlined style={{ marginRight: '3px', fontSize: '16px' }} />,
+      page: <RoleData />,
+    },
+    {
+      name: '装备',
+      icon: <SkinOutlined style={{ marginRight: '3px', fontSize: '16px' }} />,
+      page: <RoleEquip />,
+    },
+    {
+      name: '技能',
+      icon: <BookOutlined style={{ marginRight: '3px', fontSize: '16px' }} />,
+      page: <RoleSkill />,
+    },
+    {
+      name: '料理',
+      icon: <CoffeeOutlined style={{ marginRight: '3px', fontSize: '16px' }} />,
+      page: <RoleFood />,
+    },
   ];
 
-  const showPages = () => {
-    switch (showPage) {
-      case '能力':
-        return <RoleAbility id={id} />;
-      case '面板':
-        return <RoleData id={id} />;
-      case '装备':
-        return <RoleEquip id={id} />;
-      case '技能':
-        return <RoleSkill id={id} />;
-      case '料理':
-        return <RoleFood id={id} />;
-    }
-  };
-
-  const changeShowPages = (item) => {
-    setShowPage(item.key);
-  };
-
   return (
-    <Layout className="edit-role__layout">
-      <Header className="edit-role__header">
-        <Menu
-          className="edit-role__menu"
-          mode="horizontal"
-          defaultOpenKeys={['属性']}
-          onSelect={changeShowPages}
-        >
-          {headerTitle.map((item) => (
-            <Menu.Item className="edit-role__menu-item" key={item.name}>
-              {item.logo}&nbsp;
-              {item.name}
-            </Menu.Item>
-          ))}
-        </Menu>
-      </Header>
-      <Content className="edit-role__pages" style={{ padding: '0 50px' }}>
-        {showPages()}
-      </Content>
-    </Layout>
+    <section className="edit-role">
+      <header className="edit-role__header">
+        <Card className="edit-role__card">
+          <Descriptions title="角色名">
+            <Descriptions.Item label="等级">233</Descriptions.Item>
+            <Descriptions.Item label="武器">双剑</Descriptions.Item>
+          </Descriptions>
+        </Card>
+      </header>
+      <section className="edit-role__details">
+        <Layout className="edit-role__details-content">
+          <Header className="edit-role__details-header">
+            <Menu theme="light" mode="horizontal" className="edit-role__details-menu">
+              {menus.map((item) => (
+                <Menu.Item
+                  className="edit-role__menu-item"
+                  key={item.name}
+                  style={{ fontSize: '18px' }}
+                  onClick={() => setShowPages(item.page)}
+                >
+                  {item.icon}
+                  {item.name}
+                </Menu.Item>
+              ))}
+            </Menu>
+          </Header>
+          <Content style={{ padding: '0 50px', marginTop: '20px' }}>
+            <div className="site-layout-content">{showPages}</div>
+          </Content>
+        </Layout>
+      </section>
+    </section>
   );
 };
 

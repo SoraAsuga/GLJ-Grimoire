@@ -12,7 +12,7 @@ const SplitLine: FC<IProps> = (props) => {
 
   return (
     <section className="split-line">
-      {icon}
+      {icon}&nbsp;
       <div className="split-line__title">{title}</div>
     </section>
   );
