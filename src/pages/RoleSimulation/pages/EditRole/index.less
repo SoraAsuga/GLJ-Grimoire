@@ -6,6 +6,7 @@
 
   .edit-role__header {
     display: flex;
+
     height: 140px;
     margin: 0 auto;
     
@@ -17,6 +18,7 @@
 
   .edit-role__details {
     display: flex;
+    max-width: @min-width;
     margin: 0 auto;
 
     .edit-role__details-content {
@@ -24,6 +26,10 @@
       background-color: white;
 
       .edit-role__details-header {
+        position: sticky;
+
+        top: 70px;
+
         background-color: white;
         padding: 0 10px;
 

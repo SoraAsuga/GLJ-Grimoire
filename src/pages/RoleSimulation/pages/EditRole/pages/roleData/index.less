@@ -1,0 +1,66 @@
+@import '@/common/css/var.less';
+
+.edit-role__page-data {
+  display: flex;
+  font-size: 14px;
+
+  .edit-role__page-field{
+    display: flex;
+    flex-direction: column;
+
+    .role-data {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  
+      max-width: 380px;
+      min-height: 210px;
+  
+      margin: 20px auto;
+  
+      .role-data__header {
+        color: @theme-font-color;
+        font-size: 16px;
+  
+        margin: 10px auto;
+      }
+  
+      .role-data__content {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+  
+        .role-data__item {
+          font-size: 16px;
+  
+          display: flex;
+
+          min-width: 150px;
+  
+          padding: 2px 5px;
+          margin: 5px 10px;
+          border-bottom: 1px solid #00327c67;
+  
+          .role-data__item-name {
+            color: @theme-font-color;
+  
+            flex-grow: 1;
+  
+            padding: 5px;
+          }
+  
+          .role-data__item-value {
+            color: @theme-color;
+  
+            padding: 6px;
+          }
+        }
+      }
+    }
+  }
+
+  .edit-role__page-line {
+    padding-right: 15px;
+    border-left: 1px solid @theme-color;
+  }
+}

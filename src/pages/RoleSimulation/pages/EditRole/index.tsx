@@ -74,7 +74,7 @@ const EditRole: FC = () => {
               ))}
             </Menu>
           </Header>
-          <Content style={{ padding: '0 50px', marginTop: '20px' }}>
+          <Content style={{ padding: '20px 30px 100px' }}>
             <div className="site-layout-content">{showPages}</div>
           </Content>
         </Layout>
