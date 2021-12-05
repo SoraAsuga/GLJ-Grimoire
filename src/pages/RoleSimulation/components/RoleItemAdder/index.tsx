@@ -10,9 +10,8 @@ const RoleItemAdder: FC = () => {
   const history = useHistory();
   const setList = useSetRecoilState(roleSimulationState);
   const date = new Date();
-  let id = '';
 
-  const addRole = () => {
+  const addRole = (id: string) => {
     const createDate =
       date.getFullYear() +
       '-' +
@@ -30,25 +29,28 @@ const RoleItemAdder: FC = () => {
         id,
         level: 1,
         name: '新建角色',
-        str: 1,
-        dex: 1,
-        int: 1,
-        vit: 1,
-        agi: 1,
         createDate,
+        ability: {
+          str: 1,
+          dex: 1,
+          int: 1,
+          vit: 1,
+          agi: 1,
+        },
+        equipment: {},
       },
     ]);
   };
 
   const handleClickEdit = () => {
-    id = nanoid();
-    addRole();
-    history.push('/RoleSimulation/EditRole');
+    const id = nanoid();
+    addRole(id);
+    history.push(`/RoleSimulation/EditRole/${id}`);
   };
 
   return (
     <Card className="role-item" onClick={handleClickEdit}>
-      <UserAddOutlined id={id} />
+      <UserAddOutlined />
     </Card>
   );
 };

@@ -6,10 +6,11 @@ import {
 } from '@ant-design/icons';
 import Modal from 'antd/lib/modal/Modal';
 import React, { FC, useState } from 'react';
+import { IProps } from '../types';
 
 import './index.less';
 
-const RoleEquip: FC = () => {
+const RoleEquip: FC<IProps> = (props) => {
   const type = [
     '主手武器',
     '副手武器',

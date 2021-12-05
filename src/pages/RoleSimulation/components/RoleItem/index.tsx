@@ -1,22 +1,21 @@
 import React, { FC, useState } from 'react';
 import { Card, Descriptions, Modal } from 'antd';
 import { EditOutlined, CopyOutlined, DeleteOutlined } from '@ant-design/icons';
-import { RoleSimulationItem } from '@/store/types';
 import { useHistory } from 'react-router-dom';
 
 import './index.less';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { roleSimulationState } from '@/store/role-simulation';
-import Item from 'antd/lib/list/Item';
 import { nanoid } from 'nanoid';
+import { IRoleItem } from '@/typings/role';
 
 interface RoleItemProps {
-  role: RoleSimulationItem;
+  role: IRoleItem;
 }
 
 const RoleItem: FC<RoleItemProps> = (props) => {
   const { role } = props;
-  const { name, level, str, dex, int, vit, agi, exName, ex } = props.role;
+  const { id, name, level, ability, equipment } = props.role;
 
   const setList = useSetRecoilState(roleSimulationState);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -42,11 +41,8 @@ const RoleItem: FC<RoleItemProps> = (props) => {
           id: nanoid(),
           level,
           name,
-          str,
-          dex,
-          int,
-          vit,
-          agi,
+          ability,
+          equipment,
           createDate,
         },
       ];
@@ -54,7 +50,7 @@ const RoleItem: FC<RoleItemProps> = (props) => {
   };
 
   const handleClickEdit = () => {
-    history.push('/RoleSimulation/EditRole');
+    history.push(`/RoleSimulation/EditRole/${id}`);
   };
 
   const deleteRole = () => {
@@ -86,12 +82,14 @@ const RoleItem: FC<RoleItemProps> = (props) => {
       >
         <Descriptions title={name}>
           <Descriptions.Item label="等级">{level}</Descriptions.Item>
-          <Descriptions.Item label="STR">{str}</Descriptions.Item>
-          <Descriptions.Item label="DEX">{dex}</Descriptions.Item>
-          <Descriptions.Item label="INT">{int}</Descriptions.Item>
-          <Descriptions.Item label="VIT">{vit}</Descriptions.Item>
-          <Descriptions.Item label="AGI">{agi}</Descriptions.Item>
-          {exName && <Descriptions.Item label={exName}>{ex}</Descriptions.Item>}
+          <Descriptions.Item label="STR">{ability.str}</Descriptions.Item>
+          <Descriptions.Item label="DEX">{ability.dex}</Descriptions.Item>
+          <Descriptions.Item label="INT">{ability.int}</Descriptions.Item>
+          <Descriptions.Item label="VIT">{ability.vit}</Descriptions.Item>
+          <Descriptions.Item label="AGI">{ability.agi}</Descriptions.Item>
+          {ability.exName && (
+            <Descriptions.Item label={ability.exName}>{ability.ex}</Descriptions.Item>
+          )}
           <Descriptions.Item label="创建日期">{role.createDate}</Descriptions.Item>
         </Descriptions>
       </Card>

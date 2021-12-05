@@ -8,8 +8,12 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
 // const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { merge } = require('webpack-merge');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {
+  merge
+} = require('webpack-merge');
+const {
+  CleanWebpackPlugin
+} = require('clean-webpack-plugin');
 
 const PORT = 2333;
 
@@ -43,23 +47,20 @@ const commonConfig = {
     hints: false,
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.[tj]sx?$/,
         use: ['cache-loader', 'babel-loader'],
         exclude: /node_modules/,
       },
       {
         test: /\.(gif|png|jpe?g|svg|ico)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              name: 'assets/[name].[contenthash].[ext]',
-              limit: 8192,
-            },
+        use: [{
+          loader: 'url-loader',
+          options: {
+            name: 'assets/[name].[contenthash].[ext]',
+            limit: 8192,
           },
-        ],
+        }, ],
       },
       {
         test: /\.(ttf|eot|woff2?)/,
@@ -77,31 +78,47 @@ const commonConfig = {
   ],
 };
 
-module.exports = (env, { mode }) => {
+module.exports = (env, {
+  mode
+}) => {
   const devConfig = {
     devtool: 'source-map',
     devServer: {
+      // open: true,
       // contentBase: '.',
       hot: true,
-      host: '0.0.0.0',
+      host: '127.0.0.1',
       port: PORT,
       clientLogLevel: 'none',
       noInfo: true,
     },
     module: {
-      rules: [
-        {
+      rules: [{
           test: /\.less$/,
           use: [
             'style-loader',
             {
               loader: 'css-loader',
-              options: { sourceMap: true, importLoaders: 2 },
+              options: {
+                sourceMap: true,
+                importLoaders: 2
+              },
             },
             {
               loader: 'less-loader',
-              options: { sourceMap: true },
+              options: {
+                sourceMap: true
+              },
             },
+            {
+              loader: 'style-resources-loader',
+              options: {
+                patterns: [
+                  path.resolve(__dirname, './src/common/css/var.less'),
+                ],
+                injector: 'append'
+              }
+            }
           ],
         },
         {
@@ -110,7 +127,10 @@ module.exports = (env, { mode }) => {
             'style-loader',
             {
               loader: 'css-loader',
-              options: { sourceMap: true, importLoaders: 2 },
+              options: {
+                sourceMap: true,
+                importLoaders: 2
+              },
             },
           ],
         },
@@ -118,34 +138,33 @@ module.exports = (env, { mode }) => {
     },
     plugins: [
       new WebpackBar({
-        reporter: [
-          {
-            afterAllDone() {
-              // console.log(
-              //   chalk.bgBlue(` ${chalk.black('INFO')} `) +
-              //     chalk.white(' Your App is running at: \n\n') +
-              //     chalk.green(`     IPv4:  http://127.0.0.1:${PORT}\n`),
-              // );
-            },
+        reporter: [{
+          afterAllDone() {
+            console.log(
+              chalk.bgBlue(` ${chalk.black('INFO')} `) +
+                chalk.white(' Your App is running at: \n\n') +
+                chalk.green(`     IPv4:  http://127.0.0.1:${PORT}\n`),
+            );
           },
-        ],
+        }, ],
       }),
     ],
   };
 
   const prodConfig = {
     module: {
-      rules: [
-        {
+      rules: [{
           test: /\.less$/,
-          use: [
-            {
+          use: [{
               loader: MiniCssExtractPlugin.loader,
               options: {},
             },
             {
               loader: 'css-loader',
-              options: { sourceMap: false, importLoaders: 2 },
+              options: {
+                sourceMap: false,
+                importLoaders: 2
+              },
             },
             {
               loader: 'less-loader',
@@ -158,7 +177,10 @@ module.exports = (env, { mode }) => {
             'style-loader',
             {
               loader: 'css-loader',
-              options: { sourceMap: false, importLoaders: 2 },
+              options: {
+                sourceMap: false,
+                importLoaders: 2
+              },
             },
           ],
         },
@@ -212,7 +234,9 @@ module.exports = (env, { mode }) => {
             preset: [
               'default',
               {
-                discardComments: { removeAll: true },
+                discardComments: {
+                  removeAll: true
+                },
               },
             ],
           },

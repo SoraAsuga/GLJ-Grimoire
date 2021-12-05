@@ -31,7 +31,7 @@ const routes: IRoute[] = [
     children: [
       {
         name: '编辑角色',
-        path: '/EditRole',
+        path: '/EditRole/:id',
         component: EditRole,
       },
     ],

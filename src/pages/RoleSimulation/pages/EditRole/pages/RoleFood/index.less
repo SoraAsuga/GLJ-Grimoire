@@ -1,0 +1,136 @@
+@import '@/common/css/var.less';
+
+.edit-role__page-food {
+
+  .page-food__container {
+    padding: 10px;
+    margin-top: 30px;
+
+    .page-food__name {
+      display: flex;
+      align-items: center;
+
+      font-size: 14px;
+      color: @theme-font-color;
+
+      .page-food__name-chose {
+        color: @theme-font-color;
+
+        min-width: 300px;
+        margin: 0 10px;
+      }
+
+      .page-food__name-btn {
+        font-size: 16px;
+
+        padding: 5px 10px;
+        margin: 0 20px;
+
+        button {
+          color: @theme-color;
+
+          padding: 5px 10px;
+          border: 1px solid @theme-color;
+          border-radius: 10px;
+          margin: 0 5px;
+
+          transition: 0.2s;
+
+          &:hover {
+            color: @theme-font-color;
+
+            border: 1px solid @theme-font-color;
+          }
+
+        }
+
+        .page-food__name-delete {
+          color: rgba(255, 0, 0, 0.5);
+          border: 1px solid rgba(255, 0, 0, 0.5);
+
+          transition: 0.2s;
+
+          &:hover {
+            color: red;
+
+            border: 1px solid red;
+          }
+        }
+      }
+    }
+
+    .page-food__chose-container {
+      display: flex;
+      flex-wrap: wrap;
+
+      .page-food__chose-item {
+        color: @theme-color;
+        font-size: 16px;
+
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        justify-content: space-between;
+
+        max-width: 360px;
+        min-width: 360px;
+        padding: 5px 10px;
+        border-bottom: 1px solid @theme-color;
+        margin: 5px 10px;
+
+        .chose-item__data {
+          width: 60px;
+        }
+
+        .chose-item__delete {
+          color: rgba(255, 0, 0, 0.5);
+
+          border: none;
+          margin: 5px;
+
+          transition: 0.2s;
+
+          &:hover {
+            color: red;
+          }
+        }
+
+        .chose-item__name {
+          flex-grow: 1;
+
+          color: @theme-font-color;
+          text-align: left;
+
+          margin: 0 10px;
+        }
+      }
+
+      .item-btn {
+        border-left: 0;
+        border-right: 0;
+        border-top: 0;
+
+        transition: 0.2s;
+
+        &:hover {
+          background-color: #4e8eee17;
+        }
+      }
+    }
+  }
+
+  .chose-window {
+    position: sticky;
+    background-color: white;
+
+    top: 135px;
+
+    min-height: 210px;
+    padding: 9px;
+    border: 1px solid #4e8eee3b;
+    border-radius: 10px;
+
+    z-index: 2;
+  }
+}

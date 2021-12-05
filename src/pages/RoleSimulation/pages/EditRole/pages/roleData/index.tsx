@@ -2,10 +2,12 @@ import { PicLeftOutlined } from '@ant-design/icons';
 import { Card, Tooltip } from 'antd';
 import React, { FC } from 'react';
 import SplitLine from '../../components/SplitLine';
+import { IProps } from '../types';
 
 import './index.less';
 
-const RoleData: FC = () => {
+const RoleData: FC<IProps> = (props) => {
+  const { id } = props;
   const ability = [
     [
       { name: 'STR', value: 1 },
@@ -34,9 +36,9 @@ const RoleData: FC = () => {
       { name: 'MDEF', value: 1 },
       { name: '物理抗性', value: 1 + '%' },
       { name: '魔法抗性', value: 1 + '%' },
-      { name: '受到物理伤害', value: 1 + '%' },
-      { name: '受到魔法伤害', value: 1 + '%' },
-      { name: '受到百分比伤害', value: 1 + '%' },
+      { name: '受物理伤害', value: 1 + '%' },
+      { name: '受魔法伤害', value: 1 + '%' },
+      { name: '受百分比伤害', value: 1 + '%' },
     ],
     [
       { name: '命中', value: 1 },

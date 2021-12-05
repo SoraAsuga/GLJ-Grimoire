@@ -52,7 +52,8 @@ const BreadcrumbSeparator = memo((props: IBreadcrumbSeparatorProps) => {
  */
 function getMatchedRoute(pathname: string, routes: IRoute[], basename = '/') {
   return routes.reduce((matched: IRoute[], route) => {
-    const routePath = path.join(basename, route.path);
+    /** 把路径里面的变量去掉 */
+    const routePath = path.join(basename, route.path).replace(/\/:[\w\d-]+/g, '');
 
     if (pathname.startsWith(routePath)) {
       matched.push(route);

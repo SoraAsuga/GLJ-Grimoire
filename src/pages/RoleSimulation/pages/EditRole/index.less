@@ -1,5 +1,3 @@
-@import '@/common/css/var.less';
-
 .edit-role {
   display: flex;
   flex-direction: column;
@@ -18,8 +16,8 @@
 
   .edit-role__details {
     display: flex;
-    max-width: @min-width;
     margin: 0 auto;
+    max-width: @min-width;
 
     .edit-role__details-content {
       min-width: @min-width !important;
@@ -27,11 +25,11 @@
 
       .edit-role__details-header {
         position: sticky;
-
         top: 70px;
+        padding: 0 10px;
 
         background-color: white;
-        padding: 0 10px;
+        z-index: 2;
 
         .edit-role__details-menu {
           .edit-role__menu-item {

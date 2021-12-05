@@ -8,6 +8,9 @@ import {
 import { Card, Descriptions, Layout, Menu } from 'antd';
 import { Header, Content } from 'antd/lib/layout/layout';
 import React, { FC, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { IEditRoleRouteParam } from '../../types';
 
 import './index.less';
 import RoleAbility from './pages/RoleAbility';
@@ -17,35 +20,55 @@ import RoleFood from './pages/RoleFood';
 import RoleSkill from './pages/RoleSkill';
 
 const EditRole: FC = () => {
-  const [showPages, setShowPages] = useState(<RoleAbility />);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+  const params = useParams<IEditRoleRouteParam>();
+  // const roleData = useRecoilState();
+
+  console.log(params.id);
 
   const menus = [
     {
       name: '能力',
       icon: <RadarChartOutlined style={{ marginRight: '3px', fontSize: '16px' }} />,
-      page: <RoleAbility />,
+      page: <RoleAbility id={params.id} />,
     },
     {
       name: '数值',
       icon: <UserOutlined style={{ marginRight: '3px', fontSize: '16px' }} />,
-      page: <RoleData />,
+      page: <RoleData id={params.id} />,
     },
     {
       name: '装备',
       icon: <SkinOutlined style={{ marginRight: '3px', fontSize: '16px' }} />,
-      page: <RoleEquip />,
+      page: <RoleEquip id={params.id} />,
     },
     {
       name: '技能',
       icon: <BookOutlined style={{ marginRight: '3px', fontSize: '16px' }} />,
-      page: <RoleSkill />,
+      page: <RoleSkill id={params.id} />,
     },
     {
       name: '料理',
       icon: <CoffeeOutlined style={{ marginRight: '3px', fontSize: '16px' }} />,
-      page: <RoleFood />,
+      page: <RoleFood id={params.id} />,
     },
   ];
+
+  const renderTabContents = () => {
+    return menus.map((menu, i) => {
+      const visible = currentPageIndex === i;
+
+      return (
+        <div
+          className="site-layout-content"
+          key={menu.name}
+          style={{ display: visible ? 'block' : 'none' }}
+        >
+          {menu.page}
+        </div>
+      );
+    });
+  };
 
   return (
     <section className="edit-role">
@@ -61,12 +84,12 @@ const EditRole: FC = () => {
         <Layout className="edit-role__details-content">
           <Header className="edit-role__details-header">
             <Menu theme="light" mode="horizontal" className="edit-role__details-menu">
-              {menus.map((item) => (
+              {menus.map((item, index) => (
                 <Menu.Item
                   className="edit-role__menu-item"
                   key={item.name}
                   style={{ fontSize: '18px' }}
-                  onClick={() => setShowPages(item.page)}
+                  onClick={() => setCurrentPageIndex(index)}
                 >
                   {item.icon}
                   {item.name}
@@ -74,9 +97,7 @@ const EditRole: FC = () => {
               ))}
             </Menu>
           </Header>
-          <Content style={{ padding: '20px 30px 100px' }}>
-            <div className="site-layout-content">{showPages}</div>
-          </Content>
+          <Content style={{ padding: '20px 20px 60px' }}>{renderTabContents()}</Content>
         </Layout>
       </section>
     </section>
