@@ -5,37 +5,32 @@ import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { nanoid } from 'nanoid';
+import dayjs from 'dayjs';
+
+import './index.less';
 
 const RoleItemAdder: FC = () => {
   const history = useHistory();
   const setList = useSetRecoilState(roleSimulationState);
-  const date = new Date();
 
   const addRole = (id: string) => {
-    const createDate =
-      date.getFullYear() +
-      '-' +
-      (date.getMonth() + 1) +
-      '-' +
-      date.getDate() +
-      ' ' +
-      (date.getHours() + 1) +
-      ':' +
-      (date.getMinutes() + 1);
-
     setList((oldList) => [
       ...oldList,
       {
         id,
-        level: 1,
         name: '新建角色',
-        createDate,
+        level: 1,
+        createDate: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         ability: {
           str: 1,
           dex: 1,
           int: 1,
           vit: 1,
           agi: 1,
+        },
+        abilityEx: {
+          type: null,
+          value: 1,
         },
         equipment: {},
       },
@@ -49,8 +44,13 @@ const RoleItemAdder: FC = () => {
   };
 
   return (
-    <Card className="role-item" onClick={handleClickEdit}>
-      <UserAddOutlined />
+    <Card className="role-item role-item__new" onClick={handleClickEdit}>
+      <div className="role-item__container">
+        <div className="role-item__icon">
+          <UserAddOutlined />
+        </div>
+        <div className="role-item__title">点击创建新角色</div>
+      </div>
     </Card>
   );
 };

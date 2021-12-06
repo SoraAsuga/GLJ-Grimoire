@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { Card, Descriptions, Modal } from 'antd';
 import { EditOutlined, CopyOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 import './index.less';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -15,25 +16,13 @@ interface RoleItemProps {
 
 const RoleItem: FC<RoleItemProps> = (props) => {
   const { role } = props;
-  const { id, name, level, ability, equipment } = props.role;
+  const { id, name, level, ability, equipment, abilityEx } = props.role;
 
   const setList = useSetRecoilState(roleSimulationState);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const history = useHistory();
-  const date = new Date();
 
   const copyRole = () => {
-    const createDate =
-      date.getFullYear() +
-      '-' +
-      (date.getMonth() + 1) +
-      '-' +
-      date.getDate() +
-      ' ' +
-      (date.getHours() + 1) +
-      ':' +
-      (date.getMinutes() + 1);
-
     setList((oldList) => {
       return [
         ...oldList,
@@ -42,8 +31,9 @@ const RoleItem: FC<RoleItemProps> = (props) => {
           level,
           name,
           ability,
+          abilityEx,
           equipment,
-          createDate,
+          createDate: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         },
       ];
     });
@@ -87,8 +77,8 @@ const RoleItem: FC<RoleItemProps> = (props) => {
           <Descriptions.Item label="INT">{ability.int}</Descriptions.Item>
           <Descriptions.Item label="VIT">{ability.vit}</Descriptions.Item>
           <Descriptions.Item label="AGI">{ability.agi}</Descriptions.Item>
-          {ability.exName && (
-            <Descriptions.Item label={ability.exName}>{ability.ex}</Descriptions.Item>
+          {abilityEx.type && (
+            <Descriptions.Item label={abilityEx.type}>{abilityEx.value}</Descriptions.Item>
           )}
           <Descriptions.Item label="创建日期">{role.createDate}</Descriptions.Item>
         </Descriptions>

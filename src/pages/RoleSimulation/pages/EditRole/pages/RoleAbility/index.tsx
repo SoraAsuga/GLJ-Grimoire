@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { getRoleSelector, roleSimulationState } from '@/store/role-simulation';
+import { getRoleSelector } from '@/store/role-simulation';
 import {
   DeploymentUnitOutlined,
   EditOutlined,
@@ -9,10 +9,10 @@ import {
 } from '@ant-design/icons/lib/icons';
 import { Cascader, Col, InputNumber, Row, Slider } from 'antd';
 import React, { FC, useCallback, useMemo, useState } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { ENumericalNumber } from '@/constants/numericalValue';
 
-import { IRoleAbility, IRoleAbilityEx } from '@/typings/role';
+import { IRoleAbilityEx } from '@/typings/role';
 import SplitLine from '../../components/SplitLine';
 import { IProps } from '../types';
 import './index.less';
@@ -102,16 +102,16 @@ const RoleAbility: FC<IProps> = (props) => {
             <Row className="ability-input">
               <Col span={12}>
                 <Slider
-                  min={1}
-                  max={510}
+                  min={MIN_VALUE}
+                  max={MAX_VALUE}
                   onChange={changeValue.bind(this, name)}
                   value={typeof value === 'number' ? value : 1}
                 />
               </Col>
               <Col span={4}>
                 <InputNumber
-                  min={1}
-                  max={510}
+                  min={MIN_VALUE}
+                  max={MAX_VALUE}
                   style={{ margin: '0 16px' }}
                   value={value}
                   onChange={changeValue.bind(this, name)}
@@ -132,7 +132,9 @@ const RoleAbility: FC<IProps> = (props) => {
           <SmileOutlined style={{ marginRight: '5px' }} />
           角色名：缘染之空
         </span>
-        <EditOutlined style={{ marginLeft: '50px' }} />
+        <button style={{ marginLeft: '50px', border: 'none' }}>
+          <EditOutlined />
+        </button>
       </div>
       <div className="page-ability__container">
         <SplitLine icon={<StarOutlined />} title="角色名称" />
@@ -140,7 +142,7 @@ const RoleAbility: FC<IProps> = (props) => {
           <UserOutlined style={{ marginRight: '5px' }} />
           角色等级{' '}
           <InputNumber
-            min={1}
+            min={MIN_VALUE}
             max={240}
             defaultValue={1}
             onChange={() => {}}
@@ -165,7 +167,7 @@ const RoleAbility: FC<IProps> = (props) => {
           <Row className="ability-input">
             <Col span={12}>
               <Slider
-                min={1}
+                min={MIN_VALUE}
                 max={255}
                 onChange={changeEx}
                 disabled={ex.type === null}
@@ -174,8 +176,8 @@ const RoleAbility: FC<IProps> = (props) => {
             </Col>
             <Col span={4}>
               <InputNumber
-                min={1}
-                max={510}
+                min={MIN_VALUE}
+                max={255}
                 style={{ margin: '0 16px' }}
                 disabled={ex.type === null}
                 value={ex.value || 1}
