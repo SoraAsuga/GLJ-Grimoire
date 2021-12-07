@@ -1,3 +1,4 @@
+import { getRoleSelector } from '@/store/role-simulation';
 import {
   UserOutlined,
   SkinOutlined,
@@ -7,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import { Card, Descriptions, Layout, Menu } from 'antd';
 import { Header, Content } from 'antd/lib/layout/layout';
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { IEditRoleRouteParam } from '../../types';
@@ -22,6 +23,8 @@ import RoleSkill from './pages/RoleSkill';
 const EditRole: FC = () => {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const params = useParams<IEditRoleRouteParam>();
+  const roleSelector = useMemo(() => getRoleSelector(params.id), [params.id]);
+  const [role, setRole] = useRecoilState(roleSelector);
   // const roleData = useRecoilState();
 
   console.log(params.id);
@@ -74,8 +77,8 @@ const EditRole: FC = () => {
     <section className="edit-role">
       <header className="edit-role__header">
         <Card className="edit-role__card">
-          <Descriptions title="角色名">
-            <Descriptions.Item label="等级">233</Descriptions.Item>
+          <Descriptions title={role.name}>
+            <Descriptions.Item label="等级">{role.level}</Descriptions.Item>
             <Descriptions.Item label="武器">双剑</Descriptions.Item>
           </Descriptions>
         </Card>

@@ -11,6 +11,11 @@ import React, { FC, useState } from 'react';
 import { nanoid } from 'nanoid';
 
 import './index.less';
+import {
+  ENumericalNumber,
+  ENumericalNumberType,
+  NUMERICAL_NUMBER,
+} from '@/constants/numericalValue';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { foodConfigurationState } from '@/store/food-configuration';
 import SplitLine from '../../components/SplitLine';
@@ -33,43 +38,26 @@ const RoleFood: FC<IProps> = (props) => {
   const [deleteWindow, setDeleteWindow] = useState(false);
   /** 料理列表 */
   const [foodList, setFoodList] = useState([
-    { name: 'HP上限+', value: 0, chose: false },
-    { name: 'MP上限+', value: 0, chose: false },
-    { name: 'STR+', value: 0, chose: false },
-    { name: 'DEX+', value: 0, chose: false },
-    { name: 'INT+', value: 0, chose: false },
-    { name: 'VIT+', value: 0, chose: false },
-    { name: 'AGI+', value: 0, chose: false },
-    { name: 'ATK+', value: 0, chose: false },
-    { name: 'MATK+', value: 0, chose: false },
-    { name: '武器ATK+', value: 0, chose: false },
-    { name: '物理抗性+', value: 0, chose: false },
-    { name: '魔法抗性+', value: 0, chose: false },
-    { name: '仇恨值+', value: 0, chose: false },
-    { name: '仇恨值-', value: 0, chose: false },
-    { name: '攻击MP回复+', value: 0, chose: false },
-    { name: '暴击率+', value: 0, chose: false },
-    { name: '命中+', value: 0, chose: false },
-    { name: '回避+', value: 0, chose: false },
-    { name: 'DEF+', value: 0, chose: false },
-    { name: 'MDEF+', value: 0, chose: false },
-    { name: '掉宝率+', value: 0, chose: false },
-    { name: '物理屏障+', value: 0, chose: false },
-    { name: '魔法屏障+', value: 0, chose: false },
-    { name: '百分比屏障+', value: 0, chose: false },
-    { name: '对无属性伤害+', value: 0, chose: false },
-    { name: '对火属性伤害+', value: 0, chose: false },
-    { name: '对水属性伤害+', value: 0, chose: false },
-    { name: '对地属性伤害+', value: 0, chose: false },
-    { name: '对风属性伤害+', value: 0, chose: false },
-    { name: '对光属性伤害+', value: 0, chose: false },
-    { name: '对暗属性伤害+', value: 0, chose: false },
-    { name: '对火抗性+', value: 0, chose: false },
-    { name: '对水抗性+', value: 0, chose: false },
-    { name: '对地抗性+', value: 0, chose: false },
-    { name: '对风抗性+', value: 0, chose: false },
-    { name: '对光抗性+', value: 0, chose: false },
-    { name: '对暗抗性+', value: 0, chose: false },
+    { name: ENumericalNumber.HP, value: 0, chose: false },
+    { name: ENumericalNumber.MP, value: 0, chose: false },
+    { name: ENumericalNumber.STR, value: 0, chose: false },
+    { name: ENumericalNumber.DEX, value: 0, chose: false },
+    { name: ENumericalNumber.INT, value: 0, chose: false },
+    { name: ENumericalNumber.VIT, value: 0, chose: false },
+    { name: ENumericalNumber.AGI, value: 0, chose: false },
+    { name: ENumericalNumber.ATK, value: 0, chose: false },
+    { name: ENumericalNumber.MATK, value: 0, chose: false },
+    { name: ENumericalNumber.WEAPON_ATK, value: 0, chose: false },
+    { name: ENumericalNumber.PHYSICAL_RESISTANCE, value: 0, chose: false },
+    { name: ENumericalNumber.MAGIC_RESISTANCE, value: 0, chose: false },
+    { name: ENumericalNumber.AGGRO_PERCENT, value: 0, chose: false },
+    { name: ENumericalNumber.AGGRO_PERCENT, value: 0, chose: false, type: '-' },
+    { name: ENumericalNumber.ATTACK_MP_RECOVERY, value: 0, chose: false },
+    { name: ENumericalNumber.CRITICAL_RATE, value: 0, chose: false },
+    { name: ENumericalNumber.ACCURACY, value: 0, chose: false },
+    { name: ENumericalNumber.DODGE, value: 0, chose: false },
+    { name: ENumericalNumber.DEF, value: 0, chose: false },
+    { name: ENumericalNumber.MDEF, value: 0, chose: false },
   ]);
 
   /** 料理选择并存入暂存 */
@@ -127,13 +115,15 @@ const RoleFood: FC<IProps> = (props) => {
     foodList
       .filter((item) => item.chose)
       .map((item) => {
-        const { name, value } = item;
+        const { name, value, type } = item;
         return (
           <div key={name} className="page-food__chose-item">
             <CheckCircleOutlined style={{ border: 'none' }} />
             <span className="chose-item__name">
-              {name}
+              {NUMERICAL_NUMBER[name].name}
+              {type ? type : '+'}
               {value}
+              {NUMERICAL_NUMBER[name].type === ENumericalNumberType.Normal ? '' : '%'}
             </span>
             <button className="chose-item__delete" onClick={changeChose(name)}>
               <DeleteOutlined />
@@ -154,13 +144,15 @@ const RoleFood: FC<IProps> = (props) => {
     foodList
       .filter((item) => !item.chose)
       .map((item) => {
-        const { name, value } = item;
+        const { name, value, type } = item;
         return (
           <button key={name} className="page-food__chose-item item-btn" onClick={changeChose(name)}>
             <BorderOutlined style={{ border: 'none' }} />
             <span className="chose-item__name">
-              {name}
+              {NUMERICAL_NUMBER[name].name}
+              {type ? type : '+'}
               {value}
+              {NUMERICAL_NUMBER[name].type === ENumericalNumberType.Normal ? '' : '%'}
             </span>
             <InputNumber
               className="chose-item__data"

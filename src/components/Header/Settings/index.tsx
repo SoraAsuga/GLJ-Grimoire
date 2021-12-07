@@ -28,6 +28,7 @@ const Settings: FC<IProps> = (props) => {
       onCancel={onClose}
       footer={null}
       getContainer={false}
+      className="settings-menu"
     >
       <section className="settings-menu__content">
         <div className="settings-menu__content-func">

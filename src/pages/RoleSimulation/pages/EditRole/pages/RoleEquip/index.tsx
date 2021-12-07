@@ -1,8 +1,10 @@
 import {
+  RocketOutlined,
   CloseOutlined,
   MenuUnfoldOutlined,
   QuestionOutlined,
-  RocketOutlined,
+  FileDoneOutlined,
+  FileAddOutlined,
 } from '@ant-design/icons';
 import Modal from 'antd/lib/modal/Modal';
 import React, { FC, useState } from 'react';
@@ -50,10 +52,10 @@ const RoleEquip: FC<IProps> = (props) => {
             </button>
           </header>
           <section className="role-equip__content">
-            <section className="role-equip__content-details">
+            <button className="role-equip__content-details" onClick={changeShow(item)}>
               <QuestionOutlined className="content-details__icon" />
               <span className="content-details__text">无装备 OvO</span>
-            </section>
+            </button>
           </section>
         </div>
       );
@@ -62,13 +64,33 @@ const RoleEquip: FC<IProps> = (props) => {
   return (
     <section className="edit-role__page-equip">
       {equipItem()}
-      <Modal visible={show} onCancel={changeShow()} footer={null} className="role-equip__list">
+      <Modal
+        visible={show}
+        onCancel={changeShow()}
+        footer={null}
+        className="role-equip__list"
+        getContainer={false}
+      >
         <header className="role-equip__list-header">
           <div className="list-header__title">
-            <RocketOutlined className="list-header__title-icon" />
+            <RocketOutlined style={{ padding: '5px' }} className="list-header__title-icon" />
             <span className="list-header__title-text">装备清单</span>
           </div>
+          <div className="list-header__menu">
+            <button>
+              <FileDoneOutlined className="btn-icon" />
+              新增装备
+            </button>
+            <button>
+              <FileAddOutlined className="btn-icon" />
+              自定装备
+            </button>
+          </div>
         </header>
+        <section className="role-equip__list-content">
+          <div></div>
+          <div></div>
+        </section>
       </Modal>
     </section>
   );

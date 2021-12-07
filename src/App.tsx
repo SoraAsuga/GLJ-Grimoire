@@ -4,9 +4,8 @@ import React, { FC } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import DemoPage from './demo';
+
 import routes, { IRoute } from './route';
-import DemoPage2 from './demo2';
 
 const App: FC = () => {
   const renderRoute = (routes: IRoute[], base = '/') => {
@@ -40,8 +39,6 @@ const App: FC = () => {
   /** 简单的路由嵌套 */
   return (
     <Switch>
-      <Route path="/demo" component={DemoPage}></Route>
-      <Route path="/demo2" component={DemoPage2} exact strict></Route>
       <Route
         path="/"
         render={() => (

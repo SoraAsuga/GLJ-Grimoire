@@ -14,6 +14,12 @@
     border-radius: 5px;
     margin: 10px;
 
+    transition: 0.3s;
+
+    &:hover {
+      background-color: #4e8eee1a;
+    }
+
     .role-equip__card-header {
       display: flex;
       font-size: 14px;
@@ -54,7 +60,9 @@
         color: @theme-font-color;
         font-size: 16px;
 
-        margin: auto;
+        height: 100%;
+        width: 100%;
+        border: none;
 
         .content-details__icon {
           font-size: 24px;
@@ -73,5 +81,53 @@
 
   .role-equip__list {
     font-size: 100px;
+    display: flex;
+
+    .role-equip__list-header {
+      width: 520px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid @theme-color;
+
+      .list-header__title {
+        font-size: 16px !important;
+        color: @theme-font-color  !important;
+
+        .list-header__title-icon {
+          color: @theme-color  !important;
+        }
+      }
+
+      .list-header__menu {
+        display: flex;
+        justify-content: end;
+
+        button {
+          color: @theme-font-color;
+          width: 100px;
+
+          padding: 5px;
+          border: 1px solid #4e8eee75;
+          border-radius: 20px;
+          margin: 5px;
+
+          transition: 0.3s;
+
+          .btn-icon {
+            color: #4e8eee75;
+            margin: 5px;
+            transition: 0.3s;
+          }
+
+          &:hover {
+            border: 1px solid #4e8eee;
+
+            .btn-icon {
+              color: #4e8eee;
+              margin: 5px;
+            }
+          }
+        }
+      }
+    }
   }
 }

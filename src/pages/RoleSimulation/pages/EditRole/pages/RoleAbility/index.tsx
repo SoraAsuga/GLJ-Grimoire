@@ -2,12 +2,11 @@ import _ from 'lodash';
 import { getRoleSelector } from '@/store/role-simulation';
 import {
   DeploymentUnitOutlined,
-  EditOutlined,
   SmileOutlined,
   StarOutlined,
   UserOutlined,
 } from '@ant-design/icons/lib/icons';
-import { Cascader, Col, InputNumber, Row, Slider } from 'antd';
+import { Cascader, Col, Input, InputNumber, Row, Slider } from 'antd';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { ENumericalNumber } from '@/constants/numericalValue';
@@ -28,7 +27,7 @@ interface IAbilityExOption {
 const RoleAbility: FC<IProps> = (props) => {
   /** 当前角色ID */
   const { id } = props;
-  /** 角色 */
+  /** 当前角色数据 */
   const roleSelector = useMemo(() => getRoleSelector(id), [id]);
   const [role, setRole] = useRecoilState(roleSelector);
 
@@ -62,7 +61,19 @@ const RoleAbility: FC<IProps> = (props) => {
     },
   ];
 
-  const setStoreRole = useCallback(_.debounce(setRole, 100), []);
+  /** 数据更新的节流 */
+  const setStoreRole = useCallback(_.debounce(setRole, 200), []);
+
+  /** 改变角色名 */
+  const changeRoleName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value;
+    setRole({ ...role, name });
+  };
+
+  /** 改变角色等级 */
+  const changeRoleLevel = (level: number) => {
+    setStoreRole({ ...role, level });
+  };
 
   /** 改变能力数值 */
   const changeValue = (name: string, value: number) => {
@@ -113,7 +124,7 @@ const RoleAbility: FC<IProps> = (props) => {
                   min={MIN_VALUE}
                   max={MAX_VALUE}
                   style={{ margin: '0 16px' }}
-                  value={value}
+                  value={typeof value === 'number' ? value : 1}
                   onChange={changeValue.bind(this, name)}
                 />
               </Col>
@@ -128,24 +139,27 @@ const RoleAbility: FC<IProps> = (props) => {
     <section className="edit-role__page-ability">
       <div className="page-ability__container" style={{ marginTop: '0' }}>
         <SplitLine icon={<StarOutlined />} title="角色名称" />
-        <span>
+        <div className="page-ability__name">
           <SmileOutlined style={{ marginRight: '5px' }} />
-          角色名：缘染之空
-        </span>
-        <button style={{ marginLeft: '50px', border: 'none' }}>
-          <EditOutlined />
-        </button>
+          <span className="page-ability__name-title">角色名：</span>
+          <Input
+            className="page-ability__name-input"
+            placeholder="输入角色名"
+            value={role.name}
+            onChange={changeRoleName}
+          />
+        </div>
       </div>
       <div className="page-ability__container">
         <SplitLine icon={<StarOutlined />} title="角色名称" />
         <span>
           <UserOutlined style={{ marginRight: '5px' }} />
-          角色等级{' '}
+          角色等级
           <InputNumber
             min={MIN_VALUE}
             max={240}
-            defaultValue={1}
-            onChange={() => {}}
+            value={role.level}
+            onChange={changeRoleLevel}
             style={{ marginLeft: '10px' }}
           />
         </span>
