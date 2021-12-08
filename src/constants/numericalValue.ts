@@ -1,3 +1,5 @@
+import { EEquipmentLocation, EWeaponType, IEquipment } from '@/typings/equipment';
+
 /** 数值枚举类型 */
 export enum ENumericalNumberType {
   Normal = 'Normal',
@@ -563,3 +565,42 @@ export const NUMERICAL_NUMBER: Record<ENumericalNumber, INumericalNumberValue> =
     name: '拔刀攻击',
   },
 };
+
+export const EQUIPS: IEquipment[] = [
+  {
+    id: 'one-handed-1',
+    name: '长剑',
+    weaponType: EWeaponType.OneHandedSword,
+    location: EEquipmentLocation.BothHandWeapon,
+    mainValueType: ENumericalNumber.WEAPON_ATK,
+    mainValue: 17,
+    stable: 80,
+    enchanting: [
+      { type: ENumericalNumber.HP, value: 50, isNegative: false },
+      { type: ENumericalNumber.ACCURACY, value: 1, isNegative: false },
+    ],
+  },
+  {
+    id: 'two-handed-1',
+    name: '重剑',
+    weaponType: EWeaponType.TwoHandedSword,
+    location: EEquipmentLocation.MainWeaponOnly,
+    mainValueType: ENumericalNumber.WEAPON_ATK,
+    mainValue: 25,
+    stable: 70,
+    enchanting: [
+      { type: ENumericalNumber.ACCURACY_PERCENT, value: 5, isNegative: true },
+      { type: ENumericalNumber.CRITICAL_DAMAGE_PERCENT, value: 5, isNegative: false },
+    ],
+  },
+  {
+    id: 'bow-1',
+    name: '硬木弓',
+    weaponType: EWeaponType.Bow,
+    location: EEquipmentLocation.MainWeaponOnly,
+    mainValueType: ENumericalNumber.WEAPON_ATK,
+    mainValue: 6,
+    stable: 60,
+    enchanting: [{ type: ENumericalNumber.STR, value: 1, isNegative: false }],
+  },
+];

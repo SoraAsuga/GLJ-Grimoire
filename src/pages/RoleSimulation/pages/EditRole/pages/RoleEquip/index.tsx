@@ -1,3 +1,5 @@
+import { ENumericalNumber, NUMERICAL_NUMBER } from '@/constants/numericalValue';
+import { IEquipment } from '@/typings/equipment';
 import {
   RocketOutlined,
   CloseOutlined,
@@ -88,8 +90,8 @@ const RoleEquip: FC<IProps> = (props) => {
           </div>
         </header>
         <section className="role-equip__list-content">
-          <div></div>
-          <div></div>
+          <div className="role-list">列表</div>
+          <div className="role-detail">详情</div>
         </section>
       </Modal>
     </section>
