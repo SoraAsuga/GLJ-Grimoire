@@ -1,4 +1,5 @@
-import { ENumericalNumber, NUMERICAL_NUMBER } from '@/constants/numericalValue';
+import EquipDetailCard from '@/pages/RoleSimulation/components/EquipItemCard';
+import { equipsState } from '@/store/equips';
 import { IEquipment } from '@/typings/equipment';
 import {
   RocketOutlined,
@@ -7,9 +8,11 @@ import {
   QuestionOutlined,
   FileDoneOutlined,
   FileAddOutlined,
+  StarOutlined,
 } from '@ant-design/icons';
 import Modal from 'antd/lib/modal/Modal';
 import React, { FC, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { IProps } from '../types';
 
 import './index.less';
@@ -26,6 +29,8 @@ const RoleEquip: FC<IProps> = (props) => {
     '时装三',
   ];
   const [show, setShow] = useState(false);
+  const [equips, setEquips] = useRecoilState(equipsState);
+  const [currentEquip, setCurrentEquip] = useState(null);
 
   /** 装备选择页面显示 */
   const changeShow = (type?) => () => {
@@ -36,10 +41,44 @@ const RoleEquip: FC<IProps> = (props) => {
       console.log('false: ', type);
       setShow(!show);
     }
+    setCurrentEquip(null);
+  };
+
+  /** 改变当前装备 */
+  const changeCurrentEquip = (item: IEquipment) => () => {
+    setCurrentEquip(item);
+  };
+
+  /** 动态生成装备条目 */
+  const equipItem = () => {
+    return equips.map((item) => (
+      <button
+        className="role-list_item"
+        key={item.id}
+        style={
+          currentEquip
+            ? currentEquip.id === item.id
+              ? { backgroundColor: '#4e8eee34' }
+              : null
+            : {}
+        }
+        onClick={changeCurrentEquip(item)}
+      >
+        <span className="role-list_item-name">
+          <StarOutlined style={{ margin: '5px' }} />
+          {item.name}
+        </span>
+        {item.reform && (
+          <span className="role-list_item-container">
+            <span className="role-list_item-type">+{item.reform}</span>
+          </span>
+        )}
+      </button>
+    ));
   };
 
   /** 动态生成装备卡 */
-  const equipItem = () =>
+  const equipCard = () =>
     type.map((item) => {
       return (
         <div className="role-equip__card" key={item}>
@@ -65,7 +104,7 @@ const RoleEquip: FC<IProps> = (props) => {
 
   return (
     <section className="edit-role__page-equip">
-      {equipItem()}
+      {equipCard()}
       <Modal
         visible={show}
         onCancel={changeShow()}
@@ -90,8 +129,14 @@ const RoleEquip: FC<IProps> = (props) => {
           </div>
         </header>
         <section className="role-equip__list-content">
-          <div className="role-list">列表</div>
-          <div className="role-detail">详情</div>
+          <div className="role-list">{equipItem()}</div>
+          {currentEquip && (
+            <div className="role-detail">
+              <div className="role-detail_container">
+                <EquipDetailCard item={currentEquip}></EquipDetailCard>
+              </div>
+            </div>
+          )}
         </section>
       </Modal>
     </section>

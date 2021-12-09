@@ -29,7 +29,7 @@
 
       .card-header__title {
         flex-grow: 1;
-
+        text-align: left;
         margin: 0 5px;
       }
 
@@ -82,9 +82,14 @@
   .role-equip__list {
     font-size: 100px;
     display: flex;
+    justify-content: center;
+
+    top: 50px;
+    margin: auto;
+    width: auto !important;
 
     .role-equip__list-header {
-      width: 520px;
+      width: 100%;
       padding-bottom: 10px;
       border-bottom: 1px solid @theme-color;
 
@@ -132,12 +137,60 @@
 
     .role-equip__list-content {
       display: flex;
+      overflow-y: auto;
+      max-height: 70vh;
+      min-width: 640px;
+
+      padding: 5px;
+      margin: 10px 0;
 
       .role-list {
-        border: 1px ;
+        display: flex;
+        flex-direction: column;
+
+        min-width: 300px;
+        margin: 0 10px;
+        border: 1px;
+
+        .role-list_item {
+          display: flex;
+          justify-content: start;
+          align-items: center;
+          color: @theme-font-color;
+          font-size: 16px;
+
+          min-height: 50px;
+          padding: 0 10px;
+          border-width: 0 0 1px;
+          border-style: solid;
+          border-color: @theme-color;
+
+          transition: 0.3s;
+
+          .role-list_item-name {
+            text-align: left;
+            min-width: 150px;
+          }
+
+          .role-list_item-container {
+            .role-list_item-type {
+              color: @theme-color;
+              margin: 10px;
+            }
+          }
+
+          &:hover {
+            background-color: #4e8eee34;
+          }
+        }
       }
+
       .role-detail {
-        
+        display: flex;
+
+        .role-detail_container {
+          border: 1px solid @theme-color;
+        }
       }
     }
   }

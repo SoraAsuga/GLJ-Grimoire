@@ -1,8 +1,8 @@
-import { NUMERICAL_NUMBER, ENumericalNumber } from '@/constants/numericalValue';
-import { EEquipmentLocation, EWeaponType, IEquipment } from '@/typings/equipment';
+import { EQUIPS } from '@/constants/numericalValue';
+import { IEquipment } from '@/typings/equipment';
 import { atom } from 'recoil';
 
 export const equipsState = atom<IEquipment[]>({
-  key: 'role-simulation/role-list',
-  default: [],
+  key: 'role-simulation/equips',
+  default: [...EQUIPS],
 });

@@ -41,7 +41,7 @@ export enum EWeaponType {
   /** 箭矢 */
   Arrow,
   /** 小刀 */
-  Knife,
+  Dagger,
   /** 忍者卷轴 */
   NinjutsuScroll,
   /** 盾牌 */
@@ -63,6 +63,13 @@ export interface IEnchanting {
   type: ENumericalNumber;
   value: number;
   isNegative: boolean;
+  weaponLimit?: EWeaponType;
+}
+
+export interface IXtal {
+  name: string;
+  type: EEquipmentLocation;
+  enchanting: IEnchanting[];
 }
 
 /** 装备 */
@@ -85,4 +92,8 @@ export interface IEquipment {
   reform?: EModificationState;
   /** 附魔 */
   enchanting?: IEnchanting[];
+  /** 锻晶 */
+  xtal?: IXtal[];
+  /** 自定义 */
+  isDIY?: string;
 }
