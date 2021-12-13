@@ -36,12 +36,12 @@ export interface IRoleAbility {
 
 /** 装备信息 */
 export interface IRoleEquipment {
-  mainWeapon?: IEquipment;
-  secondaryWeapon?: IEquipment;
-  armorEquip?: IEquipment;
-  additionalEquip?: IEquipment;
-  specialEquip?: IEquipment;
-  fashionEquip1?: IEquipment;
-  fashionEquip2?: IEquipment;
-  fashionEquip3?: IEquipment;
+  mainWeapon: IEquipment;
+  secondaryWeapon: IEquipment;
+  armorEquip: IEquipment | null;
+  additionalEquip: IEquipment | null;
+  specialEquip: IEquipment | null;
+  fashionEquip1: IEquipment | null;
+  fashionEquip2: IEquipment | null;
+  fashionEquip3: IEquipment | null;
 }

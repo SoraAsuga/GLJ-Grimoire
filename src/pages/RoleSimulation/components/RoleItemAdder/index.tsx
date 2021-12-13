@@ -8,6 +8,8 @@ import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
 
 import './index.less';
+import { EWeaponType, EEquipmentLocation } from '@/typings/equipment';
+import { ENumericalNumber } from '@/constants/numericalValue';
 
 const RoleItemAdder: FC = () => {
   const history = useHistory();
@@ -32,7 +34,48 @@ const RoleItemAdder: FC = () => {
           type: null,
           value: 1,
         },
-        equipment: {},
+        equipment: {
+          mainWeapon: {
+            id: 'empty-handed',
+            name: '空',
+            weaponType: EWeaponType.EmptyHanded,
+            location: EEquipmentLocation.BothHandWeapon,
+            mainValueType: ENumericalNumber.WEAPON_ATK,
+            mainValue: 0,
+            allowedSecondaryWeapon: [
+              EWeaponType.MagicDevice,
+              EWeaponType.Knuckle,
+              EWeaponType.Dagger,
+              EWeaponType.Shield,
+              EWeaponType.Arrow,
+              EWeaponType.EmptyHanded,
+              EWeaponType.NinjutsuScroll,
+            ],
+          },
+          secondaryWeapon: {
+            id: 'empty-handed',
+            name: '空',
+            weaponType: EWeaponType.EmptyHanded,
+            location: EEquipmentLocation.BothHandWeapon,
+            mainValueType: ENumericalNumber.WEAPON_ATK,
+            mainValue: 0,
+            allowedSecondaryWeapon: [
+              EWeaponType.MagicDevice,
+              EWeaponType.Knuckle,
+              EWeaponType.Dagger,
+              EWeaponType.Shield,
+              EWeaponType.Arrow,
+              EWeaponType.EmptyHanded,
+              EWeaponType.NinjutsuScroll,
+            ],
+          },
+          armorEquip: null,
+          additionalEquip: null,
+          specialEquip: null,
+          fashionEquip1: null,
+          fashionEquip2: null,
+          fashionEquip3: null,
+        },
       },
     ]);
   };

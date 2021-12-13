@@ -20,32 +20,42 @@ export enum EEquipmentLocation {
 
 /** 武器类型 */
 export enum EWeaponType {
+  /** 空手 */
+  EmptyHanded = '空手',
   /** 单手剑 */
-  OneHandedSword,
+  OneHandedSword = '单手剑',
   /** 双手剑 */
-  TwoHandedSword,
+  TwoHandedSword = '双手剑',
   /** 弓 */
-  Bow,
+  Bow = '弓',
   /** 弩 */
-  BowGun,
+  BowGun = '弩',
   /** 拳套 */
-  Knuckle,
+  Knuckle = '拳套',
   /** 法杖 */
-  Staff,
+  Staff = '法杖',
   /** 魔导具 */
-  MagicDevice,
+  MagicDevice = '魔导具',
   /** 旋风枪 */
-  Halberd,
+  Halberd = '旋风枪',
   /** 拔刀剑 */
-  Katana,
+  Katana = '拔刀剑',
   /** 箭矢 */
-  Arrow,
-  /** 小刀 */
-  Dagger,
+  Arrow = '箭矢',
+  /** 短剑 */
+  Dagger = '短剑',
   /** 忍者卷轴 */
-  NinjutsuScroll,
+  NinjutsuScroll = '忍者卷轴',
   /** 盾牌 */
-  Shield,
+  Shield = '盾牌',
+  /** 身体防具 */
+  Armor = '身体防具',
+  /** 追加装备 */
+  AdditionalEquip = '追加装备',
+  /** 特殊装备 */
+  SpecialEquip = '特殊装备',
+  /** 时装 */
+  FashionEquip = '时装',
 }
 
 /** 防具改造类型 */
@@ -82,12 +92,16 @@ export interface IEquipment {
   mainValueType: ENumericalNumber;
   /** 主属性数值 */
   mainValue: number;
-  /** 武器类型 */
-  weaponType?: EWeaponType;
+  /** 装备类型 */
+  weaponType: EWeaponType;
   /** 精炼值 */
   refine?: number;
   /** 稳定率，武器才有 */
   stable?: number;
+  /** 允许副手装备 */
+  allowedSecondaryWeapon?: EWeaponType[];
+  /** 需求技能 */
+  requiredSkill?: any;
   /** 重化轻化，防具才有 */
   reform?: EModificationState;
   /** 附魔 */

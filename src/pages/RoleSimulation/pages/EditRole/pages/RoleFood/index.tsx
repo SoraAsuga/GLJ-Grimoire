@@ -24,8 +24,7 @@ const { Option } = Select;
 
 const RoleFood: FC<IProps> = (props) => {
   /** 引入料理清单 */
-  const foodConfiguration = useRecoilState(foodConfigurationState);
-  const setFoodConfiguration = useSetRecoilState(foodConfigurationState);
+  const [foodConfiguration, setFoodConfiguration] = useRecoilState(foodConfigurationState);
   /** 暂存当前正在编辑的料理信息 */
   const currentConfiguration = { name: '', id: '', foodList: [] };
   /** 暂存料理名称 */
@@ -38,32 +37,103 @@ const RoleFood: FC<IProps> = (props) => {
   const [deleteWindow, setDeleteWindow] = useState(false);
   /** 料理列表 */
   const [foodList, setFoodList] = useState([
-    { name: ENumericalNumber.HP, value: 0, chose: false },
-    { name: ENumericalNumber.MP, value: 0, chose: false },
-    { name: ENumericalNumber.STR, value: 0, chose: false },
-    { name: ENumericalNumber.DEX, value: 0, chose: false },
-    { name: ENumericalNumber.INT, value: 0, chose: false },
-    { name: ENumericalNumber.VIT, value: 0, chose: false },
-    { name: ENumericalNumber.AGI, value: 0, chose: false },
-    { name: ENumericalNumber.ATK, value: 0, chose: false },
-    { name: ENumericalNumber.MATK, value: 0, chose: false },
-    { name: ENumericalNumber.WEAPON_ATK, value: 0, chose: false },
-    { name: ENumericalNumber.PHYSICAL_RESISTANCE, value: 0, chose: false },
-    { name: ENumericalNumber.MAGIC_RESISTANCE, value: 0, chose: false },
-    { name: ENumericalNumber.AGGRO_PERCENT, value: 0, chose: false },
-    { name: ENumericalNumber.AGGRO_PERCENT, value: 0, chose: false, type: '-' },
-    { name: ENumericalNumber.ATTACK_MP_RECOVERY, value: 0, chose: false },
-    { name: ENumericalNumber.CRITICAL_RATE, value: 0, chose: false },
-    { name: ENumericalNumber.ACCURACY, value: 0, chose: false },
-    { name: ENumericalNumber.DODGE, value: 0, chose: false },
-    { name: ENumericalNumber.DEF, value: 0, chose: false },
-    { name: ENumericalNumber.MDEF, value: 0, chose: false },
+    { name: ENumericalNumber.HP, value: 0, chose: false, level: 0, max: 5000, halfIncrement: 400 },
+    { name: ENumericalNumber.MP, value: 0, chose: false, level: 0, max: 1000, halfIncrement: 60 },
+    { name: ENumericalNumber.STR, value: 0, chose: false, level: 0, max: 30, halfIncrement: 2 },
+    { name: ENumericalNumber.DEX, value: 0, chose: false, level: 0, max: 30, halfIncrement: 2 },
+    { name: ENumericalNumber.INT, value: 0, chose: false, level: 0, max: 30, halfIncrement: 2 },
+    { name: ENumericalNumber.VIT, value: 0, chose: false, level: 0, max: 30, halfIncrement: 2 },
+    {
+      name: ENumericalNumber.AGI,
+      value: 0,
+      chose: false,
+      level: 0,
+      max: 30,
+      halfIncrement: 2,
+    },
+    { name: ENumericalNumber.ATK, value: 0, chose: false, level: 0, max: 100, halfIncrement: 6 },
+    { name: ENumericalNumber.MATK, value: 0, chose: false, level: 0, max: 100, halfIncrement: 6 },
+    {
+      name: ENumericalNumber.WEAPON_ATK,
+      value: 0,
+      chose: false,
+      level: 0,
+      max: 100,
+      halfIncrement: 6,
+    },
+    {
+      name: ENumericalNumber.PHYSICAL_RESISTANCE,
+      value: 0,
+      chose: false,
+      level: 0,
+      max: 50,
+      halfIncrement: 4,
+    },
+    {
+      name: ENumericalNumber.MAGIC_RESISTANCE,
+      value: 0,
+      chose: false,
+      level: 0,
+      max: 50,
+      halfIncrement: 4,
+    },
+    {
+      name: ENumericalNumber.AGGRO_PERCENT,
+      value: 0,
+      chose: false,
+      level: 0,
+      max: 100,
+      halfIncrement: 6,
+    },
+    {
+      name: ENumericalNumber.AGGRO_PERCENT,
+      value: 0,
+      chose: false,
+      type: '-',
+      level: 0,
+      max: 100,
+      halfIncrement: 6,
+    },
+    {
+      name: ENumericalNumber.ATTACK_MP_RECOVERY,
+      value: 0,
+      chose: false,
+      level: 0,
+      max: 30,
+      halfIncrement: 2,
+    },
+    {
+      name: ENumericalNumber.CRITICAL_RATE,
+      value: 0,
+      chose: false,
+      level: 0,
+      max: 30,
+      halfIncrement: 2,
+    },
+    {
+      name: ENumericalNumber.ACCURACY,
+      value: 0,
+      chose: false,
+      level: 0,
+      max: 100,
+      halfIncrement: 6,
+    },
+    {
+      name: ENumericalNumber.DODGE,
+      value: 0,
+      chose: false,
+      level: 0,
+      max: 100,
+      halfIncrement: 6,
+    },
+    { name: ENumericalNumber.DEF, value: 0, chose: false, level: 0, max: 100, halfIncrement: 6 },
+    { name: ENumericalNumber.MDEF, value: 0, chose: false, level: 0, max: 100, halfIncrement: 6 },
   ]);
 
   /** 料理选择并存入暂存 */
   const handleChange = (value: string) => {
     console.log('gdx: ', value);
-    const currentFood = foodConfiguration[0].filter((item) => item.id === value);
+    const currentFood = foodConfiguration.filter((item) => item.id === value);
     currentConfiguration.name = currentFood[0].name;
     currentConfiguration.id = currentFood[0].id;
     currentConfiguration.foodList = currentFood[0].foodList;
@@ -72,7 +142,7 @@ const RoleFood: FC<IProps> = (props) => {
 
   /** 动态生成配置表 */
   const foodItems = () =>
-    foodConfiguration[0].map((item) => {
+    foodConfiguration.map((item) => {
       const { name, id } = item;
       return (
         <Option key={id} value={id}>
@@ -98,11 +168,17 @@ const RoleFood: FC<IProps> = (props) => {
     setFoodList(newFoodList);
   };
 
-  /** 料理等级 */
-  const changeValue = (name) => (value) => {
+  /** 料理等级与加成 */
+  const changeLevel = (name: ENumericalNumber) => (value: number) => {
     const newFoodList = foodList.map((item) => {
       if (item.name === name) {
-        item.value = value;
+        item.level = value;
+        if (value <= 5) {
+          item.value = item.halfIncrement * value;
+        } else {
+          item.value =
+            ((item.max - item.halfIncrement * 5) / 5) * (value - 5) + item.halfIncrement * 5;
+        }
         return item;
       }
       return item;
@@ -115,7 +191,7 @@ const RoleFood: FC<IProps> = (props) => {
     foodList
       .filter((item) => item.chose)
       .map((item) => {
-        const { name, value, type } = item;
+        const { name, value, type, level } = item;
         return (
           <div key={name} className="page-food__chose-item">
             <CheckCircleOutlined style={{ border: 'none' }} />
@@ -132,8 +208,8 @@ const RoleFood: FC<IProps> = (props) => {
               className="chose-item__data"
               min={0}
               max={10}
-              defaultValue={value}
-              onChange={changeValue(name)}
+              defaultValue={level}
+              onChange={changeLevel(name)}
             />
           </div>
         );
@@ -144,7 +220,7 @@ const RoleFood: FC<IProps> = (props) => {
     foodList
       .filter((item) => !item.chose)
       .map((item) => {
-        const { name, value, type } = item;
+        const { name, value, type, level } = item;
         return (
           <button key={name} className="page-food__chose-item item-btn" onClick={changeChose(name)}>
             <BorderOutlined style={{ border: 'none' }} />
@@ -158,8 +234,8 @@ const RoleFood: FC<IProps> = (props) => {
               className="chose-item__data"
               min={0}
               max={10}
-              defaultValue={value}
-              onChange={changeValue(name)}
+              defaultValue={level}
+              onChange={changeLevel(name)}
             />
           </button>
         );

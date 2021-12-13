@@ -79,7 +79,10 @@ const EditRole: FC = () => {
         <Card className="edit-role__card">
           <Descriptions title={role.name}>
             <Descriptions.Item label="等级">{role.level}</Descriptions.Item>
-            <Descriptions.Item label="武器">双剑</Descriptions.Item>
+            <Descriptions.Item label="武器">
+              {role.equipment.mainWeapon ? role.equipment.mainWeapon.weaponType : '空手'}/
+              {role.equipment.secondaryWeapon ? role.equipment.secondaryWeapon.weaponType : '空手'}
+            </Descriptions.Item>
           </Descriptions>
         </Card>
       </header>

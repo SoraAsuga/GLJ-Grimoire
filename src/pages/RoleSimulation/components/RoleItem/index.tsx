@@ -77,9 +77,13 @@ const RoleItem: FC<RoleItemProps> = (props) => {
           <Descriptions.Item label="INT">{ability.int}</Descriptions.Item>
           <Descriptions.Item label="VIT">{ability.vit}</Descriptions.Item>
           <Descriptions.Item label="AGI">{ability.agi}</Descriptions.Item>
-          {abilityEx.type && (
+          {abilityEx.type ? (
             <Descriptions.Item label={abilityEx.type}>{abilityEx.value}</Descriptions.Item>
+          ) : (
+            <Descriptions.Item label={'无EX'}>0</Descriptions.Item>
           )}
+          <Descriptions.Item label="主手">{equipment.mainWeapon.weaponType}</Descriptions.Item>
+          <Descriptions.Item label="副手">{equipment.secondaryWeapon.weaponType}</Descriptions.Item>
           <Descriptions.Item label="创建日期">{role.createDate}</Descriptions.Item>
         </Descriptions>
       </Card>

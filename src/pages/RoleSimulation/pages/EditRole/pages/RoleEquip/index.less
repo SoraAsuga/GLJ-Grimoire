@@ -4,81 +4,6 @@
   display: flex;
   flex-wrap: wrap;
 
-  .role-equip__card {
-    color: @theme-color;
-    font-size: 16px;
-
-    min-width: 350px;
-    padding: 10px;
-    border: 1px solid @theme-color;
-    border-radius: 5px;
-    margin: 10px;
-
-    transition: 0.3s;
-
-    &:hover {
-      background-color: #4e8eee1a;
-    }
-
-    .role-equip__card-header {
-      display: flex;
-      font-size: 14px;
-
-      padding: 5px;
-      border-bottom: 1px solid @theme-color;
-
-      .card-header__title {
-        flex-grow: 1;
-        text-align: left;
-        margin: 0 5px;
-      }
-
-      .card-header__btn {
-        font-size: 16px;
-
-        padding-left: 5px;
-        border: none;
-
-        transition: 0.15s;
-
-        &:hover {
-          color: @theme-font-color;
-        }
-      }
-    }
-
-    .role-equip__content {
-      display: flex;
-      align-items: center;
-
-      min-height: 100px;
-
-      padding: 5px;
-      margin: 10px 0;
-
-      .role-equip__content-details {
-        color: @theme-font-color;
-        font-size: 16px;
-
-        height: 100%;
-        width: 100%;
-        border: none;
-
-        .content-details__icon {
-          font-size: 24px;
-
-          padding: 10px;
-        }
-
-        .content-details__text {
-          font-size: 20px;
-
-          padding: 10px;
-        }
-      }
-    }
-  }
-
   .role-equip__list {
     font-size: 100px;
     display: flex;
@@ -139,7 +64,7 @@
       display: flex;
       overflow-y: auto;
       max-height: 70vh;
-      min-width: 640px;
+      min-width: 670px;
 
       padding: 5px;
       margin: 10px 0;
@@ -180,17 +105,72 @@
           }
 
           &:hover {
-            background-color: #4e8eee34;
+            background-color: #4e8eee25;
           }
         }
       }
 
       .role-detail {
         display: flex;
+        flex-direction: column;
+        position: sticky;
+        top: 1px;
 
         .role-detail_container {
           border: 1px solid @theme-color;
+          flex-grow: 0;
         }
+      }
+    }
+
+    .role-equip__list-footer {
+      display: flex;
+      align-items: center;
+
+      padding: 10px 10px 0;
+      border-width: 1px 0 0;
+      border-style: solid;
+      border-color: @theme-color;
+
+      .list-footer__btn {
+        font-size: 16px;
+        color: @theme-font-color;
+
+        padding: 5px 15px;
+        border: 1px solid @theme-color;
+        border-radius: 25px;
+        margin: 0 5px;
+
+        transition: 0.3s;
+
+        .list-footer__btn-icon {
+          color: @theme-color;
+
+          margin: 5px;
+        }
+
+        &:hover {
+          background-color: #4e8eee25;
+        }
+      }
+
+      .list-footer__btn-error {
+        font-size: 16px;
+        color: red;
+        opacity: 0.6;
+
+        padding: 5px 15px;
+        border: 1px solid red;
+        border-radius: 25px;
+        margin: 0 5px;
+
+        .list-footer__btn-icon {
+          margin: 5px;
+        }
+      }
+
+      .list-footer__div {
+        flex-grow: 1;
       }
     }
   }

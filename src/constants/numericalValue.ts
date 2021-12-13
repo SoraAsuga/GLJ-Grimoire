@@ -1,4 +1,9 @@
-import { EEquipmentLocation, EWeaponType, IEquipment } from '@/typings/equipment';
+import {
+  EEquipmentLocation,
+  EModificationState,
+  EWeaponType,
+  IEquipment,
+} from '@/typings/equipment';
 
 /** 数值枚举类型 */
 export enum ENumericalNumberType {
@@ -568,6 +573,23 @@ export const NUMERICAL_NUMBER: Record<ENumericalNumber, INumericalNumberValue> =
 
 export const EQUIPS: IEquipment[] = [
   {
+    id: 'empty-handed',
+    name: '空',
+    weaponType: EWeaponType.EmptyHanded,
+    location: EEquipmentLocation.BothHandWeapon,
+    mainValueType: ENumericalNumber.WEAPON_ATK,
+    mainValue: 0,
+    allowedSecondaryWeapon: [
+      EWeaponType.MagicDevice,
+      EWeaponType.Knuckle,
+      EWeaponType.Dagger,
+      EWeaponType.Shield,
+      EWeaponType.Arrow,
+      EWeaponType.EmptyHanded,
+      EWeaponType.NinjutsuScroll,
+    ],
+  },
+  {
     id: 'one-handed-1',
     name: '长剑',
     weaponType: EWeaponType.OneHandedSword,
@@ -575,6 +597,16 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 17,
     stable: 80,
+    allowedSecondaryWeapon: [
+      EWeaponType.MagicDevice,
+      EWeaponType.Knuckle,
+      EWeaponType.Dagger,
+      EWeaponType.Shield,
+      EWeaponType.Arrow,
+      EWeaponType.OneHandedSword,
+      EWeaponType.EmptyHanded,
+      EWeaponType.NinjutsuScroll,
+    ],
     enchanting: [
       { type: ENumericalNumber.HP, value: 50, isNegative: false },
       { type: ENumericalNumber.ACCURACY, value: 1, isNegative: false },
@@ -588,9 +620,10 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 25,
     stable: 70,
+    allowedSecondaryWeapon: [EWeaponType.EmptyHanded],
     enchanting: [
-      { type: ENumericalNumber.ACCURACY_PERCENT, value: 5, isNegative: true },
       { type: ENumericalNumber.CRITICAL_DAMAGE_PERCENT, value: 5, isNegative: false },
+      { type: ENumericalNumber.ACCURACY_PERCENT, value: 5, isNegative: true },
     ],
   },
   {
@@ -601,6 +634,7 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 6,
     stable: 60,
+    allowedSecondaryWeapon: [EWeaponType.Katana, EWeaponType.Arrow, EWeaponType.EmptyHanded],
     enchanting: [{ type: ENumericalNumber.STR, value: 1, isNegative: false }],
   },
   {
@@ -611,6 +645,14 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 8,
     stable: 50,
+    allowedSecondaryWeapon: [
+      EWeaponType.MagicDevice,
+      EWeaponType.Knuckle,
+      EWeaponType.Dagger,
+      EWeaponType.Shield,
+      EWeaponType.Arrow,
+      EWeaponType.EmptyHanded,
+    ],
     enchanting: [{ type: ENumericalNumber.DEX, value: 10, isNegative: false }],
   },
   {
@@ -621,6 +663,15 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 25,
     stable: 60,
+    allowedSecondaryWeapon: [
+      EWeaponType.MagicDevice,
+      EWeaponType.Knuckle,
+      EWeaponType.Dagger,
+      EWeaponType.Shield,
+      EWeaponType.Arrow,
+      EWeaponType.NinjutsuScroll,
+      EWeaponType.EmptyHanded,
+    ],
     enchanting: [{ type: ENumericalNumber.MP, value: 100, isNegative: false }],
   },
   {
@@ -631,6 +682,7 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 8,
     stable: 70,
+    allowedSecondaryWeapon: [EWeaponType.NinjutsuScroll, EWeaponType.EmptyHanded],
     enchanting: [
       { type: ENumericalNumber.MP, value: 100, isNegative: false },
       { type: ENumericalNumber.ASPD_PERCENT, value: 1, isNegative: false },
@@ -644,6 +696,13 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 17,
     stable: 90,
+    allowedSecondaryWeapon: [
+      EWeaponType.MagicDevice,
+      EWeaponType.Dagger,
+      EWeaponType.Shield,
+      EWeaponType.Arrow,
+      EWeaponType.EmptyHanded,
+    ],
     enchanting: [
       { type: ENumericalNumber.DEX, value: 1, isNegative: false },
       { type: ENumericalNumber.ASPD_PERCENT, value: 2, isNegative: false },
@@ -658,6 +717,7 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 21,
     stable: 60,
+    allowedSecondaryWeapon: [EWeaponType.Dagger, EWeaponType.Arrow, EWeaponType.EmptyHanded],
     enchanting: [
       { type: ENumericalNumber.MP, value: 50, isNegative: false },
       { type: ENumericalNumber.ACCURACY, value: 1, isNegative: false },
@@ -671,6 +731,11 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 6,
     stable: 70,
+    allowedSecondaryWeapon: [
+      EWeaponType.Dagger,
+      EWeaponType.NinjutsuScroll,
+      EWeaponType.EmptyHanded,
+    ],
     enchanting: [{ type: ENumericalNumber.CRITICAL_RATE, value: 5, isNegative: false }],
   },
   {
@@ -693,6 +758,81 @@ export const EQUIPS: IEquipment[] = [
       { type: ENumericalNumber.HP, value: 30, isNegative: false },
       { type: ENumericalNumber.GUARD_POWER_PERCENT, value: 15, isNegative: false },
       { type: ENumericalNumber.GUARD_RECHARGE_PERCENT, value: 15, isNegative: false },
+    ],
+  },
+  {
+    id: 'arrow-1',
+    name: '商队的箭',
+    weaponType: EWeaponType.Arrow,
+    location: EEquipmentLocation.SecondaryWeaponOnly,
+    mainValueType: ENumericalNumber.WEAPON_ATK,
+    mainValue: 2,
+    enchanting: [{ type: ENumericalNumber.ACCURACY, value: 2, isNegative: false }],
+  },
+  {
+    id: 'ninjutsu-scroll-1',
+    name: '忍术卷轴·暗遁',
+    weaponType: EWeaponType.NinjutsuScroll,
+    location: EEquipmentLocation.SecondaryWeaponOnly,
+    mainValueType: ENumericalNumber.WEAPON_ATK,
+    mainValue: 0,
+    stable: 0,
+    enchanting: [{ type: ENumericalNumber.AGGRO_PERCENT, value: 10, isNegative: true }],
+  },
+  {
+    id: 'armor-1',
+    name: '爱丽丝铠甲',
+    weaponType: EWeaponType.Armor,
+    location: EEquipmentLocation.ArmorEquip,
+    mainValueType: ENumericalNumber.DEF,
+    mainValue: 100,
+    reform: EModificationState.Normal,
+    enchanting: [
+      { type: ENumericalNumber.HP_PERCENT, value: 10, isNegative: false },
+      { type: ENumericalNumber.MP, value: 100, isNegative: false },
+      { type: ENumericalNumber.WEAPON_ATK_PERCENT, value: 10, isNegative: false },
+      { type: ENumericalNumber.ACCURACY_PERCENT, value: 10, isNegative: false },
+      { type: ENumericalNumber.DODGE_PERCENT, value: 10, isNegative: false },
+      { type: ENumericalNumber.PHYSICAL_RESISTANCE, value: 10, isNegative: false },
+      { type: ENumericalNumber.MAGIC_RESISTANCE, value: 10, isNegative: false },
+    ],
+  },
+  {
+    id: 'additional-equip-1',
+    name: '面铠',
+    weaponType: EWeaponType.AdditionalEquip,
+    location: EEquipmentLocation.AdditionalEquip,
+    mainValueType: ENumericalNumber.DEF,
+    mainValue: 190,
+    enchanting: [
+      { type: ENumericalNumber.UNSHEATHE_ATTACK_PERCENT, value: 7, isNegative: false },
+      { type: ENumericalNumber.MP, value: 200, isNegative: false },
+      {
+        type: ENumericalNumber.SHORT_RANGE_DAMAGE_PERCENT,
+        value: 5,
+        isNegative: false,
+        weaponLimit: EWeaponType.Katana,
+      },
+      {
+        type: ENumericalNumber.LONG_RANGE_DAMAGE_PERCENT,
+        value: 5,
+        isNegative: false,
+        weaponLimit: EWeaponType.Bow,
+      },
+    ],
+  },
+  {
+    id: 'special-equip-1',
+    name: '烂漫守石',
+    weaponType: EWeaponType.SpecialEquip,
+    location: EEquipmentLocation.SpecialEquip,
+    mainValueType: ENumericalNumber.DEF,
+    mainValue: 0,
+    enchanting: [
+      { type: ENumericalNumber.MP, value: 200, isNegative: false },
+      { type: ENumericalNumber.ASPD, value: 750, isNegative: false },
+      { type: ENumericalNumber.CSPD, value: 750, isNegative: false },
+      { type: ENumericalNumber.AILMENT_RESISTANCE_PERCENT, value: 8, isNegative: true },
     ],
   },
 ];

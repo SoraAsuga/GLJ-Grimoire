@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { getRoleSelector } from '@/store/role-simulation';
 import {
   DeploymentUnitOutlined,
+  FormOutlined,
   SmileOutlined,
   StarOutlined,
   UserOutlined,
@@ -27,6 +28,7 @@ interface IAbilityExOption {
 const RoleAbility: FC<IProps> = (props) => {
   /** 当前角色ID */
   const { id } = props;
+
   /** 当前角色数据 */
   const roleSelector = useMemo(() => getRoleSelector(id), [id]);
   const [role, setRole] = useRecoilState(roleSelector);
@@ -36,6 +38,9 @@ const RoleAbility: FC<IProps> = (props) => {
 
   /** 特殊能力的值与状态 */
   const [ex, setEx] = useState<IRoleAbilityEx>(role.abilityEx);
+
+  /** 修改角色名暂存 */
+  const [newName, setNewName] = useState(role.name);
 
   /** 特殊能力选择项 */
   const options: IAbilityExOption[] = [
@@ -64,9 +69,14 @@ const RoleAbility: FC<IProps> = (props) => {
   /** 数据更新的节流 */
   const setStoreRole = useCallback(_.debounce(setRole, 200), []);
 
-  /** 改变角色名 */
-  const changeRoleName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.value;
+  /** 改变角色名暂存 */
+  const changeNewName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewName(e.target.value);
+    // setRole({ ...role, name });
+  };
+
+  const changeRoleName = () => {
+    const name = newName;
     setRole({ ...role, name });
   };
 
@@ -123,7 +133,7 @@ const RoleAbility: FC<IProps> = (props) => {
                 <InputNumber
                   min={MIN_VALUE}
                   max={MAX_VALUE}
-                  style={{ margin: '0 16px' }}
+                  style={{ margin: '0 16px', color: '#00327c' }}
                   value={typeof value === 'number' ? value : 1}
                   onChange={changeValue.bind(this, name)}
                 />
@@ -145,9 +155,13 @@ const RoleAbility: FC<IProps> = (props) => {
           <Input
             className="page-ability__name-input"
             placeholder="输入角色名"
-            value={role.name}
-            onChange={changeRoleName}
+            value={newName}
+            onChange={changeNewName}
           />
+          <button className="page-ability__name-change" onClick={changeRoleName}>
+            <FormOutlined style={{ color: '#4e8eee', padding: '0 5px' }} />
+            确认修改
+          </button>
         </div>
       </div>
       <div className="page-ability__container">
@@ -160,7 +174,7 @@ const RoleAbility: FC<IProps> = (props) => {
             max={240}
             value={role.level}
             onChange={changeRoleLevel}
-            style={{ marginLeft: '10px' }}
+            style={{ marginLeft: '10px', color: '#00327c' }}
           />
         </span>
       </div>
@@ -192,7 +206,7 @@ const RoleAbility: FC<IProps> = (props) => {
               <InputNumber
                 min={MIN_VALUE}
                 max={255}
-                style={{ margin: '0 16px' }}
+                style={{ margin: '0 16px', color: '#00327c' }}
                 disabled={ex.type === null}
                 value={ex.value || 1}
                 onChange={changeEx}

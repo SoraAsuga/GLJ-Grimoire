@@ -1,8 +1,9 @@
-import { atom, selector, useRecoilValue, useSetRecoilState } from 'recoil';
+import { atom, selector, useSetRecoilState } from 'recoil';
 import { IRoleItem } from '@/typings/role';
+import { EEquipmentLocation, EWeaponType, IEquipment } from '@/typings/equipment';
 import { ENumericalNumber } from '@/constants/numericalValue';
 
-const defaultRole = {
+const defaultRole: IRoleItem = {
   id: 'default',
   name: '演示',
   level: 1,
@@ -18,7 +19,48 @@ const defaultRole = {
     type: null,
     value: 1,
   },
-  equipment: {},
+  equipment: {
+    mainWeapon: {
+      id: 'empty-handed',
+      name: '空',
+      weaponType: EWeaponType.EmptyHanded,
+      location: EEquipmentLocation.BothHandWeapon,
+      mainValueType: ENumericalNumber.WEAPON_ATK,
+      mainValue: 0,
+      allowedSecondaryWeapon: [
+        EWeaponType.MagicDevice,
+        EWeaponType.Knuckle,
+        EWeaponType.Dagger,
+        EWeaponType.Shield,
+        EWeaponType.Arrow,
+        EWeaponType.EmptyHanded,
+        EWeaponType.NinjutsuScroll,
+      ],
+    },
+    secondaryWeapon: {
+      id: 'empty-handed',
+      name: '空',
+      weaponType: EWeaponType.EmptyHanded,
+      location: EEquipmentLocation.BothHandWeapon,
+      mainValueType: ENumericalNumber.WEAPON_ATK,
+      mainValue: 0,
+      allowedSecondaryWeapon: [
+        EWeaponType.MagicDevice,
+        EWeaponType.Knuckle,
+        EWeaponType.Dagger,
+        EWeaponType.Shield,
+        EWeaponType.Arrow,
+        EWeaponType.EmptyHanded,
+        EWeaponType.NinjutsuScroll,
+      ],
+    },
+    armorEquip: null,
+    additionalEquip: null,
+    specialEquip: null,
+    fashionEquip1: null,
+    fashionEquip2: null,
+    fashionEquip3: null,
+  },
 };
 
 export const roleSimulationState = atom<IRoleItem[]>({
@@ -40,4 +82,20 @@ export const getRoleSelector = (roleId: string) => {
       });
     },
   });
+};
+
+export const useSetRoleEquipment = (roleId: string) => {
+  const _setter = useSetRecoilState(roleSimulationState);
+
+  const _set = (location: EEquipmentLocation, equipment: IEquipment) => {
+    _setter((current) => {
+      return current.map((roleItem) =>
+        roleItem.id === roleId
+          ? { ...roleItem, equipment: { ...roleItem.equipment, [location]: equipment } }
+          : roleItem,
+      );
+    });
+  };
+
+  return;
 };
