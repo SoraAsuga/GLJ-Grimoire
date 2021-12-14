@@ -96,12 +96,10 @@ const RoleEquip: FC<IProps> = (props) => {
   const changeShow =
     (type?: EEquipmentLocation, both?: EEquipmentLocation, location?: string) => () => {
       if (type) {
-        console.log('gdx: ', location);
         setCurrentEquipType([type, both]);
         setCurrentLocation(location);
         setShow(!show);
       } else {
-        console.log('gdx: ', location);
         setCurrentEquipType([type, both]);
         setCurrentLocation(location);
         setShow(!show);
@@ -162,6 +160,7 @@ const RoleEquip: FC<IProps> = (props) => {
     type.map((item) => {
       return (
         <EquipChoiceCard
+          key={item.name}
           item={item}
           role={role}
           changeShow={changeShow}

@@ -25,7 +25,6 @@ interface IProps {
 
 const EquipChoiceCard: FC<IProps> = (props) => {
   const { item, role, changeShow, deleteCurrentEquip } = props;
-  console.log('name:', role.equipment[item.location]);
 
   return (
     <div className="role-equip__card" key={item.name}>

@@ -4,6 +4,7 @@ import {
   CoffeeOutlined,
   DeleteOutlined,
   FileAddOutlined,
+  FolderOutlined,
   FormOutlined,
 } from '@ant-design/icons';
 import { Input, InputNumber, Modal, Select } from 'antd';
@@ -12,132 +13,108 @@ import { nanoid } from 'nanoid';
 
 import './index.less';
 import {
+  EFoodData,
   ENumericalNumber,
   ENumericalNumberType,
+  FOOD_DATA,
   NUMERICAL_NUMBER,
 } from '@/constants/numericalValue';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { foodConfigurationState } from '@/store/food-configuration';
+import _ from 'lodash';
 import SplitLine from '../../components/SplitLine';
 import { IProps } from '../types';
+
 const { Option } = Select;
+const HALF_MAX_LEVEL = 5;
 
 const RoleFood: FC<IProps> = (props) => {
+  /** 默认料理清单 */
+  const defaultFoodList = [
+    { foodData: EFoodData.HP, userConfiguration: { value: 0, chose: false, level: 0 } },
+    { foodData: EFoodData.MP, userConfiguration: { value: 0, chose: false, level: 0 } },
+    { foodData: EFoodData.STR, userConfiguration: { value: 0, chose: false, level: 0 } },
+    { foodData: EFoodData.DEX, userConfiguration: { value: 0, chose: false, level: 0 } },
+    { foodData: EFoodData.INT, userConfiguration: { value: 0, chose: false, level: 0 } },
+    { foodData: EFoodData.VIT, userConfiguration: { value: 0, chose: false, level: 0 } },
+    { foodData: EFoodData.AGI, userConfiguration: { value: 0, chose: false, level: 0 } },
+    { foodData: EFoodData.ATK, userConfiguration: { value: 0, chose: false, level: 0 } },
+    { foodData: EFoodData.MATK, userConfiguration: { value: 0, chose: false, level: 0 } },
+    {
+      foodData: EFoodData.WEAPON_ATK,
+      userConfiguration: { value: 0, chose: false, level: 0 },
+    },
+    {
+      foodData: EFoodData.PHYSICAL_RESISTANCE,
+      userConfiguration: { value: 0, chose: false, level: 0 },
+    },
+    {
+      foodData: EFoodData.MAGIC_RESISTANCE,
+      userConfiguration: { value: 0, chose: false, level: 0 },
+    },
+    {
+      foodData: EFoodData.AGGRO_PERCENT,
+      userConfiguration: { value: 0, chose: false, level: 0 },
+    },
+    {
+      foodData: EFoodData.AGGRO_REDUCE_PERCENT,
+      userConfiguration: { value: 0, chose: false, level: 0 },
+    },
+    {
+      foodData: EFoodData.ATTACK_MP_RECOVERY,
+      userConfiguration: { value: 0, chose: false, level: 0 },
+    },
+    {
+      foodData: EFoodData.CRITICAL_RATE,
+      userConfiguration: { value: 0, chose: false, level: 0 },
+    },
+    { foodData: EFoodData.ACCURACY, userConfiguration: { value: 0, chose: false, level: 0 } },
+    { foodData: EFoodData.DODGE, userConfiguration: { value: 0, chose: false, level: 0 } },
+    { foodData: EFoodData.DEF, userConfiguration: { value: 0, chose: false, level: 0 } },
+    { foodData: EFoodData.MDEF, userConfiguration: { value: 0, chose: false, level: 0 } },
+  ];
+
   /** 引入料理清单 */
   const [foodConfiguration, setFoodConfiguration] = useRecoilState(foodConfigurationState);
-  /** 暂存当前正在编辑的料理信息 */
-  const currentConfiguration = { name: '', id: '', foodList: [] };
+
+  /** 暂存当前正在编辑的料理配置信息 */
+  const [currentConfiguration, setCurrentConfiguration] = useState({
+    name: '',
+    id: '',
+    foodList: defaultFoodList,
+  });
+
   /** 暂存料理名称 */
   const [newConfigurationName, setNewConfigurationName] = useState('');
+
   /** 已选择的料理项 */
   const [choseItem, setChoseItem] = useState(1);
+
   /** 弹窗显示状态 */
   const [newWindow, setNewWindow] = useState(false);
   const [modifyWindow, setModifyWindow] = useState(false);
   const [deleteWindow, setDeleteWindow] = useState(false);
-  /** 料理列表 */
-  const [foodList, setFoodList] = useState([
-    { name: ENumericalNumber.HP, value: 0, chose: false, level: 0, max: 5000, halfIncrement: 400 },
-    { name: ENumericalNumber.MP, value: 0, chose: false, level: 0, max: 1000, halfIncrement: 60 },
-    { name: ENumericalNumber.STR, value: 0, chose: false, level: 0, max: 30, halfIncrement: 2 },
-    { name: ENumericalNumber.DEX, value: 0, chose: false, level: 0, max: 30, halfIncrement: 2 },
-    { name: ENumericalNumber.INT, value: 0, chose: false, level: 0, max: 30, halfIncrement: 2 },
-    { name: ENumericalNumber.VIT, value: 0, chose: false, level: 0, max: 30, halfIncrement: 2 },
-    {
-      name: ENumericalNumber.AGI,
-      value: 0,
-      chose: false,
-      level: 0,
-      max: 30,
-      halfIncrement: 2,
-    },
-    { name: ENumericalNumber.ATK, value: 0, chose: false, level: 0, max: 100, halfIncrement: 6 },
-    { name: ENumericalNumber.MATK, value: 0, chose: false, level: 0, max: 100, halfIncrement: 6 },
-    {
-      name: ENumericalNumber.WEAPON_ATK,
-      value: 0,
-      chose: false,
-      level: 0,
-      max: 100,
-      halfIncrement: 6,
-    },
-    {
-      name: ENumericalNumber.PHYSICAL_RESISTANCE,
-      value: 0,
-      chose: false,
-      level: 0,
-      max: 50,
-      halfIncrement: 4,
-    },
-    {
-      name: ENumericalNumber.MAGIC_RESISTANCE,
-      value: 0,
-      chose: false,
-      level: 0,
-      max: 50,
-      halfIncrement: 4,
-    },
-    {
-      name: ENumericalNumber.AGGRO_PERCENT,
-      value: 0,
-      chose: false,
-      level: 0,
-      max: 100,
-      halfIncrement: 6,
-    },
-    {
-      name: ENumericalNumber.AGGRO_PERCENT,
-      value: 0,
-      chose: false,
-      type: '-',
-      level: 0,
-      max: 100,
-      halfIncrement: 6,
-    },
-    {
-      name: ENumericalNumber.ATTACK_MP_RECOVERY,
-      value: 0,
-      chose: false,
-      level: 0,
-      max: 30,
-      halfIncrement: 2,
-    },
-    {
-      name: ENumericalNumber.CRITICAL_RATE,
-      value: 0,
-      chose: false,
-      level: 0,
-      max: 30,
-      halfIncrement: 2,
-    },
-    {
-      name: ENumericalNumber.ACCURACY,
-      value: 0,
-      chose: false,
-      level: 0,
-      max: 100,
-      halfIncrement: 6,
-    },
-    {
-      name: ENumericalNumber.DODGE,
-      value: 0,
-      chose: false,
-      level: 0,
-      max: 100,
-      halfIncrement: 6,
-    },
-    { name: ENumericalNumber.DEF, value: 0, chose: false, level: 0, max: 100, halfIncrement: 6 },
-    { name: ENumericalNumber.MDEF, value: 0, chose: false, level: 0, max: 100, halfIncrement: 6 },
-  ]);
+
+  /** 将料理数据更新到 store */
+  const changeFoodConfiguration = () => {
+    console.log('已更新料理配置');
+    const newFoodConfiguration = foodConfiguration.map((item) => {
+      if (currentConfiguration.id === item.id) {
+        return currentConfiguration;
+      }
+      return item;
+    });
+    setFoodConfiguration(newFoodConfiguration);
+  };
 
   /** 料理选择并存入暂存 */
   const handleChange = (value: string) => {
-    console.log('gdx: ', value);
     const currentFood = foodConfiguration.filter((item) => item.id === value);
-    currentConfiguration.name = currentFood[0].name;
-    currentConfiguration.id = currentFood[0].id;
-    currentConfiguration.foodList = currentFood[0].foodList;
-    console.log('gdx: ', currentConfiguration);
+    setCurrentConfiguration({
+      name: currentFood[0].name,
+      id: currentFood[0].id,
+      foodList: currentFood[0].foodList,
+    });
   };
 
   /** 动态生成配置表 */
@@ -153,51 +130,83 @@ const RoleFood: FC<IProps> = (props) => {
 
   /** 修改选择状态 */
   const changeChose = (name) => () => {
-    const newFoodList = foodList.map((item) => {
-      if (choseItem <= 5 && !item.chose && item.name === name) {
-        item.chose = true;
+    const newFoodList = currentConfiguration.foodList.map((item) => {
+      const { foodData, userConfiguration } = item;
+      const { value, level } = userConfiguration;
+      if (
+        choseItem <= 5 &&
+        !item.userConfiguration.chose &&
+        FOOD_DATA[item.foodData].name === name
+      ) {
+        console.log('gdx: ', 1);
         setChoseItem(choseItem + 1);
-        return item;
-      } else if (item.chose && item.name === name) {
-        item.chose = false;
+        return {
+          foodData,
+          userConfiguration: {
+            value,
+            chose: true,
+            level,
+          },
+        };
+      } else if (item.userConfiguration.chose && FOOD_DATA[item.foodData].name === name) {
+        console.log('gdx: ', 2);
+        item.userConfiguration.chose = false;
         setChoseItem(choseItem - 1);
-        return item;
+        return {
+          foodData,
+          userConfiguration: {
+            value,
+            chose: false,
+            level,
+          },
+        };
       }
       return item;
     });
-    setFoodList(newFoodList);
+    setCurrentConfiguration({
+      name: currentConfiguration.name,
+      id: currentConfiguration.id,
+      foodList: newFoodList,
+    });
   };
 
   /** 料理等级与加成 */
   const changeLevel = (name: ENumericalNumber) => (value: number) => {
-    const newFoodList = foodList.map((item) => {
-      if (item.name === name) {
-        item.level = value;
-        if (value <= 5) {
-          item.value = item.halfIncrement * value;
+    const newFoodList = currentConfiguration.foodList.map((item) => {
+      const { halfIncrement, max } = FOOD_DATA[item.foodData];
+      if (FOOD_DATA[item.foodData].name === name) {
+        item.userConfiguration.level = value;
+        if (value <= HALF_MAX_LEVEL) {
+          item.userConfiguration.value = halfIncrement * value;
         } else {
-          item.value =
-            ((item.max - item.halfIncrement * 5) / 5) * (value - 5) + item.halfIncrement * 5;
+          item.userConfiguration.value =
+            ((max - halfIncrement * HALF_MAX_LEVEL) / HALF_MAX_LEVEL) * (value - HALF_MAX_LEVEL) +
+            halfIncrement * HALF_MAX_LEVEL;
         }
         return item;
       }
       return item;
     });
-    setFoodList(newFoodList);
+    setCurrentConfiguration({
+      name: currentConfiguration.name,
+      id: currentConfiguration.id,
+      foodList: newFoodList,
+    });
   };
 
   /** 动态生成已选列表 */
   const foodListChose = () =>
-    foodList
-      .filter((item) => item.chose)
+    currentConfiguration.foodList
+      .filter((item) => item.userConfiguration.chose)
       .map((item) => {
-        const { name, value, type, level } = item;
+        const { value, level } = item.userConfiguration;
+        const { name, isNegative } = FOOD_DATA[item.foodData];
         return (
-          <div key={name} className="page-food__chose-item">
+          <div key={'food' + item.foodData} className="page-food__chose-item">
             <CheckCircleOutlined style={{ border: 'none' }} />
             <span className="chose-item__name">
               {NUMERICAL_NUMBER[name].name}
-              {type ? type : '+'}
+              {isNegative ? '-' : '+'}
               {value}
               {NUMERICAL_NUMBER[name].type === ENumericalNumberType.Normal ? '' : '%'}
             </span>
@@ -217,16 +226,21 @@ const RoleFood: FC<IProps> = (props) => {
 
   /** 动态生成未选列表 */
   const foodListUnChose = () =>
-    foodList
-      .filter((item) => !item.chose)
+    currentConfiguration.foodList
+      .filter((item) => !item.userConfiguration.chose)
       .map((item) => {
-        const { name, value, type, level } = item;
+        const { value, level } = item.userConfiguration;
+        const { name, isNegative } = FOOD_DATA[item.foodData];
         return (
-          <button key={name} className="page-food__chose-item item-btn" onClick={changeChose(name)}>
+          <button
+            key={'food' + item.foodData}
+            className="page-food__chose-item item-btn"
+            onClick={changeChose(name)}
+          >
             <BorderOutlined style={{ border: 'none' }} />
             <span className="chose-item__name">
               {NUMERICAL_NUMBER[name].name}
-              {type ? type : '+'}
+              {isNegative ? '-' : '+'}
               {value}
               {NUMERICAL_NUMBER[name].type === ENumericalNumberType.Normal ? '' : '%'}
             </span>
@@ -248,7 +262,7 @@ const RoleFood: FC<IProps> = (props) => {
       {
         id: nanoid(),
         name: newConfigurationName,
-        foodList: [],
+        foodList: defaultFoodList,
       },
     ]);
     setNewWindow(false);
@@ -259,7 +273,10 @@ const RoleFood: FC<IProps> = (props) => {
   const modifyListName = () => {
     setFoodConfiguration((oldTodoList) =>
       oldTodoList.map((item) => {
+        console.log('item: ', item);
         const { id, foodList } = item;
+        console.log('id: ', id);
+        console.log('currentId: ', currentConfiguration.id);
         if (id === currentConfiguration.id) {
           currentConfiguration.name = newConfigurationName;
           return { name: newConfigurationName, id, foodList };
@@ -318,29 +335,37 @@ const RoleFood: FC<IProps> = (props) => {
             {foodItems()}
           </Select>
           <div className="page-food__name-btn">
+            <button onClick={changeFoodConfiguration}>
+              <FolderOutlined style={{ padding: '0 3px' }} />
+              保存
+            </button>
             <button onClick={() => setNewWindow(true)}>
               <FileAddOutlined style={{ padding: '0 3px' }} />
-              新建配置
+              新建
             </button>
             <button onClick={() => setModifyWindow(true)}>
               <FormOutlined style={{ padding: '0 3px' }} />
-              修改名称
+              修改
             </button>
             <button className="page-food__name-delete" onClick={() => setDeleteWindow(true)}>
               <DeleteOutlined style={{ padding: '0 3px' }} />
-              删除配置
+              删除
             </button>
           </div>
         </section>
       </div>
-      <section className="page-food__container chose-window">
-        <SplitLine icon={<CoffeeOutlined />} title="已选料理" />
-        <section className="page-food__chose-container">{foodListChose()}</section>
-      </section>
-      <section className="page-food__container">
-        <SplitLine icon={<CoffeeOutlined />} title="备选料理" />
-        <section className="page-food__chose-container">{foodListUnChose()}</section>
-      </section>
+      {currentConfiguration.id === '' || (
+        <section className="page-food__container chose-window">
+          <SplitLine icon={<CoffeeOutlined />} title="已选料理" />
+          <section className="page-food__chose-container">{foodListChose()}</section>
+        </section>
+      )}
+      {currentConfiguration.id === '' || (
+        <section className="page-food__container">
+          <SplitLine icon={<CoffeeOutlined />} title="备选料理" />
+          <section className="page-food__chose-container">{foodListUnChose()}</section>
+        </section>
+      )}
     </section>
   );
 };

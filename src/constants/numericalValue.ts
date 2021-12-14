@@ -203,6 +203,163 @@ interface INumericalNumberValue {
   name: string;
 }
 
+/** 料理数据类型 */
+export interface IFoodData {
+  name: ENumericalNumber;
+  isNegative?: boolean;
+  max: number;
+  halfIncrement: number;
+}
+
+/** 料理数据枚举 */
+export enum EFoodData {
+  /** 生命值 */
+  HP,
+  /** 魔力值 */
+  MP,
+  /** 力量 */
+  STR,
+  /** 灵巧 */
+  DEX,
+  /** 智力 */
+  INT,
+  /** 耐力 */
+  VIT,
+  /** 敏捷 */
+  AGI,
+  /** 攻击力 */
+  ATK,
+  /** 魔法攻击力 */
+  MATK,
+  /** 武器攻击力 */
+  WEAPON_ATK,
+  /** 物理抗性 */
+  PHYSICAL_RESISTANCE,
+  /** 魔法抗性 */
+  MAGIC_RESISTANCE,
+  /** 增仇 */
+  AGGRO_PERCENT,
+  /** 减仇 */
+  AGGRO_REDUCE_PERCENT,
+  /** 攻击魔力值回复 */
+  ATTACK_MP_RECOVERY,
+  /** 暴击率 */
+  CRITICAL_RATE,
+  /** 命中 */
+  ACCURACY,
+  /** 回避 */
+  DODGE,
+  /** 物理防御 */
+  DEF,
+  /** 魔法防御 */
+  MDEF,
+}
+
+/** 料理数据枚举映射 */
+export const FOOD_DATA: Record<EFoodData, IFoodData> = {
+  [EFoodData.HP]: {
+    name: ENumericalNumber.HP,
+    max: 5000,
+    halfIncrement: 400,
+  },
+  [EFoodData.MP]: {
+    name: ENumericalNumber.MP,
+    max: 1000,
+    halfIncrement: 60,
+  },
+  [EFoodData.STR]: {
+    name: ENumericalNumber.STR,
+    max: 30,
+    halfIncrement: 2,
+  },
+  [EFoodData.DEX]: {
+    name: ENumericalNumber.DEX,
+    max: 30,
+    halfIncrement: 2,
+  },
+  [EFoodData.INT]: {
+    name: ENumericalNumber.INT,
+    max: 30,
+    halfIncrement: 2,
+  },
+  [EFoodData.VIT]: {
+    name: ENumericalNumber.VIT,
+    max: 30,
+    halfIncrement: 2,
+  },
+  [EFoodData.AGI]: {
+    name: ENumericalNumber.AGI,
+    max: 30,
+    halfIncrement: 2,
+  },
+  [EFoodData.ATK]: {
+    name: ENumericalNumber.ATK,
+    max: 100,
+    halfIncrement: 6,
+  },
+  [EFoodData.MATK]: {
+    name: ENumericalNumber.MATK,
+    max: 100,
+    halfIncrement: 6,
+  },
+  [EFoodData.WEAPON_ATK]: {
+    name: ENumericalNumber.WEAPON_ATK,
+    max: 100,
+    halfIncrement: 6,
+  },
+  [EFoodData.PHYSICAL_RESISTANCE]: {
+    name: ENumericalNumber.PHYSICAL_RESISTANCE,
+    max: 50,
+    halfIncrement: 4,
+  },
+  [EFoodData.MAGIC_RESISTANCE]: {
+    name: ENumericalNumber.MAGIC_RESISTANCE,
+    max: 50,
+    halfIncrement: 4,
+  },
+  [EFoodData.AGGRO_PERCENT]: {
+    name: ENumericalNumber.AGGRO_PERCENT,
+    max: 100,
+    halfIncrement: 6,
+  },
+  [EFoodData.AGGRO_REDUCE_PERCENT]: {
+    name: ENumericalNumber.AGGRO_PERCENT,
+    isNegative: true,
+    max: 100,
+    halfIncrement: 6,
+  },
+  [EFoodData.ATTACK_MP_RECOVERY]: {
+    name: ENumericalNumber.ATTACK_MP_RECOVERY,
+    max: 30,
+    halfIncrement: 2,
+  },
+  [EFoodData.CRITICAL_RATE]: {
+    name: ENumericalNumber.CRITICAL_RATE,
+    max: 30,
+    halfIncrement: 2,
+  },
+  [EFoodData.ACCURACY]: {
+    name: ENumericalNumber.ACCURACY,
+    max: 100,
+    halfIncrement: 6,
+  },
+  [EFoodData.DODGE]: {
+    name: ENumericalNumber.DODGE,
+    max: 100,
+    halfIncrement: 6,
+  },
+  [EFoodData.DEF]: {
+    name: ENumericalNumber.DEF,
+    max: 100,
+    halfIncrement: 6,
+  },
+  [EFoodData.MDEF]: {
+    name: ENumericalNumber.MDEF,
+    max: 100,
+    halfIncrement: 6,
+  },
+};
+
 /** 数值枚举映射 */
 export const NUMERICAL_NUMBER: Record<ENumericalNumber, INumericalNumberValue> = {
   [ENumericalNumber.ATK]: {
