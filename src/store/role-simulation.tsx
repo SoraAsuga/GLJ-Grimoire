@@ -24,7 +24,7 @@ const defaultRole: IRoleItem = {
       id: 'empty-handed',
       name: '空',
       weaponType: EWeaponType.EmptyHanded,
-      location: EEquipmentLocation.BothHandWeapon,
+      location: EEquipmentLocation.MainWeapon,
       mainValueType: ENumericalNumber.WEAPON_ATK,
       mainValue: 0,
       allowedSecondaryWeapon: [
@@ -41,7 +41,7 @@ const defaultRole: IRoleItem = {
       id: 'empty-handed',
       name: '空',
       weaponType: EWeaponType.EmptyHanded,
-      location: EEquipmentLocation.BothHandWeapon,
+      location: EEquipmentLocation.MainWeapon,
       mainValueType: ENumericalNumber.WEAPON_ATK,
       mainValue: 0,
       allowedSecondaryWeapon: [

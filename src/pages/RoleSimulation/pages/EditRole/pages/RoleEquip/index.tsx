@@ -2,6 +2,7 @@ import { ENumericalNumber } from '@/constants/numericalValue';
 import EquipChoiceCard from '@/pages/RoleSimulation/components/EquipChoiceCard';
 import EquipDetailCard from '@/pages/RoleSimulation/components/EquipDetailCard';
 import { equipsState } from '@/store/equips';
+import { chosenEquipsState } from '@/store/equips-choice';
 import { getRoleSelector } from '@/store/role-simulation';
 import { EEquipmentLocation, EWeaponType, IEquipment } from '@/typings/equipment';
 import {
@@ -13,6 +14,7 @@ import {
   CopyOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
+import Item from 'antd/lib/list/Item';
 import Modal from 'antd/lib/modal/Modal';
 import React, { FC, useMemo, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -37,7 +39,7 @@ const RoleEquip: FC<IProps> = (props) => {
     id: 'empty-handed',
     name: '空',
     weaponType: EWeaponType.EmptyHanded,
-    location: EEquipmentLocation.BothHandWeapon,
+    location: EEquipmentLocation.MainWeapon,
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 0,
     allowedSecondaryWeapon: [
@@ -60,12 +62,14 @@ const RoleEquip: FC<IProps> = (props) => {
 
   /** 装备库数据 */
   const equips = useRecoilValue(equipsState);
+  /** 已选装备库数据 */
+  const chosenEquips = useRecoilState(chosenEquipsState);
 
   /** 当前装备 */
   const [currentEquip, setCurrentEquip] = useState(emptyHanded);
 
   /** 当前装备类型 */
-  const [currentEquipType, setCurrentEquipType] = useState([undefined, undefined]);
+  const [currentEquipLocationType, setCurrentEquipLocationType] = useState(undefined);
 
   /** 当前装备位置 */
   const [currentLocation, setCurrentLocation] = useState(undefined);
@@ -74,14 +78,12 @@ const RoleEquip: FC<IProps> = (props) => {
   const type: IType[] = [
     {
       name: '主手武器',
-      type: EEquipmentLocation.MainWeaponOnly,
-      both: EEquipmentLocation.BothHandWeapon,
+      type: EEquipmentLocation.MainWeapon,
       location: 'mainWeapon',
     },
     {
       name: '副手武器',
-      type: EEquipmentLocation.SecondaryWeaponOnly,
-      both: EEquipmentLocation.BothHandWeapon,
+      type: EEquipmentLocation.SecondaryWeapon,
       location: 'secondaryWeapon',
     },
     { name: '身体防具', type: EEquipmentLocation.ArmorEquip, location: 'armorEquip' },
@@ -93,19 +95,18 @@ const RoleEquip: FC<IProps> = (props) => {
   ];
 
   /** 装备选择页面，改变当前装备信息 */
-  const changeShow =
-    (type?: EEquipmentLocation, both?: EEquipmentLocation, location?: string) => () => {
-      if (type) {
-        setCurrentEquipType([type, both]);
-        setCurrentLocation(location);
-        setShow(!show);
-      } else {
-        setCurrentEquipType([type, both]);
-        setCurrentLocation(location);
-        setShow(!show);
-      }
-      setCurrentEquip(emptyHanded);
-    };
+  const changeShow = (type?: EEquipmentLocation, location?: string) => () => {
+    if (type) {
+      setCurrentEquipLocationType(type);
+      setCurrentLocation(location);
+      setShow(!show);
+    } else {
+      setCurrentEquipLocationType(type);
+      setCurrentLocation(location);
+      setShow(!show);
+    }
+    setCurrentEquip(emptyHanded);
+  };
 
   /** 将当前装备更新至 store */
   const changeEquipment = () => () => {
@@ -127,32 +128,82 @@ const RoleEquip: FC<IProps> = (props) => {
 
   /** 动态生成装备条目 */
   const equipItem = () => {
-    return equips.map((item) => (
-      <button
-        className="role-list_item"
-        key={item.id}
-        style={
-          item.location === currentEquipType[0] || item.location === currentEquipType[1]
-            ? currentEquip
-              ? currentEquip.id === item.id
-                ? { backgroundColor: '#4e8eee34' }
-                : null
-              : {}
-            : { opacity: '0.4' }
+    return equips.map((item) => {
+      const typeJudge = () => {
+        if (currentEquipLocationType === EEquipmentLocation.SecondaryWeapon) {
+          if (
+            role.equipment.mainWeapon.allowedSecondaryWeapon.some(
+              (allowedItem) => item.weaponType === allowedItem,
+            )
+          ) {
+            if (currentEquip === item) {
+              return { backgroundColor: '#4e8eee34' };
+            }
+            return {};
+          }
+        } else if (item.location === currentEquipLocationType) {
+          if (currentEquip === item) {
+            return { backgroundColor: '#4e8eee34' };
+          }
+          return {};
         }
-        onClick={changeCurrentEquip(item)}
-      >
-        <span className="role-list_item-name">
-          <StarOutlined style={{ margin: '5px' }} />
-          {item.name}
-        </span>
-        {item.refine && (
-          <span className="role-list_item-container">
-            <span className="role-list_item-type">+{item.refine}</span>
+        return { opacity: '0.4' };
+        // return { backgroundColor: '#4e8eee34' };
+      };
+
+      return (
+        <button
+          className="role-list_item"
+          key={item.id}
+          style={typeJudge()}
+          onClick={changeCurrentEquip(item)}
+        >
+          <span className="role-list_item-name">
+            <StarOutlined style={{ margin: '5px' }} />
+            {item.name}
           </span>
-        )}
-      </button>
-    ));
+          {item.refine && (
+            <span className="role-list_item-container">
+              <span className="role-list_item-type">+{item.refine}</span>
+            </span>
+          )}
+        </button>
+      );
+    });
+  };
+
+  /** 动态生成确认按钮 */
+  const okButton = () => {
+    if (currentEquipLocationType === EEquipmentLocation.SecondaryWeapon) {
+      if (
+        role.equipment.mainWeapon.allowedSecondaryWeapon.some(
+          (allowedItem) => currentEquip.weaponType === allowedItem,
+        )
+      ) {
+        return (
+          <button className="list-footer__btn" onClick={changeEquipment()}>
+            <CheckOutlined className="list-footer__btn-icon" />
+            确认
+          </button>
+        );
+      }
+    } else if (
+      currentEquipLocationType !== EEquipmentLocation.SecondaryWeapon &&
+      currentEquip.location === currentEquipLocationType
+    ) {
+      return (
+        <button className="list-footer__btn" onClick={changeEquipment()}>
+          <CheckOutlined className="list-footer__btn-icon" />
+          确认
+        </button>
+      );
+    }
+    return (
+      <div className="list-footer__btn-error">
+        <CheckOutlined className="list-footer__btn-icon" />
+        确认
+      </div>
+    );
   };
 
   /** 动态生成装备卡 */
@@ -214,18 +265,7 @@ const RoleEquip: FC<IProps> = (props) => {
               删除
             </button>
             <div className="list-footer__div"></div>
-            {currentEquip.location === currentEquipType[0] ||
-            currentEquip.location === currentEquipType[1] ? (
-              <button className="list-footer__btn" onClick={changeEquipment()}>
-                <CheckOutlined className="list-footer__btn-icon" />
-                确认
-              </button>
-            ) : (
-              <div className="list-footer__btn-error">
-                <CheckOutlined className="list-footer__btn-icon" />
-                确认
-              </div>
-            )}
+            {okButton()}
           </section>
         )}
       </Modal>

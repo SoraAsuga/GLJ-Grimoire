@@ -9,6 +9,7 @@ export interface FoodConfigurationItem {
   name: string;
   id: string;
   foodList: FoodListItem[];
+  choseFoodNumber: number;
 }
 
 export interface IUserConfiguration {

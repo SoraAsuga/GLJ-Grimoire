@@ -1,13 +1,12 @@
 import { ENumericalNumber } from '../constants/numericalValue';
 
 /** 装备位置 */
+
 export enum EEquipmentLocation {
-  /** 仅主手武器 */
-  MainWeaponOnly,
-  /** 仅副手武器 */
-  SecondaryWeaponOnly,
-  /** 双手皆可 */
-  BothHandWeapon,
+  /** 主武器 */
+  MainWeapon,
+  /** 副武器 */
+  SecondaryWeapon,
   /** 身体装备 */
   ArmorEquip,
   /** 追加装备 */

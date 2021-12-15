@@ -48,6 +48,7 @@ export const foodConfigurationState = atom<FoodConfigurationItem[]>({
         { foodData: EFoodData.DEF, userConfiguration: { value: 0, chose: false, level: 0 } },
         { foodData: EFoodData.MDEF, userConfiguration: { value: 0, chose: false, level: 0 } },
       ],
+      choseFoodNumber: 0,
     },
   ],
 });

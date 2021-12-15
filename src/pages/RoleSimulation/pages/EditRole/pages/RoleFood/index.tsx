@@ -79,10 +79,12 @@ const RoleFood: FC<IProps> = (props) => {
 
   /** 暂存当前正在编辑的料理配置信息 */
   const [currentConfiguration, setCurrentConfiguration] = useState({
-    name: '',
+    name: '选择已有配置',
     id: '',
     foodList: defaultFoodList,
+    choseFoodNumber: 0,
   });
+  console.log('current', currentConfiguration);
 
   /** 暂存料理名称 */
   const [newConfigurationName, setNewConfigurationName] = useState('');
@@ -110,10 +112,13 @@ const RoleFood: FC<IProps> = (props) => {
   /** 料理选择并存入暂存 */
   const handleChange = (value: string) => {
     const currentFood = foodConfiguration.filter((item) => item.id === value);
+    currentFood[0].foodList;
+    setChoseItem(currentFood[0].choseFoodNumber);
     setCurrentConfiguration({
       name: currentFood[0].name,
       id: currentFood[0].id,
       foodList: currentFood[0].foodList,
+      choseFoodNumber: currentFood[0].choseFoodNumber,
     });
   };
 
@@ -129,12 +134,12 @@ const RoleFood: FC<IProps> = (props) => {
     });
 
   /** 修改选择状态 */
-  const changeChose = (name) => () => {
+  const changeChose = (name: ENumericalNumber) => () => {
     const newFoodList = currentConfiguration.foodList.map((item) => {
       const { foodData, userConfiguration } = item;
       const { value, level } = userConfiguration;
       if (
-        choseItem <= 5 &&
+        choseItem <= 4 &&
         !item.userConfiguration.chose &&
         FOOD_DATA[item.foodData].name === name
       ) {
@@ -167,6 +172,7 @@ const RoleFood: FC<IProps> = (props) => {
       name: currentConfiguration.name,
       id: currentConfiguration.id,
       foodList: newFoodList,
+      choseFoodNumber: choseItem,
     });
   };
 
@@ -191,6 +197,7 @@ const RoleFood: FC<IProps> = (props) => {
       name: currentConfiguration.name,
       id: currentConfiguration.id,
       foodList: newFoodList,
+      choseFoodNumber: currentConfiguration.choseFoodNumber,
     });
   };
 
@@ -217,7 +224,7 @@ const RoleFood: FC<IProps> = (props) => {
               className="chose-item__data"
               min={0}
               max={10}
-              defaultValue={level}
+              value={level}
               onChange={changeLevel(name)}
             />
           </div>
@@ -248,7 +255,7 @@ const RoleFood: FC<IProps> = (props) => {
               className="chose-item__data"
               min={0}
               max={10}
-              defaultValue={level}
+              value={level}
               onChange={changeLevel(name)}
             />
           </button>
@@ -263,10 +270,11 @@ const RoleFood: FC<IProps> = (props) => {
         id: nanoid(),
         name: newConfigurationName,
         foodList: defaultFoodList,
+        choseFoodNumber: 0,
       },
     ]);
-    setNewWindow(false);
     setNewConfigurationName('');
+    setNewWindow(false);
   };
 
   /** 修改配置名称 */
@@ -274,12 +282,12 @@ const RoleFood: FC<IProps> = (props) => {
     setFoodConfiguration((oldTodoList) =>
       oldTodoList.map((item) => {
         console.log('item: ', item);
-        const { id, foodList } = item;
+        const { id, foodList, choseFoodNumber } = item;
         console.log('id: ', id);
         console.log('currentId: ', currentConfiguration.id);
         if (id === currentConfiguration.id) {
           currentConfiguration.name = newConfigurationName;
-          return { name: newConfigurationName, id, foodList };
+          return { name: newConfigurationName, id, foodList, choseFoodNumber };
         }
         return item;
       }),
@@ -290,7 +298,19 @@ const RoleFood: FC<IProps> = (props) => {
   };
 
   /** 删除配置 */
-  const deleteList = () => {};
+  const deleteList = () => {
+    const newList = foodConfiguration.filter((item) => {
+      item.id !== currentConfiguration.id;
+    });
+    setFoodConfiguration(newList);
+    setCurrentConfiguration({
+      name: '选择已有配置',
+      id: '',
+      foodList: defaultFoodList,
+      choseFoodNumber: 0,
+    });
+    setDeleteWindow(false);
+  };
 
   return (
     <section className="edit-role__page-food">
@@ -302,7 +322,11 @@ const RoleFood: FC<IProps> = (props) => {
         okText="确认"
         cancelText="取消"
       >
-        <Input placeholder="新配置名称" onChange={(e) => setNewConfigurationName(e.target.value)} />
+        <Input
+          placeholder="新配置名称"
+          value={newConfigurationName}
+          onChange={(e) => setNewConfigurationName(e.target.value)}
+        />
       </Modal>
       <Modal
         title="修改配置名"
@@ -312,7 +336,11 @@ const RoleFood: FC<IProps> = (props) => {
         okText="确认"
         cancelText="取消"
       >
-        <Input placeholder="新配置名称" onChange={(e) => setNewConfigurationName(e.target.value)} />
+        <Input
+          placeholder="新配置名称"
+          value={newConfigurationName}
+          onChange={(e) => setNewConfigurationName(e.target.value)}
+        />
       </Modal>
       <Modal
         title="删除配置"
@@ -328,29 +356,35 @@ const RoleFood: FC<IProps> = (props) => {
         <SplitLine icon={<CoffeeOutlined />} title="料理配置" />
         <section className="page-food__name">
           <Select
-            defaultValue="未选择配置"
+            value={currentConfiguration.name}
             onChange={handleChange}
             className="page-food__name-chose"
           >
             {foodItems()}
           </Select>
           <div className="page-food__name-btn">
-            <button onClick={changeFoodConfiguration}>
-              <FolderOutlined style={{ padding: '0 3px' }} />
-              保存
-            </button>
+            {currentConfiguration.id === '' || (
+              <button onClick={changeFoodConfiguration}>
+                <FolderOutlined style={{ padding: '0 3px' }} />
+                保存
+              </button>
+            )}
             <button onClick={() => setNewWindow(true)}>
               <FileAddOutlined style={{ padding: '0 3px' }} />
               新建
             </button>
-            <button onClick={() => setModifyWindow(true)}>
-              <FormOutlined style={{ padding: '0 3px' }} />
-              修改
-            </button>
-            <button className="page-food__name-delete" onClick={() => setDeleteWindow(true)}>
-              <DeleteOutlined style={{ padding: '0 3px' }} />
-              删除
-            </button>
+            {currentConfiguration.id === '' || (
+              <button onClick={() => setModifyWindow(true)}>
+                <FormOutlined style={{ padding: '0 3px' }} />
+                改名
+              </button>
+            )}
+            {currentConfiguration.id === '' || (
+              <button className="page-food__name-delete" onClick={() => setDeleteWindow(true)}>
+                <DeleteOutlined style={{ padding: '0 3px' }} />
+                删除
+              </button>
+            )}
           </div>
         </section>
       </div>

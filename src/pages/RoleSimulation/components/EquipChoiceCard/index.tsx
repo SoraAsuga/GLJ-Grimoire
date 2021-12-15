@@ -15,11 +15,7 @@ import './index..less';
 interface IProps {
   item: IType;
   role: IRoleItem;
-  changeShow: (
-    type?: EEquipmentLocation,
-    both?: EEquipmentLocation,
-    location?: string,
-  ) => () => void;
+  changeShow: (type?: EEquipmentLocation, location?: string) => () => void;
   deleteCurrentEquip: (item: IType) => () => void;
 }
 
@@ -37,10 +33,7 @@ const EquipChoiceCard: FC<IProps> = (props) => {
               <CloseOutlined />
             </button>
           )}
-          <button
-            className="card-header__btn"
-            onClick={changeShow(item.type, item.both, item.location)}
-          >
+          <button className="card-header__btn" onClick={changeShow(item.type, item.location)}>
             <UnorderedListOutlined />
           </button>
         </header>
@@ -48,10 +41,7 @@ const EquipChoiceCard: FC<IProps> = (props) => {
           role.equipment[item.location].name !== '空' ? (
             <EquipDetailCard item={role.equipment[item.location]} />
           ) : (
-            <button
-              className="role-equip__content"
-              onClick={changeShow(item.type, item.both, item.location)}
-            >
+            <button className="role-equip__content" onClick={changeShow(item.type, item.location)}>
               <section className="role-equip__content-details">
                 <QuestionOutlined className="content-details__icon" />
                 <span className="content-details__text">点击添加装备</span>
@@ -59,10 +49,7 @@ const EquipChoiceCard: FC<IProps> = (props) => {
             </button>
           )
         ) : (
-          <button
-            className="role-equip__content"
-            onClick={changeShow(item.type, item.both, item.location)}
-          >
+          <button className="role-equip__content" onClick={changeShow(item.type, item.location)}>
             <section className="role-equip__content-details">
               <QuestionOutlined className="content-details__icon" />
               <span className="content-details__text">点击添加装备</span>
