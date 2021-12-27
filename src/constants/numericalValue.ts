@@ -1,8 +1,10 @@
+import { ITreeOption } from '@/components/Tree/types';
+import SkillNode from '@/pages/SkillQuery/components/SkillNode';
 import {
+  IEquipment,
+  EWeaponType,
   EEquipmentLocation,
   EModificationState,
-  EWeaponType,
-  IEquipment,
 } from '@/typings/equipment';
 
 /** 数值枚举类型 */
@@ -728,6 +730,7 @@ export const NUMERICAL_NUMBER: Record<ENumericalNumber, INumericalNumberValue> =
   },
 };
 
+/** 装备数据 */
 export const EQUIPS: IEquipment[] = [
   {
     id: 'empty-handed',

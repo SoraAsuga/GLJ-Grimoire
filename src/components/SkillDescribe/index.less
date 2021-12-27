@@ -1,0 +1,74 @@
+.describe {
+  background-color: white;
+  margin-top: 5px;
+  padding: 15px;
+
+  .describe-header {
+    font-size: 16px;
+
+    margin: 10px 0;
+
+    .describe-header_icon {
+      color: @theme-color;
+    }
+
+    .describe-header_title {
+      color: @theme-font-color;
+
+      margin: 0 10px;
+    }
+  }
+
+  .describe-attribute {
+    display: flex;
+    flex-direction: column;
+
+    margin: 20px 10px;
+
+    .describe-attribute__item {
+      display: flex;
+      color: @theme-color;
+      text-align: center;
+      font-size: 14px;
+
+      .describe-attribute__item-icon {
+        padding: 10px 0;
+      }
+
+      .describe-attribute__item-title {
+        color: @theme-font-color;
+        text-align: left;
+        width: 110px;
+        padding: 10px;
+      }
+
+      .describe-attribute__item-content {
+        border-left: 1px;
+        border-style: solid;
+        border-color: @theme-color;
+        padding: 10px 15px;
+
+      }
+    }
+  }
+
+  .describe-effect {
+    .describe-effect__inertia {
+      display: flex;
+
+      margin: 5px 15px;
+
+      .describe-effect__inertia-title {
+        color: @theme-font-color;
+
+        margin-right: 10px;
+      }
+      
+      .describe-effect__inertia-value {
+        color: @theme-color;
+
+        margin-right: 20px;
+      }
+    }
+  }
+}

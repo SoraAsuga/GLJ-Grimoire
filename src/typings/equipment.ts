@@ -25,6 +25,8 @@ export enum EWeaponType {
   OneHandedSword = '单手剑',
   /** 双手剑 */
   TwoHandedSword = '双手剑',
+  /** 双剑 */
+  DualSword = '双剑',
   /** 弓 */
   Bow = '弓',
   /** 弩 */

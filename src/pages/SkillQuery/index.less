@@ -1,89 +1,14 @@
 .skill-query {
-  width: 100%;
+  width: 1024px;
+  height: 93vh;
   margin: 0 auto;
+  overflow: hidden;
 
-  .skill-query__show {
-    position: fixed;
-    background-color: rgba(0, 0, 0, 0.4);
-    width: 100%;
-    height: 100%;
+  .skill-query_container {
+    height: 104%;
 
-    .skill-query__show-content {
-      display: flex;
-      flex-direction: column;
-      background-color: white;
-      width: 80%;
-      height: 80%;
-      border-radius: 20px;
-      margin: 50px auto;
-
-      .skill-query__show-header {
-        display: flex;
-        width: 100%;
-        flex-grow: 0;
-
-        .skill-query__show-close {
-          font-size: 40px;
-          border: none;
-        }
-
-        .skill-query__show-title {
-          font-size: 28px;
-          padding-right: 51px;
-          margin: 20px auto 0;
-        }
-      }
-
-      .skill-query__show-skills {
-        flex-grow: 1;
-        text-align: center;
-        margin: 10px auto 0;
-        overflow-x: hidden;
-        overflow-y: scroll;
-
-        .show-skills {
-          color: white;
-          background-color: #4e8dee;
-          width: 600px;
-          height: 100px;
-          border-radius: 40px;
-          margin: 40px auto;
-          transition: 0.2s;
-
-          &:hover {
-            background-color: #70a9ff;
-            font-size: 30px;
-          }
-        }
-      }
-
-      .skill-query__show-skills::-webkit-scrollbar {
-        display: none;
-      }
-
-    }
-  }
-
-  .skill-query__menu {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    .skill-query__menu-btn {
-      color: white;
-      font-size: 30px;
-      background-color: #4e8dee;
-      width: 600px;
-      height: 100px;
-      margin: 30px auto;
-      border-radius: 40px;
-      transition: 0.2s;
-
-      &:hover {
-        background-color: #70a9ff;
-        font-size: 35px;
-      }
+    .skill-query_content {
+      padding: 24
     }
   }
 }
