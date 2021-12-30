@@ -4,17 +4,17 @@ import { ENumericalNumber } from '../constants/numericalValue';
 
 export enum EEquipmentLocation {
   /** 主武器 */
-  MainWeapon,
+  MainWeapon = '主手武器',
   /** 副武器 */
-  SecondaryWeapon,
+  SecondaryWeapon = '副手武器',
   /** 身体装备 */
-  ArmorEquip,
+  ArmorEquip = '身体装备',
   /** 追加装备 */
-  AdditionalEquip,
+  AdditionalEquip = '追加装备',
   /** 特殊装备 */
-  SpecialEquip,
+  SpecialEquip = '特殊装备',
   /** 时装 */
-  FashionEquip,
+  FashionEquip = '时装',
 }
 
 /** 武器类型 */

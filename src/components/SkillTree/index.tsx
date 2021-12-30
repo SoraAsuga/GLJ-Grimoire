@@ -1,5 +1,5 @@
 import SkillNode from '@/pages/SkillQuery/components/SkillNode';
-import React, { FC } from 'react';
+import React from 'react';
 import Tree from '../Tree';
 import { ITreeOption } from '../Tree/types';
 

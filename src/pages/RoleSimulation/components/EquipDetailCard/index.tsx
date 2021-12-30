@@ -1,4 +1,4 @@
-import { NUMERICAL_NUMBER } from '@/constants/numericalValue';
+import { ENumericalNumber, NUMERICAL_NUMBER } from '@/constants/numericalValue';
 import { IEquipment } from '@/typings/equipment';
 import {
   AimOutlined,
@@ -14,10 +14,11 @@ import './index.less';
 
 interface IProps {
   item: IEquipment;
+  headerMenu?: boolean;
 }
 
 const EquipDetailCard: FC<IProps> = (props) => {
-  const { item } = props;
+  const { item, headerMenu = true } = props;
   const [show, setShow] = useState(false);
 
   const onCancel = () => {
@@ -59,20 +60,22 @@ const EquipDetailCard: FC<IProps> = (props) => {
           <StarOutlined className="card-header_icon" />
           <span className="card-header_name">{item.name}</span>
           <span className="card-header_type">{item.weaponType}</span>
-          <button className="card-header_btn" onClick={() => setShow(true)}>
-            <EditOutlined />
-          </button>
+          {headerMenu && (
+            <button className="card-header_btn" onClick={() => setShow(true)}>
+              <EditOutlined />
+            </button>
+          )}
         </header>
         <section className="card-content">
           <section className="card-content_value">
-            {item.mainValueType !== 28 ? (
+            {item.mainValueType === ENumericalNumber.WEAPON_ATK ? (
               <FireOutlined style={{ margin: '0 5px' }} />
             ) : (
               <SkinOutlined style={{ margin: '0 5px' }} />
             )}
 
             <span className="card-header_value-type">
-              {item.mainValueType !== 28 ? 'ATK' : 'DEF'}
+              {item.mainValueType === ENumericalNumber.WEAPON_ATK ? 'ATK' : 'DEF'}
             </span>
             <span className="card-header_value-number">{item.mainValue}</span>
             {item.stable && <span>{item.stable}%</span>}

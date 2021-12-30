@@ -62,6 +62,7 @@ const RoleEquip: FC<IProps> = (props) => {
 
   /** 装备库数据 */
   const equips = useRecoilValue(equipsState);
+
   /** 已选装备库数据 */
   const chosenEquips = useRecoilState(chosenEquipsState);
 

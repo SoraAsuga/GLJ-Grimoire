@@ -3,8 +3,6 @@ import { ApartmentOutlined, FireOutlined } from '@ant-design/icons';
 
 import './index.less';
 import { Layout, Menu } from 'antd';
-import { ITreeOption } from '@/components/Tree/types';
-import Tree from '@/components/Tree';
 import SkillDescribe from '@/components/SkillDescribe';
 import {
   AuxiliarySkill,
@@ -26,9 +24,8 @@ import {
   SwordSkill,
   WizardSkill,
 } from '@/components/SkillTree';
-import SkillNode from './components/SkillNode';
 
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const SkillQuery: FC = () => {
@@ -37,157 +34,70 @@ const SkillQuery: FC = () => {
     {
       name: '武器技能',
       skillTree: [
-        { name: '剑术技能' },
-        { name: '射击技能' },
-        { name: '魔法技能' },
-        { name: '格斗技能' },
-        { name: '双剑技能' },
-        { name: '斧枪技能' },
-        { name: '武士技能' },
-        { name: '破坏者技能' },
+        { name: '剑术技能', tree: <SwordSkill /> },
+        { name: '射击技能', tree: <ShortSkill /> },
+        { name: '魔法技能', tree: <MagicSkill></MagicSkill> },
+        { name: '格斗技能', tree: <CombatSkill></CombatSkill> },
+        { name: '双剑技能', tree: <DualSwordSkill></DualSwordSkill> },
+        { name: '斧枪技能', tree: <HalberdSkill></HalberdSkill> },
+        { name: '武士技能', tree: <SamuraiSkill></SamuraiSkill> },
+        { name: '破坏者技能', tree: <SmasherSkill></SmasherSkill> },
       ],
     },
     {
       name: '强化技能',
       skillTree: [
-        { name: '防卫技能' },
-        { name: '防护技能' },
-        { name: '刀术技能' },
-        { name: '骑士技能' },
-        { name: '狩猎技能' },
-        { name: '祭司技能' },
-        { name: '暗杀技能' },
-        { name: '巫师技能' },
+        { name: '防卫技能', tree: <DefenceSkill></DefenceSkill> },
+        { name: '防护技能', tree: <ProtectSkill></ProtectSkill> },
+        { name: '刀术技能', tree: <KnifeSkill></KnifeSkill> },
+        { name: '骑士技能', tree: <KnightSkill></KnightSkill> },
+        { name: '狩猎技能', tree: <HuntingSkill></HuntingSkill> },
+        { name: '祭司技能', tree: <PriestsSkill></PriestsSkill> },
+        { name: '暗杀技能', tree: <WizardSkill></WizardSkill> },
+        { name: '巫师技能', tree: <AuxiliarySkill></AuxiliarySkill> },
       ],
     },
     {
       name: '辅助技能',
-      skillTree: [{ name: '辅助技能' }, { name: '生存本能' }, { name: '好战分子' }],
+      skillTree: [
+        { name: '辅助技能', tree: <div></div> },
+        { name: '生存本能', tree: <ExistenceSkill></ExistenceSkill> },
+        { name: '好战分子', tree: <MilitantsSkill></MilitantsSkill> },
+      ],
     },
     {
       name: '技能书',
       skillTree: [
-        { name: '暗黑之力' },
-        { name: '魔剑技能' },
-        { name: '舞者技能' },
-        { name: '吟游诗人' },
-        { name: '徒手战斗' },
-        { name: '忍者技能' },
+        { name: '暗黑之力', tree: <div></div> },
+        { name: '魔剑技能', tree: <div></div> },
+        { name: '舞者技能', tree: <div></div> },
+        { name: '吟游诗人', tree: <div></div> },
+        { name: '徒手战斗', tree: <div></div> },
+        { name: '忍者技能', tree: <div></div> },
       ],
     },
     {
       name: '生活技能',
-      skillTree: [{ name: '锻冶大师' }, { name: '炼金术师' }, { name: '驯兽天分' }],
+      skillTree: [
+        { name: '锻冶大师', tree: <div></div> },
+        { name: '炼金术师', tree: <div></div> },
+        { name: '驯兽天分', tree: <div></div> },
+      ],
     },
   ];
 
-  // const treeData: ITreeOption[] = [
-  //   {
-  //     content: <SkillNode content="威力攻击"></SkillNode>,
-  //     childList: [
-  //       {
-  //         content: <SkillNode content="迅捷攻击"></SkillNode>,
-  //         childList: [
-  //           {
-  //             content: <SkillNode content="横扫千军"></SkillNode>,
-  //             childList: [
-  //               {
-  //                 content: <SkillNode content="爆气斩"></SkillNode>,
-  //               },
-  //             ],
-  //             brotherList: [
-  //               {
-  //                 childList: [
-  //                   {
-  //                     childList: [
-  //                       {
-  //                         content: <SkillNode content="流星坠击"></SkillNode>,
-  //                       },
-  //                     ],
-  //                   },
-  //                 ],
-  //               },
-  //             ],
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         content: <SkillNode content="音速斩切"></SkillNode>,
-  //         childList: [
-  //           {
-  //             content: <SkillNode content="真空刃"></SkillNode>,
-  //             childList: [{ content: <SkillNode content="风暴气流"></SkillNode> }],
-  //             brotherList: [
-  //               {
-  //                 childList: [
-  //                   {
-  //                     childList: [
-  //                       {
-  //                         content: <SkillNode content="破坏之刃"></SkillNode>,
-  //                       },
-  //                     ],
-  //                   },
-  //                 ],
-  //               },
-  //             ],
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     content: <SkillNode content="剑术要领"></SkillNode>,
-  //     childList: [
-  //       {
-  //         content: <SkillNode content="剑速提升"></SkillNode>,
-  //         childList: [
-  //           {
-  //             content: <SkillNode content="大师级剑术"></SkillNode>,
-  //           },
-  //         ],
-  //         brotherList: [
-  //           {
-  //             childList: [
-  //               {
-  //                 childList: [
-  //                   {
-  //                     content: <SkillNode content="战吼"></SkillNode>,
-  //                     childList: [{ content: <SkillNode content="狂战士之怒"></SkillNode> }],
-  //                   },
-  //                 ],
-  //               },
-  //             ],
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     childList: [
-  //       {
-  //         childList: [
-  //           {
-  //             childList: [
-  //               {
-  //                 content: <SkillNode content="快速蹴击"></SkillNode>,
-  //               },
-  //             ],
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  // ];
-
-  // const SkillsQuery = () => {
-  //   return treeData.map((data, index) => <Tree key={index} data={data}></Tree>);
-  // };
+  /** 当前技能树 */
+  const [currentTree, setCurrentTree] = useState({ name: '剑术技能', tree: <SwordSkill /> });
 
   const menuItem = () =>
     skillMenu.map((item) => (
       <SubMenu key={item.name} icon={<FireOutlined />} title={item.name}>
         {item.skillTree.map((skills) => (
-          <Menu.Item key={skills.name + 'skill'} icon={<ApartmentOutlined />}>
+          <Menu.Item
+            key={skills.name + 'skill'}
+            icon={<ApartmentOutlined />}
+            onClick={() => setCurrentTree(skills)}
+          >
             {skills.name}
           </Menu.Item>
         ))}
@@ -205,24 +115,7 @@ const SkillQuery: FC = () => {
         </Sider>
         <Layout className="site-layout el-menu-vertical">
           <Content style={{ margin: '0 16px' }}>
-            <SwordSkill />
-            <ShortSkill></ShortSkill>
-            <MagicSkill></MagicSkill>
-            <CombatSkill></CombatSkill>
-            <DualSwordSkill></DualSwordSkill>
-            <HalberdSkill></HalberdSkill>
-            <SamuraiSkill></SamuraiSkill>
-            <SmasherSkill></SmasherSkill>
-            <DefenceSkill></DefenceSkill>
-            <ProtectSkill></ProtectSkill>
-            <KnifeSkill></KnifeSkill>
-            <KnightSkill></KnightSkill>
-            <HuntingSkill></HuntingSkill>
-            <PriestsSkill></PriestsSkill>
-            <WizardSkill></WizardSkill>
-            <AuxiliarySkill></AuxiliarySkill>
-            <MilitantsSkill></MilitantsSkill>
-            <ExistenceSkill></ExistenceSkill>
+            {currentTree.tree}
             <div className="site-layout-background skill-query_content">
               <SkillDescribe></SkillDescribe>
             </div>

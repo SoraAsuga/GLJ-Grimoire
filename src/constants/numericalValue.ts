@@ -13,190 +13,190 @@ export enum ENumericalNumberType {
   Percentage = 'Percentage',
 }
 
-/** 数值枚举 */
+/** 能力类型枚举 */
 export enum ENumericalNumber {
   /** 攻击力 */
-  ATK,
+  ATK = '攻击力',
   /** 攻击力百分比 */
-  ATK_PERCENT,
+  ATK_PERCENT = '攻击力%',
   /** 武器攻击力 */
-  WEAPON_ATK,
+  WEAPON_ATK = '武器攻击力',
   /** 武器攻击力百分比 */
-  WEAPON_ATK_PERCENT,
+  WEAPON_ATK_PERCENT = '武器攻击力%',
   /** 魔法攻击力 */
-  MATK,
+  MATK = '魔法攻击力',
   /** 魔法攻击力百分比 */
-  MATK_PERCENT,
+  MATK_PERCENT = '魔法攻击力%',
   /** 物理贯穿 */
-  PHYSICAL_PIERCE,
+  PHYSICAL_PIERCE = '物理贯穿%',
   /** 魔法贯穿 */
-  MAGIC_PIERCE,
+  MAGIC_PIERCE = '魔法贯穿%',
   /** 稳定率 */
-  STABILITY,
+  STABILITY = '稳定率%',
   /** 攻击MP回复 */
-  ATTACK_MP_RECOVERY,
+  ATTACK_MP_RECOVERY = '攻击MP回复',
   /** 攻击MP回复 */
-  ATTACK_MP_RECOVERY_PERCENT,
+  ATTACK_MP_RECOVERY_PERCENT = '攻击MP回复%',
   /** 力量 */
-  STR,
+  STR = '力量',
   /** 力量百分比 */
-  STR_PERCENT,
+  STR_PERCENT = '力量%',
   /** 灵巧 */
-  DEX,
+  DEX = '灵巧',
   /** 灵巧百分比 */
-  DEX_PERCENT,
+  DEX_PERCENT = '灵巧%',
   /** 智力 */
-  INT,
+  INT = '智力',
   /** 智力百分比 */
-  INT_PERCENT,
+  INT_PERCENT = '智力%',
   /** 耐力 */
-  VIT,
+  VIT = '耐力',
   /** 耐力百分比 */
-  VIT_PERCENT,
+  VIT_PERCENT = '耐力%',
   /** 敏捷 */
-  AGI,
+  AGI = '敏捷',
   /** 敏捷百分比 */
-  AGI_PERCENT,
+  AGI_PERCENT = '敏捷%',
   /** 生命值上限 */
-  HP,
+  HP = '生命值上限',
   /** 生命值上限百分比 */
-  HP_PERCENT,
+  HP_PERCENT = '生命值上限%',
   /** 魔力值 */
-  MP,
+  MP = '魔力值',
   /** 生命值自然回复 */
-  NHPR,
+  NHPR = '生命值自然回复',
   /** 生命值自然回复百分比 */
-  NHPR_PERCENT,
+  NHPR_PERCENT = '生命值自然回复%',
   /** 魔力值自然回复 */
-  NMPR,
+  NMPR = '魔力值自然回复',
   /** 魔力值自然恢复百分比 */
-  NMPR_PERCENT,
+  NMPR_PERCENT = '魔力值自然回复%',
   /** 物理防御 */
-  DEF,
+  DEF = '物理防御',
   /** 物理防御百分比 */
-  DEF_PERCENT,
+  DEF_PERCENT = '物理防御%',
   /** 魔法防御 */
-  MDEF,
+  MDEF = '魔法防御',
   /** 魔法防御百分比 */
-  MDEF_PERCENT,
+  MDEF_PERCENT = '魔法防御%',
   /** 物理抗性 */
-  PHYSICAL_RESISTANCE,
+  PHYSICAL_RESISTANCE = '物理抗性%',
   /** 魔法抗性 */
-  MAGIC_RESISTANCE,
+  MAGIC_RESISTANCE = '魔法抗性%',
   /** 敌方范围伤害减轻 */
-  REDUCE_DMG_FOE_EPICENTER,
+  REDUCE_DMG_FOE_EPICENTER = '敌方范围伤害减轻%',
   /** 范围伤害减轻 */
-  REDUCE_PLAYER_EPICENTER,
+  REDUCE_PLAYER_EPICENTER = '范围伤害减轻%',
   /** 直线伤害减轻 */
-  REDUCE_DMG_STRAIGHT_LINE,
+  REDUCE_DMG_STRAIGHT_LINE = '直线伤害减轻%',
   /** 冲撞伤害减轻 */
-  REDUCE_DMG_CHARGE,
+  REDUCE_DMG_CHARGE = '冲撞伤害减轻%',
   /** 陨石伤害减轻 */
-  REDUCE_DMG_METEOR,
+  REDUCE_DMG_METEOR = '陨石伤害减轻%',
   /** 子弹伤害减轻 */
-  REDUCE_DMG_BULLET,
+  REDUCE_DMG_BULLET = '子弹伤害减轻%',
   /** 贴地伤害减轻 */
-  REDUCE_DMG_BOWLING,
+  REDUCE_DMG_BOWLING = '贴地伤害减轻%',
   /** 地面伤害减轻 */
-  REDUCE_DMG_FLOOR,
+  REDUCE_DMG_FLOOR = '地面伤害减轻%',
   /** 命中 */
-  ACCURACY,
+  ACCURACY = '命中',
   /** 命中百分比 */
-  ACCURACY_PERCENT,
+  ACCURACY_PERCENT = '命中%',
   /** 回避 */
-  DODGE,
+  DODGE = '回避',
   /** 回避百分比 */
-  DODGE_PERCENT,
+  DODGE_PERCENT = '回避%',
   /** 暴击 */
-  CRITICAL_RATE,
+  CRITICAL_RATE = '暴击率',
   /** 暴击百分比 */
-  CRITICAL_RATE_PERCENT,
+  CRITICAL_RATE_PERCENT = '暴击率%',
   /** 暴击伤害 */
-  CRITICAL_DAMAGE,
+  CRITICAL_DAMAGE = '暴击伤害',
   /** 暴击伤害百分比 */
-  CRITICAL_DAMAGE_PERCENT,
+  CRITICAL_DAMAGE_PERCENT = '暴击伤害%',
   /** 攻击速度 */
-  ASPD,
+  ASPD = '攻击速度',
   /** 攻击速度百分比 */
-  ASPD_PERCENT,
+  ASPD_PERCENT = '攻击速度%',
   /** 咏唱速度 */
-  CSPD,
+  CSPD = '咏唱速度',
   /** 咏唱速度百分比 */
-  CSPD_PERCENT,
+  CSPD_PERCENT = '咏唱速度%',
   /** 对火属性伤害 */
-  STRONGER_AGAINST_FIRE,
+  STRONGER_AGAINST_FIRE = '对火属性伤害%',
   /** 对水属性伤害 */
-  STRONGER_AGAINST_WALTER,
+  STRONGER_AGAINST_WALTER = '对水属性伤害%',
   /** 对地属性伤害 */
-  STRONGER_AGAINST_EARTH,
+  STRONGER_AGAINST_EARTH = '对地属性伤害%',
   /** 对风属性伤害 */
-  STRONGER_AGAINST_WIND,
+  STRONGER_AGAINST_WIND = '对风属性伤害%',
   /** 对光属性伤害 */
-  STRONGER_AGAINST_LIGHT,
+  STRONGER_AGAINST_LIGHT = '对光属性伤害%',
   /** 对暗属性伤害 */
-  STRONGER_AGAINST_DARK,
+  STRONGER_AGAINST_DARK = '对暗属性伤害%',
   /** 对无属性伤害 */
-  STRONGER_AGAINST_NORMAL,
+  STRONGER_AGAINST_NORMAL = '对无属性伤害%',
   /** 抗火属性 */
-  FIRE_RESISTANCE,
+  FIRE_RESISTANCE = '抗火属性%',
   /** 抗水属性 */
-  WALTER_RESISTANCE,
+  WALTER_RESISTANCE = '抗水属性%',
   /** 抗地属性 */
-  EARTH_RESISTANCE,
+  EARTH_RESISTANCE = '抗地属性%',
   /** 抗风属性 */
-  WIND_RESISTANCE,
+  WIND_RESISTANCE = '抗风属性%',
   /** 抗光属性 */
-  LIGHT_RESISTANCE,
+  LIGHT_RESISTANCE = '抗光属性%',
   /** 抗暗属性 */
-  DARK_RESISTANCE,
+  DARK_RESISTANCE = '抗暗属性%',
   /** 抗无属性 */
-  NORMAL_RESISTANCE,
+  NORMAL_RESISTANCE = '抗无属性%',
   /** 技巧 */
-  TEC,
+  TEC = '技巧',
   /** 幸运 */
-  LUK,
+  LUK = '幸运',
   /** 异抗 */
-  MEN,
+  MEN = '异抗',
   /** 暴击 */
-  CRT,
+  CRT = '暴击',
   /** 异常抗性百分比 */
-  AILMENT_RESISTANCE_PERCENT,
+  AILMENT_RESISTANCE_PERCENT = '异常抗性%',
   /** 阻挡回复百分比 */
-  GUARD_RECHARGE_PERCENT,
+  GUARD_RECHARGE_PERCENT = '阻挡回复%',
   /** 阻挡力 */
-  GUARD_POWER,
+  GUARD_POWER = '阻挡力',
   /** 阻挡力百分比 */
-  GUARD_POWER_PERCENT,
+  GUARD_POWER_PERCENT = '阻挡力%',
   /** 闪躲回复百分比 */
-  EVASION_RECHARGE_PERCENT,
+  EVASION_RECHARGE_PERCENT = '闪躲回复%',
   /** 仇恨值百分比 */
-  AGGRO_PERCENT,
+  AGGRO_PERCENT = '仇恨值%',
   /** 火属性 */
-  FIRE,
+  FIRE = '火属性',
   /** 水属性 */
-  WALTER,
+  WALTER = '水属性',
   /** 地属性 */
-  EARTH,
+  EARTH = '地属性',
   /** 风属性 */
-  WIND,
+  WIND = '风属性',
   /** 光属性 */
-  LIGHT,
+  LIGHT = '光属性',
   /** 暗属性 */
-  DARK,
+  DARK = '暗属性',
   /** 掉宝率 */
-  DROP_RATE_PERCENT,
+  DROP_RATE_PERCENT = '掉宝率%',
   /** 物理屏障 */
-  PHYSICAL_BARRIER,
+  PHYSICAL_BARRIER = '物理屏障',
   /** 魔法屏障 */
-  MAGIC_BARRIER,
+  MAGIC_BARRIER = '魔法屏障',
   /** 百分比屏障 */
-  FRACTIONAL_BARRIER_PERCENT,
+  FRACTIONAL_BARRIER_PERCENT = '百分比屏障%',
   /** 近距离威力 */
-  SHORT_RANGE_DAMAGE_PERCENT,
+  SHORT_RANGE_DAMAGE_PERCENT = '近距离威力%',
   /** 远距离威力 */
-  LONG_RANGE_DAMAGE_PERCENT,
+  LONG_RANGE_DAMAGE_PERCENT = '远距离威力%',
   /** 拔刀攻击 */
-  UNSHEATHE_ATTACK_PERCENT,
+  UNSHEATHE_ATTACK_PERCENT = '拔刀攻击%',
 }
 
 /** 数值枚举值的类型 */
