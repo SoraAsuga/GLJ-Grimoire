@@ -1,5 +1,6 @@
 import { WEBSITE_NAME } from './common/constance';
 import HomePage from './pages/HomePage';
+import PropsQuery from './pages/PropsQuery';
 import RoleSimulation from './pages/RoleSimulation';
 import EditRole from './pages/RoleSimulation/pages/EditRole';
 import SkillQuery from './pages/SkillQuery';
@@ -54,7 +55,7 @@ const routes: IRoute[] = [
   {
     name: '道具查询',
     path: '/PropsQuery',
-    component: null,
+    component: PropsQuery,
   },
   {
     name: '锻晶查询',
