@@ -15,7 +15,6 @@ import { useRecoilValue } from 'recoil';
 import { equipsState } from '@/store/equips';
 import { Header } from 'antd/lib/layout/layout';
 import { ENumericalNumber } from '@/constants/numericalValue';
-import Item from 'antd/lib/list/Item';
 import EquipDetailCard from '../RoleSimulation/components/EquipDetailCard';
 
 const { Content, Sider } = Layout;
@@ -133,10 +132,6 @@ const PropsQuery: FC = () => {
     { type: ENumericalNumber.LIGHT_RESISTANCE, chose: false },
     { type: ENumericalNumber.DARK_RESISTANCE, chose: false },
     { type: ENumericalNumber.NORMAL_RESISTANCE, chose: false },
-    { type: ENumericalNumber.TEC, chose: false },
-    { type: ENumericalNumber.LUK, chose: false },
-    { type: ENumericalNumber.MEN, chose: false },
-    { type: ENumericalNumber.CRT, chose: false },
     { type: ENumericalNumber.AILMENT_RESISTANCE_PERCENT, chose: false },
     { type: ENumericalNumber.GUARD_RECHARGE_PERCENT, chose: false },
     { type: ENumericalNumber.GUARD_POWER, chose: false },
@@ -173,6 +168,9 @@ const PropsQuery: FC = () => {
   /** 当前装备 */
   const [currentItem, setCurrentItem] = useState(undefined);
 
+  /** 查询装备名称 */
+  const [equipName, setEquipName] = useState('');
+
   /** 对比装备 */
   const [contrast, setContrast] = useState(undefined);
 
@@ -194,8 +192,6 @@ const PropsQuery: FC = () => {
     setEnchantMenu(newList);
   };
 
-  console.log('current', currentEnchant);
-
   /** 动态生成装备菜单 */
   const menuItem = () => {
     if (currentMenu) {
@@ -207,7 +203,10 @@ const PropsQuery: FC = () => {
                 <Menu.Item
                   key={items + 'skill'}
                   icon={<TagsOutlined />}
-                  onClick={() => setCurrentItemType(items)}
+                  onClick={() => {
+                    setCurrentItemType(items);
+                    setEquipName('');
+                  }}
                 >
                   {items}
                 </Menu.Item>
@@ -219,7 +218,10 @@ const PropsQuery: FC = () => {
           <Menu.Item
             key={item.name}
             icon={<TagsOutlined />}
-            onClick={() => setCurrentItemType(item.equipList[0])}
+            onClick={() => {
+              setCurrentItemType(item.equipList[0]);
+              setEquipName('');
+            }}
           >
             {item.equipList}
           </Menu.Item>
@@ -243,9 +245,35 @@ const PropsQuery: FC = () => {
     ));
   };
 
+  /** 两数组对比 */
+  function includes(arr1: any[], arr2: any[]) {
+    return arr2.every((val) => arr1.includes(val));
+  }
+
   /** 动态生成装备条目 */
   const equipItem = () => {
-    if (currentMenu) {
+    if (equipName !== '') {
+      const newItem = equipList.filter((item) => {
+        return item.name === equipName;
+      });
+      console.log('gdx: ', newItem.length);
+      return newItem.length === 0 ? (
+        <div>
+          <div>查无此装备</div>
+        </div>
+      ) : (
+        newItem.map((item, index) => {
+          return (
+            <button className="props-query__item" key={index} onClick={() => setCurrentItem(item)}>
+              <span className="props-query__item-name">
+                <StarOutlined style={{ margin: '5px' }} />
+                {item.name}
+              </span>
+            </button>
+          );
+        })
+      );
+    } else if (currentMenu) {
       return equipList
         .filter((item) => item.weaponType === currentItemType)
         .map((item, index) => (
@@ -257,6 +285,30 @@ const PropsQuery: FC = () => {
           </button>
         ));
     }
+    return equipList
+      .filter((item) => {
+        let enchants = [];
+        item.enchanting &&
+          (enchants = item.enchanting.map((enchant) => {
+            return enchant.type;
+          }));
+        return includes(enchants, currentEnchant);
+      })
+      .map((item, index) => {
+        return (
+          <button className="props-query__item" key={index} onClick={() => setCurrentItem(item)}>
+            <span className="props-query__item-name">
+              <StarOutlined style={{ margin: '5px' }} />
+              {item.name}
+            </span>
+          </button>
+        );
+      });
+  };
+
+  /** 查询 */
+  const onSearch = (value) => {
+    setEquipName(value);
   };
 
   return (
@@ -272,8 +324,8 @@ const PropsQuery: FC = () => {
         </Menu>
         <Search
           className="props-query__header-search"
-          placeholder="input search text"
-          onSearch={() => {}}
+          placeholder="输入装备名称"
+          onSearch={onSearch}
           enterButton
         />
       </Header>
@@ -291,28 +343,30 @@ const PropsQuery: FC = () => {
         <Layout className="site-layout el-menu-vertical">
           <Content style={{ margin: '0 16px' }} className="props-query__content">
             <div
-              className="props-query__content-items"
+              className="props-query__content-items el-menu-vertical"
               style={currentItem ? {} : { width: '100%' }}
             >
               {equipItem()}
             </div>
             {currentItem && (
               <div className="props-query__container-details">
-                <div className="container-details__card">
-                  <EquipDetailCard item={currentItem} headerMenu={false}></EquipDetailCard>
-                </div>
-                <button
-                  className="container-details__conversion"
-                  onClick={() => setContrast(currentItem)}
-                >
-                  <ArrowDownOutlined />
-                  对比
-                </button>
-                {contrast && (
+                <div className="container-details__container">
                   <div className="container-details__card">
-                    <EquipDetailCard item={contrast} headerMenu={false}></EquipDetailCard>
+                    <EquipDetailCard item={currentItem} headerMenu={false}></EquipDetailCard>
                   </div>
-                )}
+                  <button
+                    className="container-details__conversion"
+                    onClick={() => setContrast(currentItem)}
+                  >
+                    <ArrowDownOutlined />
+                    加入对比
+                  </button>
+                  {contrast && (
+                    <div className="container-details__card">
+                      <EquipDetailCard item={contrast} headerMenu={false}></EquipDetailCard>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </Content>
