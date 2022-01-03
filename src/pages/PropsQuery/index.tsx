@@ -256,7 +256,9 @@ const PropsQuery: FC = () => {
       const newItem = equipList.filter((item) => {
         return item.name === equipName;
       });
+
       console.log('gdx: ', newItem.length);
+
       return newItem.length === 0 ? (
         <div>
           <div>查无此装备</div>

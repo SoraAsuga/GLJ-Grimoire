@@ -1,3 +1,4 @@
+import { spawn } from 'child_process';
 import { EWeaponType } from '@/typings/equipment';
 import {
   AimOutlined,
@@ -10,84 +11,219 @@ import {
   SyncOutlined,
 } from '@ant-design/icons';
 import { divide } from 'lodash';
-import React, { FC } from 'react';
+import React, { FC, Fragment, useCallback, useMemo, useRef, useState } from 'react';
 
 import './index.less';
+import useRefState from '@/hooks/useRefState';
+import {
+  ESkillEffectType,
+  IDescribeBlockProps,
+  IDescribeDescProps,
+  IDescribeSkillData,
+  IDescribeTableProps,
+  IDescription,
+} from './types';
 
 const Describe: FC = () => {
-  const skillData = {
+  const skillData: IDescribeSkillData = {
     name: '威力打击',
-    needMainWeapon: EWeaponType.OneHandedSword,
-    effect: [
+    neededMainWeapon: [EWeaponType.OneHandedSword],
+    effects: [
       {
-        weaponType: [EWeaponType.OneHandedSword, EWeaponType.DualSword],
-        attribute: [
-          { name: 'MP消耗', value: 100, icon: <ExperimentOutlined /> },
-          { name: '射程', value: '同施放武器', icon: <AimOutlined /> },
-          { name: '技能类型', value: '瞬发', icon: <BuildOutlined /> },
-          { name: '连击', value: '可以放入连击', icon: <HourglassOutlined /> },
-          { name: '动作时间', value: '快', icon: <QuestionCircleOutlined /> },
-          { name: '咏唱时间', value: '0S', icon: <SyncOutlined /> },
-        ],
-        name: '伤害',
-        icon: <FireOutlined />,
-        inertia: ['物理', '物理'],
-        damageType: '物理伤害',
-        damageNumber: { min: 55, max: 100 },
-        damageMultiply: { min: 105, max: 150 },
-        additionalEffects: [{ name: '命中成功后' }],
+        type: ESkillEffectType.Table,
+        data: {
+          items: [
+            {
+              name: 'MP消耗',
+              icon: <AimOutlined></AimOutlined>,
+              desc: {
+                raw: '{expression:mp}',
+                values: {
+                  mp: {
+                    args: ['level'],
+                    fn: (level) => {
+                      return level < 5 ? 300 : 600;
+                    },
+                  },
+                },
+              },
+            },
+          ],
+        },
       },
       {
-        weaponType: [EWeaponType.TwoHandedSword],
-        attribute: [
-          { name: 'MP消耗', value: 100, icon: <ExperimentOutlined /> },
-          { name: '射程', value: '同施放武器', icon: <AimOutlined /> },
-          { name: '技能类型', value: '瞬发', icon: <BuildOutlined /> },
-          { name: '连击', value: '可以放入连击', icon: <HourglassOutlined /> },
-          { name: '动作时间', value: '快', icon: <QuestionCircleOutlined /> },
-          { name: '咏唱时间', value: '0S', icon: <SyncOutlined /> },
-        ],
-        name: '伤害',
-        icon: <FireOutlined />,
-        inertia: ['物理', '物理'],
-        damageType: '物理伤害',
-        damageNumber: { min: 55, max: 100 },
-        damageMultiply: { min: 105, max: 150 },
-        additionalEffects: [{ name: '命中成功后' }],
+        type: ESkillEffectType.Desc,
+        data: {
+          items: [
+            {
+              name: '造成惯性',
+              value: '物理',
+            },
+            {
+              name: '伤害惯性',
+              value: '物理',
+            },
+          ],
+        },
+      },
+      {
+        type: ESkillEffectType.Block,
+        data: {
+          name: '伤害',
+          type: ['物理伤害'],
+          properties: [
+            {
+              icon: <FireOutlined></FireOutlined>,
+              desc: '火属性',
+            },
+            {
+              icon: <FireOutlined></FireOutlined>,
+              desc: '受距离威力影响',
+            },
+          ],
+          effects: [
+            {
+              raw: '| 有效ATK + {expression:constant} | x {expression:magnification}%',
+              values: {
+                constant: {
+                  args: ['weaponType', 'level'],
+                  fn: (weaponType: EWeaponType, level: number) => {
+                    switch (weaponType) {
+                      default:
+                        return 200 + level * 10;
+                    }
+                  },
+                },
+                magnification: {
+                  args: ['weaponType', 'level'],
+                  fn: (weaponType: EWeaponType, level: number) => {
+                    switch (weaponType) {
+                      default:
+                        return 150 + level * 5;
+                    }
+                  },
+                },
+              },
+            },
+          ],
+        },
       },
     ],
-    inertia: ['物理', '物理'],
   };
 
-  /** 动态生成技能属性 */
-  const attributeItem = () => {
-    const currentSkill = skillData.effect.filter((item) =>
-      item.weaponType.filter((item) => item === EWeaponType.OneHandedSword),
-    )[0];
-    return currentSkill.attribute.map((item) => (
+  const [state, setState] = useRefState({
+    level: 1,
+    roleLevel: 1,
+    weaponType: skillData.neededMainWeapon[0],
+    secondaryWeaponType: EWeaponType.EmptyHanded,
+  });
+
+  const stateGetter = (name: string) => {
+    console.log('stateGetter', state);
+    return state[name];
+  };
+
+  const descInterpreter = (description: IDescription) => {
+    const { raw, values } = description;
+
+    const slice = raw.split(/[{}]/);
+
+    function interpretValue(expName: string) {
+      const { args, fn } = values[expName];
+      const interpretedArgs = args.map((name) => stateGetter(name));
+      return fn(...interpretedArgs);
+    }
+
+    return slice.map((str, i) => {
+      if (str.startsWith('expression:')) {
+        const expName = str.replace('expression:', '');
+        return <Fragment key={i}>{interpretValue(expName)}</Fragment>;
+      }
+
+      return <Fragment key={i}>{str}</Fragment>;
+    });
+  };
+
+  /** 生成表格样式的效果展示 */
+  const renderTableItem = (props: IDescribeTableProps) => {
+    console.log('renderTableItem', stateGetter('level'));
+
+    const { items } = props;
+
+    return items.map((item) => (
       <div className="describe-attribute__item" key={item.name}>
         <div className="describe-attribute__item-icon ">{item.icon}</div>
         <div className="describe-attribute__item-title">{item.name}</div>
-        <div className="describe-attribute__item-content">{item.value}</div>
+        <div className="describe-attribute__item-content">{descInterpreter(item.desc)}</div>
       </div>
     ));
   };
 
-  /** 动态生成技能效果 */
-  const skillEffectItem = () => {
+  /** 生成描述样式的效果展示 */
+  const renderDescItem = (props: IDescribeDescProps) => {
+    const { items } = props;
+    const renderItem = () =>
+      items.map((item) => (
+        <Fragment key={item.name}>
+          <div className="describe-effect__inertia-title">{item.name}</div>
+          <div className="describe-effect__inertia-value">{item.value}</div>
+        </Fragment>
+      ));
+
     return (
       <div className="describe-effect">
-        {skillData.inertia && (
-          <div className="describe-effect__inertia">
-            <div className="describe-effect__inertia-title">伤害惯性</div>
-            <div className="describe-effect__inertia-value">{skillData.inertia[0]}</div>
-            <div className="describe-effect__inertia-title">造成惯性</div>
-            <div className="describe-effect__inertia-value">{skillData.inertia[1]}</div>
-          </div>
-        )}
-        <div></div>
+        <div className="describe-effect__inertia">{renderItem()}</div>
       </div>
     );
+  };
+
+  /** 生成块样式的效果展示 */
+  const renderBlockItem = (props: IDescribeBlockProps) => {
+    const { name, type, properties, effects } = props;
+
+    const renderType = () => {
+      return type.map((typeName) => <span key={typeName}>{typeName}</span>);
+    };
+
+    const renderProperties = () => {
+      return properties.map((property) => (
+        <div key={property.desc}>
+          {property.icon}
+          <span>{property.desc}</span>
+        </div>
+      ));
+    };
+
+    const renderEffects = () => {
+      return effects.map((description) => <p>{descInterpreter(description)}</p>);
+    };
+
+    return (
+      <section>
+        <header>
+          <span>{name}</span>
+          <span>{renderType()}</span>
+        </header>
+        <p>{renderProperties()}</p>
+        <section>{renderEffects()}</section>
+      </section>
+    );
+  };
+
+  /** 抽象不同样式对应的渲染函数 */
+  const skillEffectsHandler = useMemo(
+    () => ({
+      [ESkillEffectType.Table]: renderTableItem,
+      [ESkillEffectType.Desc]: renderDescItem,
+      [ESkillEffectType.Block]: renderBlockItem,
+    }),
+    [],
+  );
+
+  const renderSkillEffects = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return skillData.effects.map(({ type, data }) => skillEffectsHandler[type](data));
   };
 
   return (
@@ -96,8 +232,12 @@ const Describe: FC = () => {
         <BookOutlined className="describe-header_icon" />
         <span className="describe-header_title">{skillData.name}</span>
       </header>
-      <div className="describe-attribute">{attributeItem()}</div>
-      {skillEffectItem()}
+      {renderSkillEffects()}
+      <p>
+        技能等级: {state.level}
+        <button onClick={() => setState({ level: Math.max(1, state.level - 1) })}>-</button>
+        <button onClick={() => setState({ level: Math.min(10, state.level + 1) })}>+</button>
+      </p>
     </section>
   );
 };

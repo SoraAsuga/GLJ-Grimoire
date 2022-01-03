@@ -730,6 +730,29 @@ export const NUMERICAL_NUMBER: Record<ENumericalNumber, INumericalNumberValue> =
   },
 };
 
+export const SECONDARY_WEAPON_ALLOWED_MAP = {
+  [EWeaponType.EmptyHanded]: [
+    EWeaponType.MagicDevice,
+    EWeaponType.Knuckle,
+    EWeaponType.Dagger,
+    EWeaponType.Shield,
+    EWeaponType.Arrow,
+    EWeaponType.EmptyHanded,
+    EWeaponType.NinjutsuScroll,
+  ],
+  [EWeaponType.OneHandedSword]: [
+    EWeaponType.MagicDevice,
+    EWeaponType.Knuckle,
+    EWeaponType.Dagger,
+    EWeaponType.Shield,
+    EWeaponType.Arrow,
+    EWeaponType.OneHandedSword,
+    EWeaponType.EmptyHanded,
+    EWeaponType.NinjutsuScroll,
+  ],
+  [EWeaponType.TwoHandedSword]: [EWeaponType.EmptyHanded],
+};
+
 /** 装备数据 */
 export const EQUIPS: IEquipment[] = [
   {
