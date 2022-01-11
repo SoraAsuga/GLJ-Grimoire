@@ -1,11 +1,12 @@
-import { ITreeOption } from '@/components/Tree/types';
-import SkillNode from '@/pages/SkillQuery/components/SkillNode';
+import { IDescribeSkillData, ESkillEffectType } from '@/components/SkillDescribe/types';
 import {
   IEquipment,
   EWeaponType,
   EEquipmentLocation,
   EModificationState,
+  IEnchanting,
 } from '@/typings/equipment';
+import { AimOutlined, FireOutlined } from '@ant-design/icons';
 
 /** 数值枚举类型 */
 export enum ENumericalNumberType {
@@ -730,6 +731,7 @@ export const NUMERICAL_NUMBER: Record<ENumericalNumber, INumericalNumberValue> =
   },
 };
 
+/** 副手类型枚举映射 */
 export const SECONDARY_WEAPON_ALLOWED_MAP = {
   [EWeaponType.EmptyHanded]: [
     EWeaponType.MagicDevice,
@@ -751,6 +753,34 @@ export const SECONDARY_WEAPON_ALLOWED_MAP = {
     EWeaponType.NinjutsuScroll,
   ],
   [EWeaponType.TwoHandedSword]: [EWeaponType.EmptyHanded],
+  [EWeaponType.Bow]: [EWeaponType.Katana, EWeaponType.Arrow, EWeaponType.EmptyHanded],
+  [EWeaponType.BowGun]: [
+    EWeaponType.MagicDevice,
+    EWeaponType.Knuckle,
+    EWeaponType.Dagger,
+    EWeaponType.Shield,
+    EWeaponType.Arrow,
+    EWeaponType.EmptyHanded,
+  ],
+  [EWeaponType.Staff]: [
+    EWeaponType.MagicDevice,
+    EWeaponType.Knuckle,
+    EWeaponType.Dagger,
+    EWeaponType.Shield,
+    EWeaponType.Arrow,
+    EWeaponType.NinjutsuScroll,
+    EWeaponType.EmptyHanded,
+  ],
+  [EWeaponType.MagicDevice]: [EWeaponType.NinjutsuScroll, EWeaponType.EmptyHanded],
+  [EWeaponType.Knuckle]: [
+    EWeaponType.MagicDevice,
+    EWeaponType.Dagger,
+    EWeaponType.Shield,
+    EWeaponType.Arrow,
+    EWeaponType.EmptyHanded,
+  ],
+  [EWeaponType.Halberd]: [EWeaponType.Dagger, EWeaponType.Arrow, EWeaponType.EmptyHanded],
+  [EWeaponType.Katana]: [EWeaponType.Dagger, EWeaponType.NinjutsuScroll, EWeaponType.EmptyHanded],
 };
 
 /** 装备数据 */
@@ -762,15 +792,6 @@ export const EQUIPS: IEquipment[] = [
     location: EEquipmentLocation.MainWeapon,
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 0,
-    allowedSecondaryWeapon: [
-      EWeaponType.MagicDevice,
-      EWeaponType.Knuckle,
-      EWeaponType.Dagger,
-      EWeaponType.Shield,
-      EWeaponType.Arrow,
-      EWeaponType.EmptyHanded,
-      EWeaponType.NinjutsuScroll,
-    ],
   },
   {
     id: 'one-handed-1',
@@ -780,16 +801,6 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 17,
     stable: 80,
-    allowedSecondaryWeapon: [
-      EWeaponType.MagicDevice,
-      EWeaponType.Knuckle,
-      EWeaponType.Dagger,
-      EWeaponType.Shield,
-      EWeaponType.Arrow,
-      EWeaponType.OneHandedSword,
-      EWeaponType.EmptyHanded,
-      EWeaponType.NinjutsuScroll,
-    ],
     enchanting: [
       { type: ENumericalNumber.HP, value: 50, isNegative: false },
       { type: ENumericalNumber.ACCURACY, value: 1, isNegative: false },
@@ -803,7 +814,6 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 25,
     stable: 70,
-    allowedSecondaryWeapon: [EWeaponType.EmptyHanded],
     enchanting: [
       { type: ENumericalNumber.CRITICAL_DAMAGE_PERCENT, value: 5, isNegative: false },
       { type: ENumericalNumber.ACCURACY_PERCENT, value: 5, isNegative: true },
@@ -817,7 +827,6 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 6,
     stable: 60,
-    allowedSecondaryWeapon: [EWeaponType.Katana, EWeaponType.Arrow, EWeaponType.EmptyHanded],
     enchanting: [{ type: ENumericalNumber.STR, value: 1, isNegative: false }],
   },
   {
@@ -828,14 +837,6 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 8,
     stable: 50,
-    allowedSecondaryWeapon: [
-      EWeaponType.MagicDevice,
-      EWeaponType.Knuckle,
-      EWeaponType.Dagger,
-      EWeaponType.Shield,
-      EWeaponType.Arrow,
-      EWeaponType.EmptyHanded,
-    ],
     enchanting: [{ type: ENumericalNumber.DEX, value: 10, isNegative: false }],
   },
   {
@@ -846,15 +847,6 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 25,
     stable: 60,
-    allowedSecondaryWeapon: [
-      EWeaponType.MagicDevice,
-      EWeaponType.Knuckle,
-      EWeaponType.Dagger,
-      EWeaponType.Shield,
-      EWeaponType.Arrow,
-      EWeaponType.NinjutsuScroll,
-      EWeaponType.EmptyHanded,
-    ],
     enchanting: [{ type: ENumericalNumber.MP, value: 100, isNegative: false }],
   },
   {
@@ -865,7 +857,6 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 8,
     stable: 70,
-    allowedSecondaryWeapon: [EWeaponType.NinjutsuScroll, EWeaponType.EmptyHanded],
     enchanting: [
       { type: ENumericalNumber.MP, value: 100, isNegative: false },
       { type: ENumericalNumber.ASPD_PERCENT, value: 1, isNegative: false },
@@ -879,13 +870,6 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 17,
     stable: 90,
-    allowedSecondaryWeapon: [
-      EWeaponType.MagicDevice,
-      EWeaponType.Dagger,
-      EWeaponType.Shield,
-      EWeaponType.Arrow,
-      EWeaponType.EmptyHanded,
-    ],
     enchanting: [
       { type: ENumericalNumber.DEX, value: 1, isNegative: false },
       { type: ENumericalNumber.ASPD_PERCENT, value: 2, isNegative: false },
@@ -900,7 +884,6 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 21,
     stable: 60,
-    allowedSecondaryWeapon: [EWeaponType.Dagger, EWeaponType.Arrow, EWeaponType.EmptyHanded],
     enchanting: [
       { type: ENumericalNumber.MP, value: 50, isNegative: false },
       { type: ENumericalNumber.ACCURACY, value: 1, isNegative: false },
@@ -914,11 +897,6 @@ export const EQUIPS: IEquipment[] = [
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 6,
     stable: 70,
-    allowedSecondaryWeapon: [
-      EWeaponType.Dagger,
-      EWeaponType.NinjutsuScroll,
-      EWeaponType.EmptyHanded,
-    ],
     enchanting: [{ type: ENumericalNumber.CRITICAL_RATE, value: 5, isNegative: false }],
   },
   {
@@ -1016,6 +994,161 @@ export const EQUIPS: IEquipment[] = [
       { type: ENumericalNumber.ASPD, value: 750, isNegative: false },
       { type: ENumericalNumber.CSPD, value: 750, isNegative: false },
       { type: ENumericalNumber.AILMENT_RESISTANCE_PERCENT, value: 8, isNegative: true },
+    ],
+  },
+];
+
+/** 锻晶类型枚举 */
+export enum EForgingCrystal {
+  /** 武器锻晶 */
+  WEAPON = '武器锻晶',
+  /** 防具锻晶 */
+  ARMOR = '防具锻晶',
+  /** 追加锻晶 */
+  ADD = '追加锻晶',
+  /** 特殊锻晶 */
+  SPECIAL = '特殊锻晶',
+  /** 通用锻晶 */
+  CURRENCY = '通用锻晶',
+}
+
+export interface IForgingCrystal {
+  name: string;
+  type: EForgingCrystal;
+  strengthen?: boolean;
+  enchanting: IEnchanting[];
+}
+
+/** 锻晶数据 */
+export const FORGING_CRYSTAL: IForgingCrystal[] = [
+  {
+    name: '虚假黑骑士',
+    type: EForgingCrystal.WEAPON,
+    enchanting: [
+      { type: ENumericalNumber.STR_PERCENT, value: 3, isNegative: false },
+      { type: ENumericalNumber.ATK_PERCENT, value: 4, isNegative: false },
+      { type: ENumericalNumber.DEF_PERCENT, value: 9, isNegative: true },
+      { type: ENumericalNumber.CRITICAL_RATE_PERCENT, value: 2, isNegative: false },
+    ],
+  },
+  {
+    name: '卦莫尔',
+    type: EForgingCrystal.WEAPON,
+    strengthen: true,
+    enchanting: [
+      { type: ENumericalNumber.STR_PERCENT, value: 5, isNegative: false },
+      { type: ENumericalNumber.ATK_PERCENT, value: 6, isNegative: false },
+      { type: ENumericalNumber.DEF_PERCENT, value: 15, isNegative: true },
+      { type: ENumericalNumber.CRITICAL_RATE_PERCENT, value: 4, isNegative: false },
+    ],
+  },
+  {
+    name: '塔利结晶兽',
+    type: EForgingCrystal.WEAPON,
+    strengthen: true,
+    enchanting: [
+      { type: ENumericalNumber.STR_PERCENT, value: 6, isNegative: false },
+      { type: ENumericalNumber.ATK_PERCENT, value: 8, isNegative: false },
+      { type: ENumericalNumber.DEF_PERCENT, value: 21, isNegative: true },
+      { type: ENumericalNumber.CRITICAL_RATE_PERCENT, value: 6, isNegative: false },
+    ],
+  },
+  {
+    name: '地狱三头犬',
+    type: EForgingCrystal.ARMOR,
+    enchanting: [
+      { type: ENumericalNumber.UNSHEATHE_ATTACK_PERCENT, value: 3, isNegative: false },
+      { type: ENumericalNumber.PHYSICAL_PIERCE, value: 3, isNegative: false },
+      { type: ENumericalNumber.CRITICAL_DAMAGE, value: 3, isNegative: false },
+    ],
+  },
+  {
+    name: '结晶兽',
+    type: EForgingCrystal.ARMOR,
+    strengthen: true,
+    enchanting: [
+      { type: ENumericalNumber.UNSHEATHE_ATTACK_PERCENT, value: 4, isNegative: false },
+      { type: ENumericalNumber.PHYSICAL_PIERCE, value: 4, isNegative: false },
+      { type: ENumericalNumber.CRITICAL_DAMAGE, value: 4, isNegative: false },
+    ],
+  },
+  {
+    name: '晶码体',
+    type: EForgingCrystal.ARMOR,
+    strengthen: true,
+    enchanting: [
+      { type: ENumericalNumber.UNSHEATHE_ATTACK_PERCENT, value: 7, isNegative: false },
+      { type: ENumericalNumber.PHYSICAL_PIERCE, value: 5, isNegative: false },
+      { type: ENumericalNumber.CRITICAL_DAMAGE, value: 6, isNegative: false },
+    ],
+  },
+  {
+    name: '草龙耶佛',
+    type: EForgingCrystal.ADD,
+    enchanting: [
+      { type: ENumericalNumber.LONG_RANGE_DAMAGE_PERCENT, value: 10, isNegative: true },
+      { type: ENumericalNumber.ATK_PERCENT, value: 3, isNegative: false },
+      { type: ENumericalNumber.ASPD_PERCENT, value: 50, isNegative: false },
+    ],
+  },
+  {
+    name: '放浪魔轮',
+    type: EForgingCrystal.ADD,
+    strengthen: true,
+    enchanting: [
+      { type: ENumericalNumber.LONG_RANGE_DAMAGE_PERCENT, value: 14, isNegative: true },
+      { type: ENumericalNumber.ATK_PERCENT, value: 5, isNegative: false },
+      { type: ENumericalNumber.ASPD_PERCENT, value: 75, isNegative: false },
+    ],
+  },
+  {
+    name: '戈尔多',
+    type: EForgingCrystal.ADD,
+    strengthen: true,
+    enchanting: [
+      { type: ENumericalNumber.LONG_RANGE_DAMAGE_PERCENT, value: 15, isNegative: true },
+      { type: ENumericalNumber.ATK_PERCENT, value: 7, isNegative: false },
+      { type: ENumericalNumber.ASPD_PERCENT, value: 80, isNegative: false },
+    ],
+  },
+  {
+    name: '薇芮娜',
+    type: EForgingCrystal.SPECIAL,
+    enchanting: [
+      { type: ENumericalNumber.MP, value: 500, isNegative: false },
+      { type: ENumericalNumber.ATK_PERCENT, value: 1, isNegative: false },
+      { type: ENumericalNumber.MATK_PERCENT, value: 1, isNegative: false },
+      { type: ENumericalNumber.STABILITY, value: 2, isNegative: false },
+    ],
+  },
+  {
+    name: '薇芮娜Ⅱ',
+    type: EForgingCrystal.SPECIAL,
+    strengthen: true,
+    enchanting: [
+      { type: ENumericalNumber.MP, value: 600, isNegative: false },
+      { type: ENumericalNumber.ATK_PERCENT, value: 2, isNegative: false },
+      { type: ENumericalNumber.MATK_PERCENT, value: 2, isNegative: false },
+      { type: ENumericalNumber.STABILITY, value: 3, isNegative: false },
+    ],
+  },
+  {
+    name: '波多姆大王',
+    type: EForgingCrystal.CURRENCY,
+    enchanting: [
+      { type: ENumericalNumber.HP_PERCENT, value: 10, isNegative: false },
+      { type: ENumericalNumber.PHYSICAL_RESISTANCE, value: 5, isNegative: true },
+      { type: ENumericalNumber.MAGIC_RESISTANCE, value: 5, isNegative: true },
+    ],
+  },
+  {
+    name: '白金波多姆',
+    type: EForgingCrystal.CURRENCY,
+    strengthen: true,
+    enchanting: [
+      { type: ENumericalNumber.HP_PERCENT, value: 20, isNegative: false },
+      { type: ENumericalNumber.PHYSICAL_RESISTANCE, value: 10, isNegative: true },
+      { type: ENumericalNumber.MAGIC_RESISTANCE, value: 10, isNegative: true },
     ],
   },
 ];

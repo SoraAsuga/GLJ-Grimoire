@@ -1,20 +1,12 @@
-import { spawn } from 'child_process';
 import { EWeaponType } from '@/typings/equipment';
-import {
-  AimOutlined,
-  BookOutlined,
-  BuildOutlined,
-  ExperimentOutlined,
-  FireOutlined,
-  HourglassOutlined,
-  QuestionCircleOutlined,
-  SyncOutlined,
-} from '@ant-design/icons';
-import { divide } from 'lodash';
-import React, { FC, Fragment, useCallback, useMemo, useRef, useState } from 'react';
+import { BookOutlined } from '@ant-design/icons';
+import React, { FC, Fragment, useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
+import { currentSkillState } from '@/store/current-skill';
 
 import './index.less';
 import useRefState from '@/hooks/useRefState';
+import { InputNumber, Select } from 'antd';
 import {
   ESkillEffectType,
   IDescribeBlockProps,
@@ -23,99 +15,23 @@ import {
   IDescribeTableProps,
   IDescription,
 } from './types';
+import { SkillData } from './skillData';
 
-const Describe: FC = () => {
-  const skillData: IDescribeSkillData = {
-    name: '威力打击',
-    neededMainWeapon: [EWeaponType.OneHandedSword],
-    effects: [
-      {
-        type: ESkillEffectType.Table,
-        data: {
-          items: [
-            {
-              name: 'MP消耗',
-              icon: <AimOutlined></AimOutlined>,
-              desc: {
-                raw: '{expression:mp}',
-                values: {
-                  mp: {
-                    args: ['level'],
-                    fn: (level) => {
-                      return level < 5 ? 300 : 600;
-                    },
-                  },
-                },
-              },
-            },
-          ],
-        },
-      },
-      {
-        type: ESkillEffectType.Desc,
-        data: {
-          items: [
-            {
-              name: '造成惯性',
-              value: '物理',
-            },
-            {
-              name: '伤害惯性',
-              value: '物理',
-            },
-          ],
-        },
-      },
-      {
-        type: ESkillEffectType.Block,
-        data: {
-          name: '伤害',
-          type: ['物理伤害'],
-          properties: [
-            {
-              icon: <FireOutlined></FireOutlined>,
-              desc: '火属性',
-            },
-            {
-              icon: <FireOutlined></FireOutlined>,
-              desc: '受距离威力影响',
-            },
-          ],
-          effects: [
-            {
-              raw: '| 有效ATK + {expression:constant} | x {expression:magnification}%',
-              values: {
-                constant: {
-                  args: ['weaponType', 'level'],
-                  fn: (weaponType: EWeaponType, level: number) => {
-                    switch (weaponType) {
-                      default:
-                        return 200 + level * 10;
-                    }
-                  },
-                },
-                magnification: {
-                  args: ['weaponType', 'level'],
-                  fn: (weaponType: EWeaponType, level: number) => {
-                    switch (weaponType) {
-                      default:
-                        return 150 + level * 5;
-                    }
-                  },
-                },
-              },
-            },
-          ],
-        },
-      },
-    ],
-  };
+const { Option } = Select;
+
+interface IDescribe {
+  item: IDescribeSkillData;
+}
+
+const Describe: FC<IDescribe> = (props) => {
+  const { item } = props;
+  const skillData = item;
 
   const [state, setState] = useRefState({
     level: 1,
     roleLevel: 1,
     weaponType: skillData.neededMainWeapon[0],
-    secondaryWeaponType: EWeaponType.EmptyHanded,
+    secondaryWeaponType: skillData.neededSecondaryWeapon[0],
   });
 
   const stateGetter = (name: string) => {
@@ -226,6 +142,15 @@ const Describe: FC = () => {
     return skillData.effects.map(({ type, data }) => skillEffectsHandler[type](data));
   };
 
+  /** 动态生成选项 */
+  const menuItem = (item: EWeaponType[]) => {
+    return item.map((item) => (
+      <Option value={item} key={item}>
+        {item}
+      </Option>
+    ));
+  };
+
   return (
     <section className="describe">
       <header className="describe-header">
@@ -233,11 +158,50 @@ const Describe: FC = () => {
         <span className="describe-header_title">{skillData.name}</span>
       </header>
       {renderSkillEffects()}
-      <p>
-        技能等级: {state.level}
-        <button onClick={() => setState({ level: Math.max(1, state.level - 1) })}>-</button>
-        <button onClick={() => setState({ level: Math.min(10, state.level + 1) })}>+</button>
-      </p>
+      <section className="describe-menu">
+        <div className="describe-menu__item">
+          主手武器{' '}
+          <Select
+            defaultValue={state.weaponType}
+            style={{ width: 120 }}
+            onChange={() => {}}
+            bordered={false}
+          >
+            {menuItem(skillData.neededMainWeapon)}
+          </Select>
+        </div>
+        <div className="describe-menu__item">
+          副手武器{' '}
+          <Select
+            defaultValue={state.secondaryWeaponType}
+            style={{ width: 120 }}
+            onChange={() => {}}
+            bordered={false}
+          >
+            {menuItem(skillData.neededSecondaryWeapon)}
+          </Select>
+        </div>
+        <div className="describe-menu__item">
+          技能等级{' '}
+          <InputNumber
+            size="small"
+            min={1}
+            max={10}
+            defaultValue={10}
+            onChange={(value) => setState({ level: value })}
+          />
+        </div>
+        <div className="describe-menu__item">
+          角色等级{' '}
+          <InputNumber
+            size="small"
+            min={1}
+            max={240}
+            defaultValue={240}
+            onChange={(value) => setState({ roleLevel: value })}
+          />
+        </div>
+      </section>
     </section>
   );
 };

@@ -24,6 +24,10 @@ import {
   SwordSkill,
   WizardSkill,
 } from '@/components/SkillTree';
+import useRefState from '@/hooks/useRefState';
+import { SkillData } from '@/components/SkillDescribe/skillData';
+import { currentSkillState } from '@/store/current-skill';
+import { useRecoilValue } from 'recoil';
 
 const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -86,9 +90,14 @@ const SkillQuery: FC = () => {
     },
   ];
 
+  /** 当前技能 */
+  const currentSkill = useRecoilValue(currentSkillState);
+  const skillData = SkillData.filter((item) => item.name === currentSkill)[0];
+
   /** 当前技能树 */
   const [currentTree, setCurrentTree] = useState({ name: '剑术技能', tree: <SwordSkill /> });
 
+  /** 动态生成技能菜单 */
   const menuItem = () =>
     skillMenu.map((item) => (
       <SubMenu key={item.name} icon={<FireOutlined />} title={item.name}>
@@ -106,18 +115,22 @@ const SkillQuery: FC = () => {
 
   return (
     <div className="skill-query">
-      <Layout className="skill-query_container">
+      <Layout className="skill-query__container">
         <Sider theme="light" className="el-menu-vertical">
-          <div className="logo" />
-          <Menu theme="light" defaultSelectedKeys={['1']} mode="inline">
+          <Menu
+            className="skill-query__menu"
+            theme="light"
+            defaultSelectedKeys={['1']}
+            mode="inline"
+          >
             {menuItem()}
           </Menu>
         </Sider>
         <Layout className="site-layout el-menu-vertical">
           <Content style={{ margin: '0 16px' }}>
             {currentTree.tree}
-            <div className="site-layout-background skill-query_content">
-              <SkillDescribe></SkillDescribe>
+            <div className="site-layout-background skill-query__content">
+              {skillData && <SkillDescribe item={skillData}></SkillDescribe>}
             </div>
           </Content>
         </Layout>

@@ -1,4 +1,6 @@
+import { currentSkillState } from '@/store/current-skill';
 import React, { FC } from 'react';
+import { useRecoilState } from 'recoil';
 
 import './index.less';
 
@@ -9,9 +11,10 @@ interface ISkillNodeProps {
 
 const SkillNode: FC<ISkillNodeProps> = (props) => {
   const { content, icon } = props;
+  const [skillState, setSkillState] = useRecoilState(currentSkillState);
 
   return (
-    <section className="skill-node" title={content}>
+    <section className="skill-node" title={content} onClick={() => setSkillState(content)}>
       {icon || '?'}
     </section>
   );

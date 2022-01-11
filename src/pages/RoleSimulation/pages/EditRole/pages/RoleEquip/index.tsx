@@ -1,4 +1,4 @@
-import { ENumericalNumber } from '@/constants/numericalValue';
+import { ENumericalNumber, SECONDARY_WEAPON_ALLOWED_MAP } from '@/constants/numericalValue';
 import EquipChoiceCard from '@/pages/RoleSimulation/components/EquipChoiceCard';
 import EquipDetailCard from '@/pages/RoleSimulation/components/EquipDetailCard';
 import { equipsState } from '@/store/equips';
@@ -42,15 +42,6 @@ const RoleEquip: FC<IProps> = (props) => {
     location: EEquipmentLocation.MainWeapon,
     mainValueType: ENumericalNumber.WEAPON_ATK,
     mainValue: 0,
-    allowedSecondaryWeapon: [
-      EWeaponType.MagicDevice,
-      EWeaponType.Knuckle,
-      EWeaponType.Dagger,
-      EWeaponType.Shield,
-      EWeaponType.Arrow,
-      EWeaponType.EmptyHanded,
-      EWeaponType.NinjutsuScroll,
-    ],
   };
   const { id } = props;
   /** 当前角色数据 */
@@ -62,9 +53,6 @@ const RoleEquip: FC<IProps> = (props) => {
 
   /** 装备库数据 */
   const equips = useRecoilValue(equipsState);
-
-  /** 已选装备库数据 */
-  const chosenEquips = useRecoilState(chosenEquipsState);
 
   /** 当前装备 */
   const [currentEquip, setCurrentEquip] = useState(emptyHanded);
@@ -133,7 +121,7 @@ const RoleEquip: FC<IProps> = (props) => {
       const typeJudge = () => {
         if (currentEquipLocationType === EEquipmentLocation.SecondaryWeapon) {
           if (
-            role.equipment.mainWeapon.allowedSecondaryWeapon.some(
+            SECONDARY_WEAPON_ALLOWED_MAP[role.equipment.mainWeapon.weaponType].some(
               (allowedItem) => item.weaponType === allowedItem,
             )
           ) {
@@ -177,7 +165,7 @@ const RoleEquip: FC<IProps> = (props) => {
   const okButton = () => {
     if (currentEquipLocationType === EEquipmentLocation.SecondaryWeapon) {
       if (
-        role.equipment.mainWeapon.allowedSecondaryWeapon.some(
+        SECONDARY_WEAPON_ALLOWED_MAP[role.equipment.mainWeapon.weaponType].some(
           (allowedItem) => currentEquip.weaponType === allowedItem,
         )
       ) {

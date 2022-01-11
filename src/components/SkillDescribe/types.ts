@@ -68,5 +68,6 @@ type TDescribeSkillEffects =
 export interface IDescribeSkillData {
   name: string;
   neededMainWeapon: EWeaponType[];
+  neededSecondaryWeapon: EWeaponType[];
   effects: TDescribeSkillEffects[];
 }

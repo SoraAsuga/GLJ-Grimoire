@@ -19,6 +19,8 @@ export enum EEquipmentLocation {
 
 /** 武器类型 */
 export enum EWeaponType {
+  /** 任意 */
+  Any = '无限制',
   /** 空手 */
   EmptyHanded = '空手',
   /** 单手剑 */
@@ -99,8 +101,6 @@ export interface IEquipment {
   refine?: number;
   /** 稳定率，武器才有 */
   stable?: number;
-  /** 允许副手装备 */
-  allowedSecondaryWeapon?: EWeaponType[];
   /** 需求技能 */
   requiredSkill?: any;
   /** 重化轻化，防具才有 */

@@ -4,6 +4,7 @@ import PropsQuery from './pages/PropsQuery';
 import RoleSimulation from './pages/RoleSimulation';
 import EditRole from './pages/RoleSimulation/pages/EditRole';
 import SkillQuery from './pages/SkillQuery';
+import ForgingCrystalQuery from './pages/ForgingCrystalQuery';
 
 export interface IRoute {
   path: string /** 路由地址 */;
@@ -60,7 +61,7 @@ const routes: IRoute[] = [
   {
     name: '锻晶查询',
     path: '/ForgingCrystalQuery',
-    component: null,
+    component: ForgingCrystalQuery,
   },
   {
     name: '伤害计算',

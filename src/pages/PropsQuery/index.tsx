@@ -1,11 +1,12 @@
 import React, { FC, useState } from 'react';
 import './index.less';
-import { Layout, Menu, Input, Radio, Space, Button } from 'antd';
+import { Layout, Menu, Input } from 'antd';
 import { EEquipmentLocation, EWeaponType } from '@/typings/equipment';
 import {
   ArrowDownOutlined,
   BorderOutlined,
   CheckCircleOutlined,
+  QuestionOutlined,
   SearchOutlined,
   StarOutlined,
   TagOutlined,
@@ -21,7 +22,7 @@ const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
 const { Search } = Input;
 
-interface IEquipMenu {
+interface IMenu {
   name: EEquipmentLocation;
   equipList: EWeaponType[];
 }
@@ -33,7 +34,7 @@ interface IEnchantItem {
 
 const PropsQuery: FC = () => {
   /** 装备类型菜单 */
-  const equipMenu: IEquipMenu[] = [
+  const equipMenu: IMenu[] = [
     {
       name: EEquipmentLocation.MainWeapon,
       equipList: [
@@ -62,7 +63,7 @@ const PropsQuery: FC = () => {
     { name: EEquipmentLocation.SpecialEquip, equipList: [EWeaponType.SpecialEquip] },
   ];
 
-  /** 装备附魔菜单 */
+  /** 附魔菜单 */
   const [enchantMenu, setEnchantMenu] = useState([
     { type: ENumericalNumber.ATK, chose: false },
     { type: ENumericalNumber.ATK_PERCENT, chose: false },
@@ -254,14 +255,17 @@ const PropsQuery: FC = () => {
   const equipItem = () => {
     if (equipName !== '') {
       const newItem = equipList.filter((item) => {
-        return item.name === equipName;
+        return item.name.includes(equipName);
       });
 
       console.log('gdx: ', newItem.length);
 
       return newItem.length === 0 ? (
-        <div>
-          <div>查无此装备</div>
+        <div className="props-query__item">
+          <span className="props-query__item-name">
+            <QuestionOutlined style={{ margin: '5px' }} />
+            查无此装备
+          </span>
         </div>
       ) : (
         newItem.map((item, index) => {

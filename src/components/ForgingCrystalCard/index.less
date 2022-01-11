@@ -1,0 +1,90 @@
+.forging-crystal-card_container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  min-width: 320px;
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: @theme-color;
+
+    padding: 5px 0;
+    margin: 0 5px 5px;
+
+    .card-header_icon {
+      margin: 0 5px;
+    }
+
+    .card-header_name {
+      color: @theme-font-color;
+      margin: 0 5px;
+
+      min-width: 100px;
+    }
+
+    .card-header_tips {
+      font-size: 12px;
+    }
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+
+    .card-content_value {
+      display: flex;
+      align-items: center;
+      color: @theme-font-color;
+      font-size: 16px;
+
+      padding: 5px 15px;
+      border: 1px solid @theme-color;
+      border-radius: 20px;
+
+      .card-header_value-type {
+        color: @theme-color;
+      }
+
+      .card-header_value-number {
+        flex-grow: 1;
+        margin: 0 10px;
+      }
+    }
+
+    .card-content_enchanting {
+      display: flex;
+      flex-wrap: wrap;
+      flex-grow: 0;
+      padding: 5px;
+      border-top: 1px;
+      border-style: solid;
+      border-color: @theme-color;
+
+      width: 300px;
+
+      .enchanting {
+        color: @theme-font-color;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+
+        margin: 0 5px;
+
+        .enchanting_icon {
+          color: @theme-color;
+          padding:  0 5px 0 0;
+        }
+
+        .enchanting_name {
+          padding: 5px 0 5px 5px;
+        }
+
+        .enchanting_value {
+
+        }
+      }
+    }
+  }
+}
