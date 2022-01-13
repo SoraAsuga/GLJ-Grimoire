@@ -1,0 +1,103 @@
+.render-block {
+  color: @theme-font-color;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+
+  padding: 5px 5px 25px;
+  border: 1px solid @theme-color;
+  margin: 30px 0 5px;
+
+  .render-block__header {
+    display: flex;
+    position: relative;
+    top: -19px;
+    left: 15px;
+
+    .render-block__header-icon {
+      background-color: white;
+      padding: 5px 5px 5px 10px;
+      color: @theme-color;
+    }
+
+    .render-block__header-name {
+      font-size: 16px;
+      background-color: white;
+      padding: 5px;
+    }
+
+    .render-block__header-type {
+      font-size: 14px;
+      color: red;
+      display: flex;
+      align-items: center;
+      background-color: white;
+      padding: 5px 10px 5px 5px;
+
+    }
+  }
+
+  .render-block__properties {
+    display: flex;
+    font-size: 14px;
+
+    position: relative;
+    top: -10px;
+    left: 10px;
+
+    .render-block__properties-item {
+      color: @theme-color;
+      display: flex;
+
+      .properties-item__name {
+        color: @theme-font-color;
+        padding: 0 10px;
+      }
+    }
+  }
+
+  .render-block__effects {
+    font-size: 16px;
+    padding: 0 10px;
+
+    margin-top: 5px;
+
+    .render-block__effects-content {
+      padding: 0 25px;
+    }
+  }
+
+  .render-block__additional {
+    display: flex;
+    flex-direction: column;
+
+    border-top: 1px;
+    border-color: @theme-color;
+    border-style: solid;
+    margin: 25px 10px 0;
+
+    .render-block__additional-header {
+      font-size: 15px;
+      display: flex;
+
+      position: relative;
+      top: -10px;
+      left: 5px;
+
+      .additional-header__icon {
+        color: @theme-color;
+        background-color: white;
+        padding: 0 5px 0 10px;
+      }
+
+      .additional-header__name {
+        background-color: white;
+        padding: 0 10px 0 5px;
+      }
+    }
+
+    .render-block__additional-content {
+      padding: 0 25px;
+    }
+  }
+}

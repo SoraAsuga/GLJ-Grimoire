@@ -1,3 +1,4 @@
+import { ENumericalNumber } from '@/constants/numericalValue';
 import { EWeaponType } from '@/typings/equipment';
 
 export enum ESkillEffectType {
@@ -5,7 +6,7 @@ export enum ESkillEffectType {
   Table,
   Block,
   Desc,
-  Tips,
+  Tip,
 }
 
 export interface ISkillEffectOption {
@@ -13,6 +14,7 @@ export interface ISkillEffectOption {
 }
 
 export interface IDescription {
+  type?: ENumericalNumber[];
   raw: string;
   values: Record<
     string,
@@ -40,8 +42,24 @@ export interface IDescribeDescProps {
   }[];
 }
 
+/** 展示为额外形式的描述信息 */
+export interface IAdditional {
+  type?: ENumericalNumber[];
+  name: string;
+  icon: any;
+  raw: string;
+  values: Record<
+    string,
+    {
+      args: string[];
+      fn: (...args: any[]) => any;
+    }
+  >;
+}
+
 /** 展示为描述块形式的描述信息 */
 export interface IDescribeBlockProps {
+  icon?: any;
   name: string;
   type: string[];
   properties: {
@@ -49,6 +67,13 @@ export interface IDescribeBlockProps {
     desc: string;
   }[];
   effects: IDescription[];
+  additional?: IAdditional[];
+}
+
+/** 展示为提升形式的描述信息 */
+export interface IDescribeTipProps {
+  icon: any;
+  content: string;
 }
 
 type TDescribeSkillEffects =
@@ -63,6 +88,10 @@ type TDescribeSkillEffects =
   | {
       type: ESkillEffectType.Block;
       data: IDescribeBlockProps;
+    }
+  | {
+      type: ESkillEffectType.Tip;
+      data: IDescribeTipProps[];
     };
 
 export interface IDescribeSkillData {

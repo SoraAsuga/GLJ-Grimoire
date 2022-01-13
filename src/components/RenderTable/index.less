@@ -1,0 +1,32 @@
+.render-table {
+  display: flex;
+  flex-direction: column;
+
+  margin: 20px 10px;
+
+  .render-table__item {
+    display: flex;
+    color: @theme-color;
+    text-align: center;
+    font-size: 14px;
+
+    .render-table__item-icon {
+      padding: 10px 0;
+    }
+
+    .render-table__item-title {
+      color: @theme-font-color;
+      text-align: left;
+      width: 110px;
+      padding: 10px;
+    }
+
+    .render-table__item-content {
+      border-left: 1px;
+      border-style: solid;
+      border-color: @theme-color;
+      padding: 10px 15px;
+
+    }
+  }
+}

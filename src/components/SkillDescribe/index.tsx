@@ -1,21 +1,15 @@
 import { EWeaponType } from '@/typings/equipment';
 import { BookOutlined } from '@ant-design/icons';
-import React, { FC, Fragment, useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
-import { currentSkillState } from '@/store/current-skill';
+import React, { FC, useMemo } from 'react';
 
 import './index.less';
 import useRefState from '@/hooks/useRefState';
 import { InputNumber, Select } from 'antd';
-import {
-  ESkillEffectType,
-  IDescribeBlockProps,
-  IDescribeDescProps,
-  IDescribeSkillData,
-  IDescribeTableProps,
-  IDescription,
-} from './types';
-import { SkillData } from './skillData';
+import RenderTable from '../RenderTable';
+import RenderDesc from '../RenderDesc';
+import RenderBlock from '../RenderBlock';
+import RenderTip from '../RenderTip';
+import { ESkillEffectType, IDescribeSkillData } from './types';
 
 const { Option } = Select;
 
@@ -34,104 +28,13 @@ const Describe: FC<IDescribe> = (props) => {
     secondaryWeaponType: skillData.neededSecondaryWeapon[0],
   });
 
-  const stateGetter = (name: string) => {
-    console.log('stateGetter', state);
-    return state[name];
-  };
-
-  const descInterpreter = (description: IDescription) => {
-    const { raw, values } = description;
-
-    const slice = raw.split(/[{}]/);
-
-    function interpretValue(expName: string) {
-      const { args, fn } = values[expName];
-      const interpretedArgs = args.map((name) => stateGetter(name));
-      return fn(...interpretedArgs);
-    }
-
-    return slice.map((str, i) => {
-      if (str.startsWith('expression:')) {
-        const expName = str.replace('expression:', '');
-        return <Fragment key={i}>{interpretValue(expName)}</Fragment>;
-      }
-
-      return <Fragment key={i}>{str}</Fragment>;
-    });
-  };
-
-  /** 生成表格样式的效果展示 */
-  const renderTableItem = (props: IDescribeTableProps) => {
-    console.log('renderTableItem', stateGetter('level'));
-
-    const { items } = props;
-
-    return items.map((item) => (
-      <div className="describe-attribute__item" key={item.name}>
-        <div className="describe-attribute__item-icon ">{item.icon}</div>
-        <div className="describe-attribute__item-title">{item.name}</div>
-        <div className="describe-attribute__item-content">{descInterpreter(item.desc)}</div>
-      </div>
-    ));
-  };
-
-  /** 生成描述样式的效果展示 */
-  const renderDescItem = (props: IDescribeDescProps) => {
-    const { items } = props;
-    const renderItem = () =>
-      items.map((item) => (
-        <Fragment key={item.name}>
-          <div className="describe-effect__inertia-title">{item.name}</div>
-          <div className="describe-effect__inertia-value">{item.value}</div>
-        </Fragment>
-      ));
-
-    return (
-      <div className="describe-effect">
-        <div className="describe-effect__inertia">{renderItem()}</div>
-      </div>
-    );
-  };
-
-  /** 生成块样式的效果展示 */
-  const renderBlockItem = (props: IDescribeBlockProps) => {
-    const { name, type, properties, effects } = props;
-
-    const renderType = () => {
-      return type.map((typeName) => <span key={typeName}>{typeName}</span>);
-    };
-
-    const renderProperties = () => {
-      return properties.map((property) => (
-        <div key={property.desc}>
-          {property.icon}
-          <span>{property.desc}</span>
-        </div>
-      ));
-    };
-
-    const renderEffects = () => {
-      return effects.map((description) => <p>{descInterpreter(description)}</p>);
-    };
-
-    return (
-      <section>
-        <header>
-          <span>{name}</span>
-          <span>{renderType()}</span>
-        </header>
-        <p>{renderProperties()}</p>
-        <section>{renderEffects()}</section>
-      </section>
-    );
-  };
-
   /** 抽象不同样式对应的渲染函数 */
   const skillEffectsHandler = useMemo(
     () => ({
-      [ESkillEffectType.Table]: renderTableItem,
-      [ESkillEffectType.Desc]: renderDescItem,
-      [ESkillEffectType.Block]: renderBlockItem,
+      [ESkillEffectType.Table]: RenderTable,
+      [ESkillEffectType.Desc]: RenderDesc,
+      [ESkillEffectType.Block]: RenderBlock,
+      [ESkillEffectType.Tip]: RenderTip,
     }),
     [],
   );
@@ -139,7 +42,7 @@ const Describe: FC<IDescribe> = (props) => {
   const renderSkillEffects = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return skillData.effects.map(({ type, data }) => skillEffectsHandler[type](data));
+    return skillData.effects.map(({ type, data }) => skillEffectsHandler[type](data, state));
   };
 
   /** 动态生成选项 */
@@ -153,18 +56,13 @@ const Describe: FC<IDescribe> = (props) => {
 
   return (
     <section className="describe">
-      <header className="describe-header">
-        <BookOutlined className="describe-header_icon" />
-        <span className="describe-header_title">{skillData.name}</span>
-      </header>
-      {renderSkillEffects()}
       <section className="describe-menu">
         <div className="describe-menu__item">
           主手武器{' '}
           <Select
             defaultValue={state.weaponType}
             style={{ width: 120 }}
-            onChange={() => {}}
+            onChange={(value) => setState({ weaponType: value })}
             bordered={false}
           >
             {menuItem(skillData.neededMainWeapon)}
@@ -175,7 +73,7 @@ const Describe: FC<IDescribe> = (props) => {
           <Select
             defaultValue={state.secondaryWeaponType}
             style={{ width: 120 }}
-            onChange={() => {}}
+            onChange={(value) => setState({ secondaryWeaponType: value })}
             bordered={false}
           >
             {menuItem(skillData.neededSecondaryWeapon)}
@@ -202,6 +100,11 @@ const Describe: FC<IDescribe> = (props) => {
           />
         </div>
       </section>
+      <header className="describe-header">
+        <BookOutlined className="describe-header_icon" />
+        <span className="describe-header_title">{skillData.name}</span>
+      </header>
+      {renderSkillEffects()}
     </section>
   );
 };

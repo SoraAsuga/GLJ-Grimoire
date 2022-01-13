@@ -1,12 +1,18 @@
+import { ENumericalNumber } from '@/constants/numericalValue';
 import { EWeaponType } from '@/typings/equipment';
 import {
   AimOutlined,
-  AppstoreOutlined,
+  AlertOutlined,
   BuildOutlined,
+  BulbOutlined,
   DashboardOutlined,
   ExperimentOutlined,
   FireOutlined,
+  InfoCircleOutlined,
+  NotificationOutlined,
+  QuestionCircleOutlined,
 } from '@ant-design/icons';
+import { values } from 'lodash';
 import React from 'react';
 import { ESkillEffectType, IDescribeSkillData } from './types';
 
@@ -42,7 +48,7 @@ export const SkillData: IDescribeSkillData[] = [
                 raw: '{expression:range}',
                 values: {
                   range: {
-                    args: [''],
+                    args: [],
                     fn: () => {
                       return '随武器射程';
                     },
@@ -52,12 +58,12 @@ export const SkillData: IDescribeSkillData[] = [
             },
             {
               name: '技能类型',
-              icon: <AppstoreOutlined />,
+              icon: <QuestionCircleOutlined />,
               desc: {
                 raw: '{expression:type}',
                 values: {
                   type: {
-                    args: [''],
+                    args: [],
                     fn: () => {
                       return '瞬发';
                     },
@@ -72,7 +78,7 @@ export const SkillData: IDescribeSkillData[] = [
                 raw: '{expression:combo}',
                 values: {
                   combo: {
-                    args: [''],
+                    args: [],
                     fn: () => {
                       return '可以放入连击';
                     },
@@ -81,13 +87,13 @@ export const SkillData: IDescribeSkillData[] = [
               },
             },
             {
-              name: '动作时间',
+              name: '动作速度',
               icon: <DashboardOutlined />,
               desc: {
                 raw: '{expression:action}',
                 values: {
                   action: {
-                    args: [''],
+                    args: [],
                     fn: () => {
                       return '稍慢';
                     },
@@ -116,6 +122,7 @@ export const SkillData: IDescribeSkillData[] = [
       {
         type: ESkillEffectType.Block,
         data: {
+          icon: <BulbOutlined />,
           name: '伤害',
           type: ['物理伤害'],
           properties: [
@@ -145,6 +152,8 @@ export const SkillData: IDescribeSkillData[] = [
                   args: ['weaponType', 'level'],
                   fn: (weaponType: EWeaponType, level: number) => {
                     switch (weaponType) {
+                      case EWeaponType.TwoHandedSword:
+                        return 250 + level * 5;
                       default:
                         return 150 + level * 5;
                     }
@@ -153,7 +162,92 @@ export const SkillData: IDescribeSkillData[] = [
               },
             },
           ],
+          additional: [
+            {
+              name: '额外效果',
+              icon: <AlertOutlined />,
+              raw: '{expression:effect}',
+              values: {
+                effect: {
+                  args: ['weaponType'],
+                  fn: (weaponType: EWeaponType) => {
+                    switch (weaponType) {
+                      case EWeaponType.TwoHandedSword:
+                        return '该技能伤害 倍率增加100%';
+                      default:
+                        return '该技能伤害 必定命中';
+                    }
+                  },
+                },
+              },
+            },
+            {
+              name: '额外效果',
+              icon: <AlertOutlined />,
+              raw: '{expression:effect}',
+              values: {
+                effect: {
+                  args: [],
+                  fn: () => {
+                    return '施放成功后获得 迅速 效果';
+                  },
+                },
+              },
+            },
+          ],
         },
+      },
+      {
+        type: ESkillEffectType.Block,
+        data: {
+          icon: <BulbOutlined />,
+          name: '迅速',
+          type: ['自身增益'],
+          properties: [
+            {
+              icon: <FireOutlined></FireOutlined>,
+              desc: '释放下一个技能前',
+            },
+          ],
+          effects: [
+            {
+              type: [ENumericalNumber.ATTACK_MP_RECOVERY],
+              raw: '攻击MP回复 + {expression:recover}',
+              values: {
+                recover: {
+                  args: ['level'],
+                  fn: (level: number) => {
+                    return level * 2;
+                  },
+                },
+              },
+            },
+          ],
+          additional: [
+            {
+              name: '额外效果',
+              icon: <AlertOutlined />,
+              raw: '{expression:effect}',
+              values: {
+                effect: {
+                  args: [],
+                  fn: () => {
+                    return '下一个技能动作时间减少 50%';
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+      {
+        type: ESkillEffectType.Tip,
+        data: [
+          {
+            icon: <InfoCircleOutlined />,
+            content: '迅速 效果会覆盖所有会影响动作时间的加成',
+          },
+        ],
       },
     ],
   },
