@@ -5,6 +5,7 @@ import React, { FC, useMemo } from 'react';
 import './index.less';
 import useRefState from '@/hooks/useRefState';
 import { InputNumber, Select } from 'antd';
+import { SECONDARY_WEAPON_ALLOWED_MAP } from '@/constants/numericalValue';
 import RenderTable from '../RenderTable';
 import RenderDesc from '../RenderDesc';
 import RenderBlock from '../RenderBlock';
@@ -47,22 +48,65 @@ const Describe: FC<IDescribe> = (props) => {
 
   /** 动态生成选项 */
   const menuItem = (item: EWeaponType[]) => {
-    return item.map((item) => (
-      <Option value={item} key={item}>
-        {item}
-      </Option>
-    ));
+    if (item)
+      return item.map((item) => (
+        <Option value={item} key={item}>
+          {item}
+        </Option>
+      ));
+  };
+
+  /** 主手变更 */
+  const changeWeapon = (value: EWeaponType) => {
+    console.log(
+      'changeWeapon',
+      SECONDARY_WEAPON_ALLOWED_MAP[value].some(
+        (item: EWeaponType) => item === state.secondaryWeaponType,
+      ),
+      state.weaponType,
+      state.secondaryWeaponType,
+    );
+    if (
+      SECONDARY_WEAPON_ALLOWED_MAP[value].some(
+        (item: EWeaponType) => item === state.secondaryWeaponType,
+      )
+    ) {
+      return setState({ weaponType: value });
+    }
+    return setState({ weaponType: value, secondaryWeaponType: skillData.neededSecondaryWeapon[0] });
+  };
+
+  /** 副手变更 */
+  const changeSecondaryWeapon = (value: EWeaponType) => {
+    console.log(
+      'changeWeapon',
+      SECONDARY_WEAPON_ALLOWED_MAP[state.weaponType].some((item: EWeaponType) => item === value),
+      state.weaponType,
+      state.secondaryWeaponType,
+    );
+    if (
+      SECONDARY_WEAPON_ALLOWED_MAP[state.weaponType].some((item: EWeaponType) => item === value)
+    ) {
+      return setState({ secondaryWeaponType: value });
+    }
+    return setState({ secondaryWeaponType: SECONDARY_WEAPON_ALLOWED_MAP[state.weaponType][0] });
   };
 
   return (
     <section className="describe">
+      <header className="describe-header">
+        <BookOutlined className="describe-header_icon" />
+        <span className="describe-header_title">{skillData.name}</span>
+      </header>
+      {renderSkillEffects()}
       <section className="describe-menu">
         <div className="describe-menu__item">
           主手武器{' '}
           <Select
             defaultValue={state.weaponType}
             style={{ width: 120 }}
-            onChange={(value) => setState({ weaponType: value })}
+            onChange={(value) => changeWeapon(value)}
+            value={state.weaponType}
             bordered={false}
           >
             {menuItem(skillData.neededMainWeapon)}
@@ -73,7 +117,8 @@ const Describe: FC<IDescribe> = (props) => {
           <Select
             defaultValue={state.secondaryWeaponType}
             style={{ width: 120 }}
-            onChange={(value) => setState({ secondaryWeaponType: value })}
+            onChange={(value) => changeSecondaryWeapon(value)}
+            value={state.secondaryWeaponType}
             bordered={false}
           >
             {menuItem(skillData.neededSecondaryWeapon)}
@@ -100,11 +145,6 @@ const Describe: FC<IDescribe> = (props) => {
           />
         </div>
       </section>
-      <header className="describe-header">
-        <BookOutlined className="describe-header_icon" />
-        <span className="describe-header_title">{skillData.name}</span>
-      </header>
-      {renderSkillEffects()}
     </section>
   );
 };

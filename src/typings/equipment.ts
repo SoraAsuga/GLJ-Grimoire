@@ -19,8 +19,6 @@ export enum EEquipmentLocation {
 
 /** 武器类型 */
 export enum EWeaponType {
-  /** 任意 */
-  Any = '无限制',
   /** 空手 */
   EmptyHanded = '空手',
   /** 单手剑 */
