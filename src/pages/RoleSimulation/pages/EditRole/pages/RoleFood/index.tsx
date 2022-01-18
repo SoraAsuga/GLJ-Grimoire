@@ -84,7 +84,6 @@ const RoleFood: FC<IProps> = (props) => {
     foodList: defaultFoodList,
     choseFoodNumber: 0,
   });
-  console.log('current', currentConfiguration);
 
   /** 暂存料理名称 */
   const [newConfigurationName, setNewConfigurationName] = useState('');

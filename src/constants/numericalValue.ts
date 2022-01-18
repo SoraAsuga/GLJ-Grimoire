@@ -34,6 +34,8 @@ export enum ENumericalNumber {
   MAGIC_PIERCE = '魔法贯穿%',
   /** 稳定率 */
   STABILITY = '稳定率%',
+  /** 魔法稳定率 */
+  MAGIC_STABILITY = '魔法稳定率%',
   /** 攻击MP回复 */
   ATTACK_MP_RECOVERY = '攻击MP回复',
   /** 攻击MP回复 */
@@ -400,6 +402,10 @@ export const NUMERICAL_NUMBER: Record<ENumericalNumber, INumericalNumberValue> =
   [ENumericalNumber.STABILITY]: {
     type: ENumericalNumberType.Percentage,
     name: '稳定率',
+  },
+  [ENumericalNumber.MAGIC_STABILITY]: {
+    type: ENumericalNumberType.Percentage,
+    name: '魔法稳定率',
   },
   [ENumericalNumber.ATTACK_MP_RECOVERY]: {
     type: ENumericalNumberType.Normal,

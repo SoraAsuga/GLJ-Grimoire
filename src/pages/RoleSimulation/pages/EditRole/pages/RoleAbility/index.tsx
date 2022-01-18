@@ -82,7 +82,7 @@ const RoleAbility: FC<IProps> = (props) => {
 
   /** 改变角色等级 */
   const changeRoleLevel = (level: number) => {
-    setStoreRole({ ...role, level });
+    setRole({ ...role, level });
   };
 
   /** 改变能力数值 */

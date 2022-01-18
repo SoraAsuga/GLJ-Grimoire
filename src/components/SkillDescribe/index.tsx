@@ -23,8 +23,8 @@ const Describe: FC<IDescribe> = (props) => {
   const skillData = item;
 
   const [state, setState] = useRefState({
-    level: 1,
-    roleLevel: 1,
+    level: 10,
+    roleLevel: 240,
     weaponType: skillData.neededMainWeapon[0],
     secondaryWeaponType: skillData.neededSecondaryWeapon[0],
   });

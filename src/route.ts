@@ -39,21 +39,6 @@ const routes: IRoute[] = [
     ],
   },
   {
-    name: '技能模拟',
-    path: '/SkillSimulation',
-    component: null,
-  },
-  {
-    name: '附魔模拟',
-    path: '/EnchantSimulation',
-    component: null,
-  },
-  {
-    name: '附魔布偶',
-    path: '/EnchantPuppet',
-    component: null,
-  },
-  {
     name: '道具查询',
     path: '/PropsQuery',
     component: PropsQuery,
@@ -62,11 +47,6 @@ const routes: IRoute[] = [
     name: '锻晶查询',
     path: '/ForgingCrystalQuery',
     component: ForgingCrystalQuery,
-  },
-  {
-    name: '伤害计算',
-    path: '/DamageCalculation',
-    component: null,
   },
 ];
 
