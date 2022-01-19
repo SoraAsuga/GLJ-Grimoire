@@ -6,6 +6,7 @@ import {
 import { getRoleSelector } from '@/store/role-simulation';
 import { EWeaponType, IEnchanting, IEquipment } from '@/typings/equipment';
 import { Tooltip } from 'antd';
+import { constant, toNumber } from 'lodash';
 import React, { FC, useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 import { IProps } from '../types';
@@ -19,8 +20,9 @@ const RoleData: FC<IProps> = (props) => {
   /** 当前角色数据 */
   const roleSelector = useMemo(() => getRoleSelector(id), [id]);
   const [role, setRole] = useRecoilState(roleSelector);
+  console.log('role:', role);
 
-  /** 判断附魔限制 */
+  /** 判断附魔的武器限制 */
   const enchantingLimit = (weaponLocation: IEquipment) => {
     return weaponLocation.enchanting.map((item) => {
       if (item.weaponLimit) {
@@ -38,7 +40,7 @@ const RoleData: FC<IProps> = (props) => {
     });
   };
 
-  /** 统计装备附魔 */
+  /** 统计装备附魔效果 */
   const enchantingData: IEnchanting[][] = [];
   if (role.equipment.mainWeapon && role.equipment.mainWeapon.name !== '空') {
     enchantingData[0] = enchantingLimit(role.equipment.mainWeapon);
@@ -76,13 +78,24 @@ const RoleData: FC<IProps> = (props) => {
 
   console.log('enchanting: ', enchantingData);
 
-  /** 带基础值加成计算 */
-  const abilityData = ({
+  /** 以基础值为基准的加成数值计算 */
+  const hasBasicsData = ({
     additionType,
     basics,
+    rounding,
+    decimal,
+    limit,
   }: {
+    /** 加成类型 */
     additionType?: ENumericalNumber[];
+    /** 基础值 */
     basics?: number;
+    /** 是否取整 */
+    rounding?: boolean;
+    /** 保留小数位数 */
+    decimal?: number;
+    /** 上限值 */
+    limit?: number;
   }) => {
     /** 结果暂存 */
     let result = basics;
@@ -109,118 +122,650 @@ const RoleData: FC<IProps> = (props) => {
         }
       }),
     );
+    if (limit && result >= limit) result = limit;
+    if (rounding) {
+      return Math.round(result);
+    } else if (decimal) {
+      return toNumber(result.toFixed(decimal));
+    }
     return result;
   };
 
-  /** 攻回计算 */
-  const attackMpRecovery = (additionType?: ENumericalNumber[]) => {};
+  /** 无基础值加成数值计算 */
+  const noBasicsData = ({
+    additionType,
+    rounding,
+    decimal,
+    limit,
+  }: {
+    /** 加成类型 */
+    additionType?: ENumericalNumber[];
+    /** 是否取整 */
+    rounding?: boolean;
+    /** 保留小数位数 */
+    decimal?: number;
+    /** 上限值 */
+    limit?: number;
+  }) => {
+    /** 结果暂存 */
+    let result = 0;
+    enchantingData.map((item) =>
+      item.map((enchanting) => {
+        /** 筛选附魔类型 */
+        if (additionType.some((item) => item === enchanting.type)) {
+          /** 判断增益或减益 */
+          if (enchanting.isNegative) {
+            result -= enchanting.value;
+          } else {
+            result += enchanting.value;
+          }
+        }
+      }),
+    );
+    if (limit && result >= limit) result = limit;
+    if (rounding) {
+      return Math.round(result);
+    } else if (decimal) {
+      return toNumber(result.toFixed(decimal));
+    }
+    console.log('result:', result);
+    return result;
+  };
+
+  /** 攻击力,魔法攻击力基础值计算 */
+  const atkBasics = (
+    ability: number[],
+    additionValue: number[],
+    isMatk?: boolean,
+    secondaryWeapon?: boolean,
+  ) => {
+    if (!secondaryWeapon) {
+      let result = role.level;
+      if (isMatk && role.equipment.mainWeapon.weaponType === EWeaponType.Knuckle) {
+        result +=
+          hasBasicsData({
+            basics: role.equipment.mainWeapon.mainValue,
+            additionType: [ENumericalNumber.WEAPON_ATK, ENumericalNumber.WEAPON_ATK_PERCENT],
+            rounding: true,
+          }) * 0.5;
+      } else {
+        result += hasBasicsData({
+          basics: role.equipment.mainWeapon.mainValue,
+          additionType: [ENumericalNumber.WEAPON_ATK, ENumericalNumber.WEAPON_ATK_PERCENT],
+          rounding: true,
+        });
+      }
+      for (let i = 0; i < ability.length; i++) {
+        result += ability[i] * additionValue[i];
+      }
+      return result;
+    }
+    return 10;
+  };
+
+  /** 抽出会参与其余面板计算的能力值的计算结果 */
+  const abilityResult = {
+    str: hasBasicsData({
+      additionType: [ENumericalNumber.STR, ENumericalNumber.STR_PERCENT],
+      basics: role.ability.str,
+      rounding: true,
+    }),
+    dex: hasBasicsData({
+      additionType: [ENumericalNumber.DEX, ENumericalNumber.DEX_PERCENT],
+      basics: role.ability.dex,
+      rounding: true,
+    }),
+    int: hasBasicsData({
+      additionType: [ENumericalNumber.INT, ENumericalNumber.INT_PERCENT],
+      basics: role.ability.int,
+      rounding: true,
+    }),
+    vit: hasBasicsData({
+      additionType: [ENumericalNumber.VIT, ENumericalNumber.VIT_PERCENT],
+      basics: role.ability.vit,
+      rounding: true,
+    }),
+    agi: hasBasicsData({
+      additionType: [ENumericalNumber.AGI, ENumericalNumber.AGI_PERCENT],
+      basics: role.ability.agi,
+      rounding: true,
+    }),
+    mp: hasBasicsData({
+      additionType: [ENumericalNumber.MP],
+      basics: 100 + 1 * role.level,
+      rounding: true,
+      limit: 2000,
+    }),
+  };
+  console.log('abilityResult:', abilityResult);
+
+  /** 有数值上限的结果运算 */
+  const hasLimitResult = ({
+    constant,
+    enchanting,
+    abilityNumber,
+    abilityAddition,
+    limit,
+    extra,
+  }: {
+    /** 常数 */
+    constant: number;
+    /** 附魔加成类型 */
+    enchanting: ENumericalNumber[];
+    /** 能力值 */
+    abilityNumber: number[];
+    /** 能力加成量 */
+    abilityAddition: number[];
+    /** 上限 */
+    limit: number;
+    /** 额外值 */
+    extra?: number;
+  }) => {
+    let result = 0;
+    for (let i = 0; i < abilityNumber.length; i++) {
+      result += abilityNumber[i] * abilityAddition[i];
+    }
+    result = Math.round(
+      result +
+        constant +
+        noBasicsData({
+          additionType: enchanting,
+        }),
+    );
+    if (extra) result += extra;
+    if (result > limit) {
+      return limit;
+    }
+    return result;
+  };
+
+  /** 与主手武器类型相关的数值计算 */
+  const hasWeaponType = (type: string) => {
+    const { stable } = role.equipment.mainWeapon;
+    if (role.equipment.mainWeapon) {
+      switch (type) {
+        case 'atk':
+          switch (role.equipment.mainWeapon.weaponType) {
+            case EWeaponType.OneHandedSword:
+              switch (role.equipment.secondaryWeapon.weaponType) {
+                case EWeaponType.OneHandedSword:
+                  return hasBasicsData({
+                    basics: atkBasics(
+                      [abilityResult.str, abilityResult.dex, abilityResult.agi],
+                      [1, 2, 1],
+                    ),
+                    additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                    rounding: true,
+                  });
+                case EWeaponType.MagicDevice:
+                  return (
+                    hasBasicsData({
+                      basics: atkBasics([abilityResult.str, abilityResult.dex], [2, 2]),
+                      additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                      rounding: true,
+                    }) * 0.85
+                  );
+                default:
+                  return hasBasicsData({
+                    basics: atkBasics([abilityResult.str, abilityResult.dex], [2, 2]),
+                    additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                    rounding: true,
+                  });
+              }
+            case EWeaponType.TwoHandedSword:
+              return hasBasicsData({
+                basics: atkBasics([abilityResult.str, abilityResult.dex], [3, 1]),
+                additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                rounding: true,
+              });
+            case EWeaponType.Bow:
+              if (role.equipment.secondaryWeapon.weaponType === EWeaponType.Arrow) {
+                return (
+                  hasBasicsData({
+                    basics: atkBasics([abilityResult.str, abilityResult.dex], [1, 3]),
+                    additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                    rounding: true,
+                  }) + role.equipment.secondaryWeapon.mainValue
+                );
+              }
+              return hasBasicsData({
+                basics: atkBasics([abilityResult.str, abilityResult.dex], [1, 3]),
+                additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                rounding: true,
+              });
+            case EWeaponType.BowGun:
+              switch (role.equipment.secondaryWeapon.weaponType) {
+                case EWeaponType.Arrow:
+                  return (
+                    hasBasicsData({
+                      basics: atkBasics([abilityResult.dex], [4]),
+                      additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                      rounding: true,
+                    }) + role.equipment.secondaryWeapon.mainValue
+                  );
+                case EWeaponType.MagicDevice:
+                  return (
+                    hasBasicsData({
+                      basics: atkBasics([abilityResult.dex], [4]),
+                      additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                      rounding: true,
+                    }) * 0.85
+                  );
+                default:
+                  return hasBasicsData({
+                    basics: atkBasics([abilityResult.dex], [4]),
+                    additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                    rounding: true,
+                  });
+              }
+            case EWeaponType.Staff:
+              switch (role.equipment.secondaryWeapon.weaponType) {
+                case EWeaponType.MagicDevice:
+                  return (
+                    hasBasicsData({
+                      basics: atkBasics([abilityResult.str, abilityResult.int], [3, 1]),
+                      additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                      rounding: true,
+                    }) * 0.85
+                  );
+                default:
+                  return hasBasicsData({
+                    basics: atkBasics([abilityResult.str, abilityResult.int], [3, 1]),
+                    additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                    rounding: true,
+                  });
+              }
+            case EWeaponType.MagicDevice:
+              return hasBasicsData({
+                basics: atkBasics([abilityResult.int, abilityResult.agi], [2, 2]),
+                additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                rounding: true,
+              });
+            case EWeaponType.Knuckle:
+              switch (role.equipment.secondaryWeapon.weaponType) {
+                case EWeaponType.MagicDevice:
+                  return (
+                    hasBasicsData({
+                      basics: atkBasics([abilityResult.dex, abilityResult.agi], [0.5, 2]),
+                      additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                      rounding: true,
+                    }) * 0.85
+                  );
+                default:
+                  return hasBasicsData({
+                    basics: atkBasics([abilityResult.dex, abilityResult.agi], [0.5, 2]),
+                    additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                    rounding: true,
+                  });
+              }
+            case EWeaponType.Katana:
+              return hasBasicsData({
+                basics: atkBasics([abilityResult.str, abilityResult.dex], [1.5, 2.5]),
+                additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                rounding: true,
+              });
+            case EWeaponType.Halberd:
+              return hasBasicsData({
+                basics: atkBasics([abilityResult.str, abilityResult.agi], [2.5, 1.5]),
+                additionType: [ENumericalNumber.ATK, ENumericalNumber.ATK_PERCENT],
+                rounding: true,
+              });
+            default:
+              switch (role.equipment.secondaryWeapon.weaponType) {
+                case EWeaponType.MagicDevice:
+                  return role.level + abilityResult.str * 0.85;
+                default:
+                  return role.level + abilityResult.str;
+              }
+          }
+        case 'matk':
+          switch (role.equipment.mainWeapon.weaponType) {
+            case EWeaponType.OneHandedSword:
+            case EWeaponType.TwoHandedSword:
+            case EWeaponType.Bow:
+            case EWeaponType.BowGun:
+              switch (role.equipment.secondaryWeapon.weaponType) {
+                case EWeaponType.Knuckle:
+                  return (role.level + abilityResult.int * 3 + abilityResult.dex * 1) * 0.85;
+                default:
+                  return role.level + abilityResult.int * 3 + abilityResult.dex * 1;
+              }
+            case EWeaponType.Staff:
+            case EWeaponType.MagicDevice:
+              switch (role.equipment.secondaryWeapon.weaponType) {
+                case EWeaponType.Knuckle:
+                  return (
+                    hasBasicsData({
+                      basics: atkBasics([abilityResult.int, abilityResult.dex], [4, 1]),
+                      additionType: [ENumericalNumber.MATK, ENumericalNumber.MATK_PERCENT],
+                      rounding: true,
+                    }) * 0.85
+                  );
+                default:
+                  return hasBasicsData({
+                    basics: atkBasics([abilityResult.int, abilityResult.dex], [4, 1]),
+                    additionType: [ENumericalNumber.MATK, ENumericalNumber.MATK_PERCENT],
+                    rounding: true,
+                  });
+              }
+            case EWeaponType.Knuckle:
+              return hasBasicsData({
+                basics: atkBasics([abilityResult.int, abilityResult.dex], [4, 1], true),
+                additionType: [ENumericalNumber.MATK, ENumericalNumber.MATK_PERCENT],
+                rounding: true,
+              });
+            case EWeaponType.Katana:
+              return role.level + abilityResult.int * 1.5 + abilityResult.dex * 1;
+            case EWeaponType.Halberd:
+              return role.level + abilityResult.int * 2 + abilityResult.dex * 1;
+            default:
+              switch (role.equipment.secondaryWeapon.weaponType) {
+                case EWeaponType.Knuckle:
+                  return (role.level + abilityResult.int * 4 + abilityResult.dex * 1) * 0.85;
+                default:
+                  return role.level + abilityResult.int * 4 + abilityResult.dex * 1;
+              }
+          }
+        case 'stability':
+          switch (role.equipment.mainWeapon.weaponType) {
+            case EWeaponType.OneHandedSword:
+              return hasLimitResult({
+                constant: stable,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.str, abilityResult.dex],
+                abilityAddition: [0.025, 0.075],
+                limit: 100,
+              });
+            case EWeaponType.TwoHandedSword:
+              return hasLimitResult({
+                constant: stable,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.dex],
+                abilityAddition: [0.1],
+                limit: 100,
+              });
+            case EWeaponType.Bow:
+              if (role.equipment.secondaryWeapon.weaponType === EWeaponType.Arrow) {
+                return hasLimitResult({
+                  constant: stable,
+                  enchanting: [ENumericalNumber.STABILITY],
+                  abilityNumber: [abilityResult.str, abilityResult.dex],
+                  abilityAddition: [0.05, 0.05],
+                  limit: 100,
+                  extra: role.equipment.secondaryWeapon.mainValue,
+                });
+              }
+              return hasLimitResult({
+                constant: stable,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.str, abilityResult.dex],
+                abilityAddition: [0.05, 0.05],
+                limit: 100,
+              });
+            case EWeaponType.BowGun:
+              if (role.equipment.secondaryWeapon.weaponType === EWeaponType.Arrow) {
+                return hasLimitResult({
+                  constant: stable,
+                  enchanting: [ENumericalNumber.STABILITY],
+                  abilityNumber: [abilityResult.str],
+                  abilityAddition: [0.05],
+                  limit: 100,
+                  extra: role.equipment.secondaryWeapon.mainValue * 0.5,
+                });
+              }
+              return hasLimitResult({
+                constant: stable,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.str],
+                abilityAddition: [0.05],
+                limit: 100,
+              });
+            case EWeaponType.Staff:
+              return hasLimitResult({
+                constant: stable,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.str],
+                abilityAddition: [0.05],
+                limit: 100,
+              });
+            case EWeaponType.MagicDevice:
+              return hasLimitResult({
+                constant: stable,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.dex],
+                abilityAddition: [0.1],
+                limit: 100,
+              });
+            case EWeaponType.Knuckle:
+              return hasLimitResult({
+                constant: stable,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.dex],
+                abilityAddition: [0.025],
+                limit: 100,
+              });
+            case EWeaponType.Katana:
+              return hasLimitResult({
+                constant: stable,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.str, abilityResult.dex],
+                abilityAddition: [0.075, 0.025],
+                limit: 100,
+              });
+            case EWeaponType.Halberd:
+              return hasLimitResult({
+                constant: stable,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.str, abilityResult.dex],
+                abilityAddition: [0.05, 0.05],
+                limit: 100,
+              });
+            default:
+              return 0;
+          }
+        case 'magicStability':
+          switch (role.equipment.mainWeapon.weaponType) {
+            case EWeaponType.OneHandedSword:
+              return hasLimitResult({
+                constant: stable * 0.5 + 50,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.str, abilityResult.dex],
+                abilityAddition: [0.025, 0.075],
+                limit: 90,
+              });
+            case EWeaponType.TwoHandedSword:
+              return hasLimitResult({
+                constant: stable * 0.5 + 50,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.dex],
+                abilityAddition: [0.1],
+                limit: 90,
+              });
+            case EWeaponType.Bow:
+              if (role.equipment.secondaryWeapon.weaponType === EWeaponType.Arrow) {
+                return hasLimitResult({
+                  constant: stable * 0.5 + 50,
+                  enchanting: [ENumericalNumber.STABILITY],
+                  abilityNumber: [abilityResult.str, abilityResult.dex],
+                  abilityAddition: [0.05, 0.05],
+                  limit: 90,
+                  extra: role.equipment.secondaryWeapon.mainValue,
+                });
+              }
+              return hasLimitResult({
+                constant: stable * 0.5 + 50,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.str, abilityResult.dex],
+                abilityAddition: [0.05, 0.05],
+                limit: 90,
+              });
+            case EWeaponType.BowGun:
+              if (role.equipment.secondaryWeapon.weaponType === EWeaponType.Arrow) {
+                return hasLimitResult({
+                  constant: stable * 0.5 + 50,
+                  enchanting: [ENumericalNumber.STABILITY],
+                  abilityNumber: [abilityResult.str],
+                  abilityAddition: [0.05],
+                  limit: 90,
+                  extra: role.equipment.secondaryWeapon.mainValue * 0.5,
+                });
+              }
+              return hasLimitResult({
+                constant: stable * 0.5 + 50,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.str],
+                abilityAddition: [0.05],
+                limit: 90,
+              });
+            case EWeaponType.Staff:
+              return hasLimitResult({
+                constant: stable * 0.5 + 50,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.str],
+                abilityAddition: [0.05],
+                limit: 90,
+              });
+            case EWeaponType.MagicDevice:
+              return hasLimitResult({
+                constant: stable * 0.5 + 50,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.dex],
+                abilityAddition: [0.1],
+                limit: 90,
+              });
+            case EWeaponType.Knuckle:
+              return hasLimitResult({
+                constant: stable * 0.5 + 50,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.dex],
+                abilityAddition: [0.025],
+                limit: 90,
+              });
+            case EWeaponType.Katana:
+              return hasLimitResult({
+                constant: stable * 0.5 + 50,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.str, abilityResult.dex],
+                abilityAddition: [0.075, 0.025],
+                limit: 90,
+              });
+            case EWeaponType.Halberd:
+              return hasLimitResult({
+                constant: stable * 0.5 + 50,
+                enchanting: [ENumericalNumber.STABILITY],
+                abilityNumber: [abilityResult.str, abilityResult.dex],
+                abilityAddition: [0.05, 0.05],
+                limit: 90,
+              });
+            default:
+              return 50;
+          }
+      }
+    }
+  };
+
+  /** 角色数值类型 */
+  interface IData {
+    name: ENumericalNumber | string;
+    value: number;
+    title: string;
+  }
 
   /** 角色数值项 */
-  const data = [
+  const data: IData[][] = [
     [
       {
         name: ENumericalNumber.STR,
-        value: abilityData({
-          additionType: [ENumericalNumber.STR, ENumericalNumber.STR_PERCENT],
-          basics: role.ability.str,
-        }),
+        value: abilityResult.str,
         title: '力量，影响角色基础暴击伤害',
       },
       {
         name: ENumericalNumber.DEX,
-        value: abilityData({
-          additionType: [ENumericalNumber.DEX, ENumericalNumber.DEX_PERCENT],
-          basics: role.ability.dex,
-        }),
+        value: abilityResult.dex,
         title: '灵巧，影响角色咏唱速度及命中率',
       },
       {
         name: ENumericalNumber.INT,
-        value: abilityData({
-          additionType: [ENumericalNumber.INT, ENumericalNumber.INT_PERCENT],
-          basics: role.ability.int,
-        }),
+        value: abilityResult.int,
         title: '智力，影响角色魔法伤害及MDEF',
       },
       {
         name: ENumericalNumber.VIT,
-        value: abilityData({
-          additionType: [ENumericalNumber.VIT, ENumericalNumber.VIT_PERCENT],
-          basics: role.ability.vit,
-        }),
+        value: abilityResult.vit,
         title: '耐力，影响角色生命值及DEF',
       },
       {
         name: ENumericalNumber.AGI,
-        value: abilityData({
-          additionType: [ENumericalNumber.AGI, ENumericalNumber.AGI_PERCENT],
-          basics: role.ability.agi,
-        }),
+        value: abilityResult.agi,
         title: '敏捷，影响角色攻击速度及回避',
       },
     ],
     [
       {
         name: ENumericalNumber.HP,
-        value: abilityData({
+        value: hasBasicsData({
           additionType: [ENumericalNumber.HP, ENumericalNumber.HP_PERCENT],
           basics: (93 + role.ability.vit / 3 + 127 / 17) * role.level,
+          rounding: true,
         }),
         title: '生命值,归零时角色倒地',
       },
       {
         name: ENumericalNumber.MP,
-        value: abilityData({
-          additionType: [ENumericalNumber.MP],
-          basics: 100 + 1 * role.level,
-        }),
+        value: abilityResult.mp,
         title: '魔力值，释放技能使用的资源',
       },
       {
         name: ENumericalNumber.NHPR,
-        value: abilityData({
+        value: hasBasicsData({
           additionType: [ENumericalNumber.NHPR, ENumericalNumber.NHPR_PERCENT],
           basics: 14 + 0.32 * role.level,
+          rounding: true,
         }),
         title: '自然生命值回复，未处于战斗状态时每3秒回复一次',
       },
       {
         name: ENumericalNumber.NMPR,
-        value: abilityData({
+        value: hasBasicsData({
           additionType: [ENumericalNumber.NMPR, ENumericalNumber.NMPR_PERCENT],
           basics: 14 + 0.32 * role.level,
+          rounding: true,
         }),
         title: '自然魔力值回复，未处于战斗状态时每3秒回复一次',
       },
       {
         name: ENumericalNumber.ATTACK_MP_RECOVERY,
-        value: attackMpRecovery([
-          ENumericalNumber.ATTACK_MP_RECOVERY,
-          ENumericalNumber.ATTACK_MP_RECOVERY_PERCENT,
-        ]),
+        value: hasBasicsData({
+          additionType: [
+            ENumericalNumber.ATTACK_MP_RECOVERY,
+            ENumericalNumber.ATTACK_MP_RECOVERY_PERCENT,
+          ],
+          basics: abilityResult.mp >= 2000 ? 30 : abilityResult.mp * 0.01 + 10,
+          rounding: true,
+        }),
         title: '攻击魔力值回复，每次普通攻击回复的MP总量',
       },
     ],
     [
       {
         name: ENumericalNumber.ATK,
-        value: 1,
+        value: hasWeaponType('atk'),
         title: '攻击力，显示于面板上的攻击力总量，影响受ATK加成的技能伤害',
       },
       {
         name: ENumericalNumber.MATK,
-        value: 1,
+        value: hasWeaponType('matk'),
         title: '魔法攻击力，显示于面板上的魔法攻击力总量，影响受MATK加成的技能伤害',
       },
       {
         name: ENumericalNumber.STABILITY,
-        value: 100 + '%',
+        value: hasWeaponType('stability'),
         title:
           '稳定率，影响最终物理伤害与一般攻击的伤害范围，将在100%~稳定率的值间随机浮动，以1%为单位变化',
       },
       {
         name: ENumericalNumber.MAGIC_STABILITY,
-        value: 100 + '%',
+        value: hasWeaponType('magicStability'),
         title:
           '魔法稳定率，影响最终魔法伤害范围，将在100%~魔法稳定率的值间随机浮动，以1%为单位变化，上限为90%',
       },
@@ -240,17 +785,17 @@ const RoleData: FC<IProps> = (props) => {
       { name: ENumericalNumber.MDEF, value: 1, title: '魔法防御，减少所受的魔法伤害' },
       {
         name: ENumericalNumber.PHYSICAL_RESISTANCE,
-        value: 1 + '%',
+        value: 1,
         title: '物理抗性，按比例降低所受物理伤害，每50%拆分相乘',
       },
       {
         name: ENumericalNumber.MAGIC_RESISTANCE,
-        value: 1 + '%',
+        value: 1,
         title: '魔法抗性，按比例降低所受魔法伤害，每50%拆分相乘',
       },
-      { name: '受物理伤害', value: 1 + '%', title: '受到的物理伤害比率' },
-      { name: '受魔法伤害', value: 1 + '%', title: '受到的魔法伤害比率' },
-      { name: '受百分比伤害', value: 1 + '%', title: '受到的百分比伤害比率' },
+      { name: '受物理伤害', value: 1, title: '受到的物理伤害比率' },
+      { name: '受魔法伤害', value: 1, title: '受到的魔法伤害比率' },
+      { name: '受百分比伤害', value: 1, title: '受到的百分比伤害比率' },
     ],
     [
       {
@@ -277,44 +822,44 @@ const RoleData: FC<IProps> = (props) => {
       },
       {
         name: '动作时间',
-        value: 100 + '%',
+        value: 100,
         title:
           '动作时间，受行动速度影响的行动所花费的时间（如部分技能释放，一般攻击等）比例，最快可为50%',
       },
       {
         name: '咏唱时间',
-        value: 100 + '%',
+        value: 100,
         title: '咏唱时间，受咏唱速度影响的技能咏唱所需要的时间比例，最少可为0%',
       },
     ],
     [
       {
         name: ENumericalNumber.UNSHEATHE_ATTACK_PERCENT,
-        value: 100 + '%',
+        value: 100,
         title: '拔刀攻击，受拔刀攻击影响的技能及一般攻击发生拔刀攻击时，伤害将乘以该倍率',
       },
       {
         name: ENumericalNumber.SHORT_RANGE_DAMAGE_PERCENT,
-        value: 100 + '%',
+        value: 100,
         title: '近距离威力，在攻击受近距离威力影响，且攻击时距离目标0~8米时，伤害将乘以该倍率',
       },
       {
         name: ENumericalNumber.LONG_RANGE_DAMAGE_PERCENT,
-        value: 100 + '%',
+        value: 100,
         title: '远距离威力，在攻击受远距离威力影响，且攻击时距离目标8米以上时，伤害将乘以该倍率',
       },
     ],
     [
       {
         name: ENumericalNumber.AGGRO_PERCENT,
-        value: 100 + '%',
+        value: 100,
         title: '仇恨值，造成的仇恨值将乘以该倍率，对部分情况无效',
       },
     ],
     [
       {
         name: ENumericalNumber.DROP_RATE_PERCENT,
-        value: 100 + '%',
+        value: 100,
         title: '掉宝率，物品掉落的概率将乘以该倍率',
       },
       { name: '复活时间', value: 300, title: '倒地后重返重返战场需要的时间' },
