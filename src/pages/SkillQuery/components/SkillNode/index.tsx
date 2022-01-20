@@ -1,4 +1,4 @@
-import { currentSkillState } from '@/store/current-skill';
+import { currentSkillState } from '@/store/current-data';
 import React, { FC } from 'react';
 import { useRecoilState } from 'recoil';
 

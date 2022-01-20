@@ -1,4 +1,4 @@
-import { ENumericalNumber } from '../constants/numericalValue';
+import { EForgingCrystal, ENumericalNumber } from '../constants/numericalValue';
 
 /** 装备位置 */
 
@@ -79,7 +79,8 @@ export interface IEnchanting {
 
 export interface IXtal {
   name: string;
-  type: EEquipmentLocation;
+  type: EForgingCrystal;
+  strengthen?: boolean;
   enchanting: IEnchanting[];
 }
 
@@ -105,8 +106,10 @@ export interface IEquipment {
   reform?: EModificationState;
   /** 附魔 */
   enchanting?: IEnchanting[];
-  /** 锻晶 */
-  xtal?: IXtal[];
+  /** 锻晶1 */
+  xtal1?: IXtal;
+  /** 锻晶2 */
+  xtal2?: IXtal;
   /** 自定义 */
   isDIY?: string;
 }

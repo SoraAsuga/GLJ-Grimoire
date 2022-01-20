@@ -1,3 +1,4 @@
+import { type } from 'os';
 import { IDescribeSkillData, ESkillEffectType } from '@/components/SkillDescribe/types';
 import {
   IEquipment,
@@ -5,6 +6,7 @@ import {
   EEquipmentLocation,
   EModificationState,
   IEnchanting,
+  IXtal,
 } from '@/typings/equipment';
 import { AimOutlined, FireOutlined } from '@ant-design/icons';
 
@@ -16,6 +18,16 @@ export enum ENumericalNumberType {
 
 /** 能力类型枚举 */
 export enum ENumericalNumber {
+  /** 受物理伤害 */
+  PHYSICAL_INJURY = '受物理伤害',
+  /** 受魔法伤害 */
+  MAGIC_INJURY = '受魔法伤害',
+  /** 受百分比伤害 */
+  PERCENT_INJURY = '受百分比伤害',
+  /** 动作时间 */
+  ACTION_TIME = '动作时间',
+  /** 咏唱时间 */
+  CHANT_TIME = '咏唱时间',
   /** 攻击力 */
   ATK = '攻击力',
   /** 攻击力百分比 */
@@ -367,6 +379,26 @@ export const FOOD_DATA: Record<EFoodData, IFoodData> = {
 
 /** 数值枚举映射 */
 export const NUMERICAL_NUMBER: Record<ENumericalNumber, INumericalNumberValue> = {
+  [ENumericalNumber.ACTION_TIME]: {
+    type: ENumericalNumberType.Percentage,
+    name: '动作时间',
+  },
+  [ENumericalNumber.CHANT_TIME]: {
+    type: ENumericalNumberType.Percentage,
+    name: '咏唱时间',
+  },
+  [ENumericalNumber.PHYSICAL_INJURY]: {
+    type: ENumericalNumberType.Percentage,
+    name: '受物理伤害',
+  },
+  [ENumericalNumber.MAGIC_INJURY]: {
+    type: ENumericalNumberType.Percentage,
+    name: '受魔法伤害',
+  },
+  [ENumericalNumber.PERCENT_INJURY]: {
+    type: ENumericalNumberType.Percentage,
+    name: '受百分比伤害',
+  },
   [ENumericalNumber.ATK]: {
     type: ENumericalNumberType.Normal,
     name: 'ATK',
@@ -1018,15 +1050,55 @@ export enum EForgingCrystal {
   CURRENCY = '通用锻晶',
 }
 
-export interface IForgingCrystal {
-  name: string;
-  type: EForgingCrystal;
-  strengthen?: boolean;
-  enchanting: IEnchanting[];
+/** 锻晶装备限制 */
+export interface IForgingEquip {
+  type: EWeaponType[];
 }
 
+/** 锻晶装备限制映射 */
+export const FORGING_TYPE: Record<EForgingCrystal, IForgingEquip> = {
+  [EForgingCrystal.WEAPON]: {
+    type: [
+      EWeaponType.OneHandedSword,
+      EWeaponType.TwoHandedSword,
+      EWeaponType.Bow,
+      EWeaponType.BowGun,
+      EWeaponType.Staff,
+      EWeaponType.MagicDevice,
+      EWeaponType.Knuckle,
+      EWeaponType.Katana,
+      EWeaponType.Halberd,
+    ],
+  },
+  [EForgingCrystal.ARMOR]: {
+    type: [EWeaponType.Armor],
+  },
+  [EForgingCrystal.ADD]: {
+    type: [EWeaponType.AdditionalEquip],
+  },
+  [EForgingCrystal.SPECIAL]: {
+    type: [EWeaponType.SpecialEquip],
+  },
+  [EForgingCrystal.CURRENCY]: {
+    type: [
+      EWeaponType.OneHandedSword,
+      EWeaponType.TwoHandedSword,
+      EWeaponType.Bow,
+      EWeaponType.BowGun,
+      EWeaponType.Staff,
+      EWeaponType.MagicDevice,
+      EWeaponType.Knuckle,
+      EWeaponType.Katana,
+      EWeaponType.Halberd,
+      EWeaponType.Armor,
+      EWeaponType.AdditionalEquip,
+      EWeaponType.SpecialEquip,
+    ],
+  },
+};
+
 /** 锻晶数据 */
-export const FORGING_CRYSTAL: IForgingCrystal[] = [
+export const FORGING_CRYSTAL: IXtal[] = [
   {
     name: '虚假黑骑士',
     type: EForgingCrystal.WEAPON,

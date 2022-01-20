@@ -19,9 +19,10 @@ import {
   FOOD_DATA,
   NUMERICAL_NUMBER,
 } from '@/constants/numericalValue';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import { foodConfigurationState } from '@/store/food-configuration';
 import _ from 'lodash';
+import { currentFoodState } from '@/store/current-data';
 import SplitLine from '../../components/SplitLine';
 import { IProps } from '../types';
 
@@ -85,6 +86,9 @@ const RoleFood: FC<IProps> = (props) => {
     choseFoodNumber: 0,
   });
 
+  /** 将当前选中料理上传到 store 中 */
+  const [currentChoseFood, setCurrentChoseFood] = useRecoilState(currentFoodState);
+
   /** 暂存料理名称 */
   const [newConfigurationName, setNewConfigurationName] = useState('');
 
@@ -119,6 +123,9 @@ const RoleFood: FC<IProps> = (props) => {
       foodList: currentFood[0].foodList,
       choseFoodNumber: currentFood[0].choseFoodNumber,
     });
+    setCurrentChoseFood(
+      currentConfiguration.foodList.filter((item) => item.userConfiguration.chose),
+    );
   };
 
   /** 动态生成配置表 */
@@ -142,7 +149,6 @@ const RoleFood: FC<IProps> = (props) => {
         !item.userConfiguration.chose &&
         FOOD_DATA[item.foodData].name === name
       ) {
-        console.log('gdx: ', 1);
         setChoseItem(choseItem + 1);
         return {
           foodData,
@@ -153,8 +159,6 @@ const RoleFood: FC<IProps> = (props) => {
           },
         };
       } else if (item.userConfiguration.chose && FOOD_DATA[item.foodData].name === name) {
-        console.log('gdx: ', 2);
-        item.userConfiguration.chose = false;
         setChoseItem(choseItem - 1);
         return {
           foodData,
@@ -173,22 +177,26 @@ const RoleFood: FC<IProps> = (props) => {
       foodList: newFoodList,
       choseFoodNumber: choseItem,
     });
+    setCurrentChoseFood(
+      currentConfiguration.foodList.filter((item) => item.userConfiguration.chose),
+    );
   };
 
   /** 料理等级与加成 */
   const changeLevel = (name: ENumericalNumber) => (value: number) => {
     const newFoodList = currentConfiguration.foodList.map((item) => {
       const { halfIncrement, max } = FOOD_DATA[item.foodData];
+      const { chose } = item.userConfiguration;
       if (FOOD_DATA[item.foodData].name === name) {
-        item.userConfiguration.level = value;
         if (value <= HALF_MAX_LEVEL) {
-          item.userConfiguration.value = halfIncrement * value;
+          const newValue = halfIncrement * value;
+          return { ...item, userConfiguration: { level: value, value: newValue, chose } };
         } else {
-          item.userConfiguration.value =
+          const newValue =
             ((max - halfIncrement * HALF_MAX_LEVEL) / HALF_MAX_LEVEL) * (value - HALF_MAX_LEVEL) +
             halfIncrement * HALF_MAX_LEVEL;
+          return { ...item, userConfiguration: { level: value, value: newValue, chose } };
         }
-        return item;
       }
       return item;
     });
@@ -198,6 +206,9 @@ const RoleFood: FC<IProps> = (props) => {
       foodList: newFoodList,
       choseFoodNumber: currentConfiguration.choseFoodNumber,
     });
+    setCurrentChoseFood(
+      currentConfiguration.foodList.filter((item) => item.userConfiguration.chose),
+    );
   };
 
   /** 动态生成已选列表 */
@@ -309,6 +320,7 @@ const RoleFood: FC<IProps> = (props) => {
       choseFoodNumber: 0,
     });
     setDeleteWindow(false);
+    setCurrentChoseFood([]);
   };
 
   return (

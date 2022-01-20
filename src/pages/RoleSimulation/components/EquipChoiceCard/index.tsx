@@ -17,10 +17,11 @@ interface IProps {
   role: IRoleItem;
   changeShow: (type?: EEquipmentLocation, location?: string) => () => void;
   deleteCurrentEquip: (item: IType) => () => void;
+  id?: string;
 }
 
 const EquipChoiceCard: FC<IProps> = (props) => {
-  const { item, role, changeShow, deleteCurrentEquip } = props;
+  const { item, role, changeShow, deleteCurrentEquip, id } = props;
 
   return (
     <div className="role-equip__card" key={item.name}>
@@ -39,7 +40,7 @@ const EquipChoiceCard: FC<IProps> = (props) => {
         </header>
         {role.equipment[item.location] ? (
           role.equipment[item.location].name !== '空' ? (
-            <EquipDetailCard item={role.equipment[item.location]} />
+            <EquipDetailCard item={role.equipment[item.location]} id={id} />
           ) : (
             <button className="role-equip__content" onClick={changeShow(item.type, item.location)}>
               <section className="role-equip__content-details">

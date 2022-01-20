@@ -26,7 +26,7 @@ import {
 } from '@/components/SkillTree';
 import useRefState from '@/hooks/useRefState';
 import { SkillData } from '@/components/SkillDescribe/skillData';
-import { currentSkillState } from '@/store/current-skill';
+import { currentSkillState } from '@/store/current-data';
 import { useRecoilValue } from 'recoil';
 
 const { Content, Sider } = Layout;

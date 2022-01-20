@@ -224,22 +224,12 @@ const RoleEquip: FC<IProps> = (props) => {
             <RocketOutlined style={{ padding: '5px' }} className="list-header__title-icon" />
             <span className="list-header__title-text">装备清单</span>
           </div>
-          <div className="list-header__menu">
-            <button>
-              <FileDoneOutlined className="btn-icon" />
-              新增装备
-            </button>
-            <button>
-              <FileAddOutlined className="btn-icon" />
-              自定装备
-            </button>
-          </div>
         </header>
         <section className="role-equip__list-content">
           <div className="role-list">{equipItem()}</div>
           <div className="role-detail">
             <div className="role-detail_container">
-              <EquipDetailCard item={currentEquip}></EquipDetailCard>
+              <EquipDetailCard item={currentEquip} headerMenu={false}></EquipDetailCard>
             </div>
           </div>
         </section>
