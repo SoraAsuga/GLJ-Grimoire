@@ -22,11 +22,9 @@ const RoleData: FC<IProps> = (props) => {
   /** 当前角色数据 */
   const roleSelector = useMemo(() => getRoleSelector(id), [id]);
   const [role, setRole] = useRecoilState(roleSelector);
-  console.log('role:', role);
 
   /** 当前料理数据 */
   const [currentChoseFood] = useRecoilState(currentFoodState);
-  console.log('currentFood data:', currentChoseFood);
 
   /** 判断附魔的武器限制 */
   const enchantingLimit = (weaponLocation: IEquipment) => {
@@ -91,8 +89,6 @@ const RoleData: FC<IProps> = (props) => {
     });
   }
 
-  console.log('enchanting: ', enchantingData);
-
   /** 以基础值为基准的加成数值计算 */
   const hasBasicsData = ({
     additionType,
@@ -114,11 +110,9 @@ const RoleData: FC<IProps> = (props) => {
   }) => {
     /** 结果暂存 */
     let result = basics;
-    console.log('enchantingData: ', enchantingData);
     enchantingData.map((item) =>
       item.map((enchanting) => {
         /** 筛选附魔类型 */
-        console.log('enchanting: ', enchanting);
         if (
           additionType.some((item) => (enchanting !== undefined ? item === enchanting.type : false))
         ) {
@@ -189,7 +183,6 @@ const RoleData: FC<IProps> = (props) => {
     } else if (decimal) {
       return toNumber(result.toFixed(decimal));
     }
-    console.log('result:', result);
     return result;
   };
 

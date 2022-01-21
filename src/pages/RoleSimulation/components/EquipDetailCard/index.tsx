@@ -1,6 +1,10 @@
-import { ENumericalNumber, NUMERICAL_NUMBER } from '@/constants/numericalValue';
-import { getRoleSelector } from '@/store/role-simulation';
-import { IEquipment, IXtal } from '@/typings/equipment';
+import {
+  EForgingCrystal,
+  ENumericalNumber,
+  FORGING_TYPE,
+  NUMERICAL_NUMBER,
+} from '@/constants/numericalValue';
+import { EEquipmentLocation, EWeaponType, IEquipment, IXtal } from '@/typings/equipment';
 import {
   AimOutlined,
   BorderOutlined,
@@ -10,26 +14,49 @@ import {
   SkinOutlined,
   StarOutlined,
 } from '@ant-design/icons';
-import React, { FC, useMemo, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import EquipEdit from '../EquipEdit';
+import React, { FC, useState } from 'react';
 
 import './index.less';
 
 interface IProps {
   item: IEquipment;
   headerMenu?: boolean;
-  id?: string;
+  showXtalList?: (show: boolean) => void;
+  changeXtalType?: (
+    type: EWeaponType,
+    location: 'xtal1' | 'xtal2',
+    weaponLocation: EEquipmentLocation,
+  ) => void;
 }
 
 const EquipDetailCard: FC<IProps> = (props) => {
-  const { item, headerMenu = true, id } = props;
+  const { item, headerMenu = true, showXtalList, changeXtalType } = props;
+  /** 锻晶选择切换 */
   const [show, setShow] = useState(false);
 
-  if (id) {
-    const roleSelector = useMemo(() => getRoleSelector(id), [id]);
-    const [role, setRole] = useRecoilState(roleSelector);
-  }
+  /** 点击锻晶选项 */
+  const clickXtalMenu = (location: 'xtal1' | 'xtal2') => () => {
+    showXtalList(true);
+    changeXtalType(item.weaponType, location, item.location);
+  };
+
+  /** 动态生成锻晶按钮 */
+  const crystalButton = (xtal: IXtal, location: 'xtal1' | 'xtal2') => {
+    if (xtal) {
+      return (
+        <button className="card-content__crystal-btn">
+          <StarOutlined className="crystal-btn__icon" />
+          <span className="crystal-btn__name">{xtal.name}</span>
+        </button>
+      );
+    }
+    return (
+      <button className="card-content__crystal-btn" onClick={clickXtalMenu(location)}>
+        <BorderOutlined className="crystal-btn__icon" />
+        <span className="crystal-btn__name">空空的锻晶孔</span>
+      </button>
+    );
+  };
 
   const enchantingItem = () =>
     item.enchanting &&
@@ -58,24 +85,6 @@ const EquipDetailCard: FC<IProps> = (props) => {
       );
     });
 
-  /** 动态生成锻晶按钮 */
-  const crystalButton = (xtal: IXtal) => {
-    if (xtal) {
-      return (
-        <button className="card-content__crystal-btn">
-          <StarOutlined className="crystal-btn__icon" />
-          <span className="crystal-btn__name">{xtal.name}</span>
-        </button>
-      );
-    }
-    return (
-      <button className="card-content__crystal-btn">
-        <BorderOutlined className="crystal-btn__icon" />
-        <span className="crystal-btn__name">空空的锻晶孔</span>
-      </button>
-    );
-  };
-
   return (
     <>
       <section className="equip-detail-card__container">
@@ -83,11 +92,14 @@ const EquipDetailCard: FC<IProps> = (props) => {
           <StarOutlined className="card-header__icon" />
           <span className="card-header__name">{item.name}</span>
           <span className="card-header__type">{item.weaponType}</span>
-          {headerMenu && (
-            <button className="card-header__btn" onClick={() => setShow(!show)}>
-              {show ? <FileDoneOutlined /> : <EditOutlined />}
-            </button>
-          )}
+          {headerMenu &&
+            FORGING_TYPE[EForgingCrystal.CURRENCY].type.some(
+              (allowedType) => allowedType === item.weaponType,
+            ) && (
+              <button className="card-header__btn" onClick={() => setShow(!show)}>
+                {show ? <FileDoneOutlined /> : <EditOutlined />}
+              </button>
+            )}
         </header>
         <section className="card-content">
           <section className="card-content__value">
@@ -105,8 +117,8 @@ const EquipDetailCard: FC<IProps> = (props) => {
           </section>
           {show ? (
             <div className="card-content__crystal">
-              {crystalButton(item.xtal1)}
-              {crystalButton(item.xtal2)}
+              {crystalButton(item.xtal1, 'xtal1')}
+              {crystalButton(item.xtal2, 'xtal2')}
             </div>
           ) : (
             <section className="card-content__enchanting">{enchantingItem()}</section>

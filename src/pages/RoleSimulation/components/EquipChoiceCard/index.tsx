@@ -1,4 +1,4 @@
-import { EEquipmentLocation } from '@/typings/equipment';
+import { EEquipmentLocation, EWeaponType } from '@/typings/equipment';
 import { IRoleItem } from '@/typings/role';
 import {
   RocketOutlined,
@@ -17,11 +17,16 @@ interface IProps {
   role: IRoleItem;
   changeShow: (type?: EEquipmentLocation, location?: string) => () => void;
   deleteCurrentEquip: (item: IType) => () => void;
-  id?: string;
+  showXtalList?: (show: boolean) => void;
+  changeXtalType?: (
+    type: EWeaponType,
+    location: 'xtal1' | 'xtal2',
+    weaponLocation: EEquipmentLocation,
+  ) => void;
 }
 
 const EquipChoiceCard: FC<IProps> = (props) => {
-  const { item, role, changeShow, deleteCurrentEquip, id } = props;
+  const { item, role, changeShow, deleteCurrentEquip, showXtalList, changeXtalType } = props;
 
   return (
     <div className="role-equip__card" key={item.name}>
@@ -40,7 +45,11 @@ const EquipChoiceCard: FC<IProps> = (props) => {
         </header>
         {role.equipment[item.location] ? (
           role.equipment[item.location].name !== '空' ? (
-            <EquipDetailCard item={role.equipment[item.location]} id={id} />
+            <EquipDetailCard
+              item={role.equipment[item.location]}
+              showXtalList={showXtalList}
+              changeXtalType={changeXtalType}
+            />
           ) : (
             <button className="role-equip__content" onClick={changeShow(item.type, item.location)}>
               <section className="role-equip__content-details">

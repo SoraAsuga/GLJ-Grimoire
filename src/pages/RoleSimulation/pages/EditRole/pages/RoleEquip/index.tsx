@@ -1,20 +1,16 @@
-import { ENumericalNumber, SECONDARY_WEAPON_ALLOWED_MAP } from '@/constants/numericalValue';
+import ForgingCrystalCard from '@/components/ForgingCrystalCard';
+import {
+  ENumericalNumber,
+  FORGING_CRYSTAL,
+  FORGING_TYPE,
+  SECONDARY_WEAPON_ALLOWED_MAP,
+} from '@/constants/numericalValue';
 import EquipChoiceCard from '@/pages/RoleSimulation/components/EquipChoiceCard';
 import EquipDetailCard from '@/pages/RoleSimulation/components/EquipDetailCard';
 import { equipsState } from '@/store/equips';
-import { chosenEquipsState } from '@/store/equips-choice';
 import { getRoleSelector } from '@/store/role-simulation';
-import { EEquipmentLocation, EWeaponType, IEquipment } from '@/typings/equipment';
-import {
-  RocketOutlined,
-  FileDoneOutlined,
-  FileAddOutlined,
-  StarOutlined,
-  CheckOutlined,
-  CopyOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
-import Item from 'antd/lib/list/Item';
+import { EEquipmentLocation, EWeaponType, IEquipment, IXtal } from '@/typings/equipment';
+import { RocketOutlined, StarOutlined, CheckOutlined } from '@ant-design/icons';
 import Modal from 'antd/lib/modal/Modal';
 import React, { FC, useMemo, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -63,6 +59,28 @@ const RoleEquip: FC<IProps> = (props) => {
   /** 当前装备位置 */
   const [currentLocation, setCurrentLocation] = useState(undefined);
 
+  /** 锻晶菜单展示 */
+  const [showXtal, setShowXtal] = useState(false);
+
+  /** 当前锻晶 */
+  const [currentXtal, setCurrentXtal] = useState(FORGING_CRYSTAL[0]);
+
+  /** 当前编辑锻晶装备类型 */
+  const [currentXtalEquip, setCurrentXtalEquip] = useState({
+    weaponType: EWeaponType.OneHandedSword,
+    xtalLocation: 'xtal1',
+    weaponLocation: EEquipmentLocation.MainWeapon,
+  });
+
+  /** 改变当前编辑锻晶装备类型 */
+  const changeCurrentXtalEquip = (
+    type: EWeaponType,
+    location: 'xtal1' | 'xtal2',
+    weaponLocation: EEquipmentLocation,
+  ) => {
+    setCurrentXtalEquip({ weaponType: type, xtalLocation: location, weaponLocation });
+  };
+
   /** 装备卡名称及其装备类型 */
   const type: IType[] = [
     {
@@ -98,10 +116,31 @@ const RoleEquip: FC<IProps> = (props) => {
   };
 
   /** 将当前装备更新至 store */
-  const changeEquipment = () => () => {
+  const changeEquipment = () => {
     const equipment = { ...role.equipment, [currentLocation]: currentEquip };
     setRole({ ...role, equipment });
     setShow(false);
+  };
+
+  /** 将当前锻晶更新至 store */
+  const changeXtal = () => {
+    if (currentXtalEquip.xtalLocation === 'xtal1') {
+      const xtal1 = {
+        ...role.equipment[currentXtalEquip.weaponLocation],
+        xtal1: currentXtal,
+      };
+      console.log('test1:', { ...role.equipment[currentXtalEquip.weaponLocation], xtal1 });
+      // setRole({ ...role.equipment[currentXtalEquip.weaponLocation], xtal1 });
+    } else {
+      const xtal2 = {
+        ...role.equipment[currentXtalEquip.weaponLocation],
+        xtal2: currentXtal,
+      };
+      console.log('test2:', { ...role.equipment[currentXtalEquip.weaponLocation], xtal2 });
+      // setRole({ ...role.equipment[currentXtalEquip.weaponLocation], xtal2 });
+    }
+    // setRole({ ...role, equipment });
+    setShowXtal(false);
   };
 
   /** 改变当前装备及装备位置 */
@@ -115,7 +154,7 @@ const RoleEquip: FC<IProps> = (props) => {
     setRole({ ...role, equipment });
   };
 
-  /** 动态生成装备条目 */
+  /** 动态生成装备选择菜单装备条目 */
   const equipItem = () => {
     return equips.map((item) => {
       const typeJudge = () => {
@@ -151,18 +190,47 @@ const RoleEquip: FC<IProps> = (props) => {
             <StarOutlined style={{ margin: '5px' }} />
             {item.name}
           </span>
-          {item.refine && (
-            <span className="role-list_item-container">
-              <span className="role-list_item-type">+{item.refine}</span>
-            </span>
-          )}
         </button>
       );
     });
   };
 
-  /** 动态生成确认按钮 */
-  const okButton = () => {
+  /** 动态生成锻晶条目 */
+  const xtalItem = () => {
+    return FORGING_CRYSTAL.map((item) => {
+      const typeJudge = () => {
+        if (
+          currentXtalEquip &&
+          FORGING_TYPE[item.type].type.some(
+            (allowedType) => currentXtalEquip.weaponType === allowedType,
+          )
+        ) {
+          if (currentXtal === item) {
+            return { backgroundColor: '#4e8eee34' };
+          }
+          return {};
+        }
+        return { opacity: '0.4' };
+      };
+
+      return (
+        <button
+          className="role-list_item"
+          key={item.name}
+          style={typeJudge()}
+          onClick={() => setCurrentXtal(item)}
+        >
+          <span className="role-list_item-name">
+            <StarOutlined style={{ margin: '5px' }} />
+            {item.name}
+          </span>
+        </button>
+      );
+    });
+  };
+
+  /** 动态生成装备选择菜单确认按钮 */
+  const weaponOkButton = () => {
     if (currentEquipLocationType === EEquipmentLocation.SecondaryWeapon) {
       if (
         SECONDARY_WEAPON_ALLOWED_MAP[role.equipment.mainWeapon.weaponType].some(
@@ -170,7 +238,7 @@ const RoleEquip: FC<IProps> = (props) => {
         )
       ) {
         return (
-          <button className="list-footer__btn" onClick={changeEquipment()}>
+          <button className="list-footer__btn" onClick={changeEquipment}>
             <CheckOutlined className="list-footer__btn-icon" />
             确认
           </button>
@@ -181,7 +249,7 @@ const RoleEquip: FC<IProps> = (props) => {
       currentEquip.location === currentEquipLocationType
     ) {
       return (
-        <button className="list-footer__btn" onClick={changeEquipment()}>
+        <button className="list-footer__btn" onClick={changeEquipment}>
           <CheckOutlined className="list-footer__btn-icon" />
           确认
         </button>
@@ -195,6 +263,33 @@ const RoleEquip: FC<IProps> = (props) => {
     );
   };
 
+  /** 动态生成锻晶选择菜单确认按钮 */
+  const xtalOkButton = () => {
+    if (
+      FORGING_TYPE[currentXtal.type].type.some(
+        (allowedType) => allowedType === currentXtalEquip.weaponType,
+      )
+    ) {
+      return (
+        <button className="list-footer__btn" onClick={changeXtal}>
+          <CheckOutlined className="list-footer__btn-icon" />
+          确认
+        </button>
+      );
+    }
+    return (
+      <div className="list-footer__btn-error">
+        <CheckOutlined className="list-footer__btn-icon" />
+        确认
+      </div>
+    );
+  };
+
+  /** 是否展示锻晶菜单 */
+  const changeShowXtal = (show: boolean) => {
+    setShowXtal(show);
+  };
+
   /** 动态生成装备卡 */
   const equipCard = () =>
     type.map((item) => {
@@ -205,6 +300,8 @@ const RoleEquip: FC<IProps> = (props) => {
           role={role}
           changeShow={changeShow}
           deleteCurrentEquip={deleteCurrentEquip}
+          showXtalList={changeShowXtal}
+          changeXtalType={changeCurrentXtalEquip}
         />
       );
     });
@@ -216,8 +313,8 @@ const RoleEquip: FC<IProps> = (props) => {
         visible={show}
         onCancel={changeShow()}
         footer={null}
-        className="role-equip__list"
         getContainer={false}
+        className="role-equip__list"
       >
         <header className="role-equip__list-header">
           <div className="list-header__title">
@@ -235,16 +332,36 @@ const RoleEquip: FC<IProps> = (props) => {
         </section>
         {currentEquip && (
           <section className="role-equip__list-footer">
-            <button className="list-footer__btn">
-              <CopyOutlined className="list-footer__btn-icon" />
-              复制
-            </button>
-            <button className="list-footer__btn">
-              <DeleteOutlined className="list-footer__btn-icon" />
-              删除
-            </button>
             <div className="list-footer__div"></div>
-            {okButton()}
+            {weaponOkButton()}
+          </section>
+        )}
+      </Modal>
+      <Modal
+        className="role-equip__list"
+        visible={showXtal}
+        footer={null}
+        getContainer={false}
+        onCancel={() => setShowXtal(false)}
+      >
+        <header className="role-equip__list-header">
+          <div className="list-header__title">
+            <RocketOutlined style={{ padding: '5px' }} className="list-header__title-icon" />
+            <span className="list-header__title-text">锻晶清单</span>
+          </div>
+        </header>
+        <section className="role-equip__list-content">
+          <div className="role-list">{xtalItem()}</div>
+          <div className="role-detail">
+            <div className="role-detail_container">
+              <ForgingCrystalCard item={currentXtal}></ForgingCrystalCard>
+            </div>
+          </div>
+        </section>
+        {currentEquip && (
+          <section className="role-equip__list-footer">
+            <div className="list-footer__div"></div>
+            {xtalOkButton()}
           </section>
         )}
       </Modal>

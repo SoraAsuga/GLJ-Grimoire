@@ -1,12 +1,13 @@
-import { IForgingCrystal, NUMERICAL_NUMBER } from '@/constants/numericalValue';
+import { NUMERICAL_NUMBER } from '@/constants/numericalValue';
 import EquipEdit from '@/pages/RoleSimulation/components/EquipEdit';
+import { IXtal } from '@/typings/equipment';
 import { AimOutlined, StarOutlined } from '@ant-design/icons';
 import React, { FC, useState } from 'react';
 
 import './index.less';
 
 interface IProps {
-  item: IForgingCrystal;
+  item: IXtal;
 }
 
 const ForgingCrystalCard: FC<IProps> = (props) => {
