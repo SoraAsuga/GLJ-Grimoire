@@ -92,14 +92,14 @@ const EquipDetailCard: FC<IProps> = (props) => {
           <StarOutlined className="card-header__icon" />
           <span className="card-header__name">{item.name}</span>
           <span className="card-header__type">{item.weaponType}</span>
-          {headerMenu &&
+          {/* {headerMenu &&
             FORGING_TYPE[EForgingCrystal.CURRENCY].type.some(
               (allowedType) => allowedType === item.weaponType,
             ) && (
               <button className="card-header__btn" onClick={() => setShow(!show)}>
                 {show ? <FileDoneOutlined /> : <EditOutlined />}
               </button>
-            )}
+            )} */}
         </header>
         <section className="card-content">
           <section className="card-content__value">

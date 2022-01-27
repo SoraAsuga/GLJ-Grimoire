@@ -7,7 +7,7 @@ const RenderBlock = (props: IDescribeBlockProps, state) => {
   const { icon, name, type, properties, effects, additional } = props;
 
   const stateGetter = (name: string) => {
-    console.log('stateGetter', state);
+    // console.log('stateGetter', state);
     return state[name];
   };
 

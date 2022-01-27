@@ -1,20 +1,26 @@
-import React, { FC } from 'react';
+import React, { createContext, FC, useContext } from 'react';
 import { ITreeOption, ETreeType } from './types';
 import TreeNode from './TreeNode';
 
 import './index.less';
 
+export const treeContext = createContext({ skillPointsMode: false });
+
 interface ITreeProps {
+  skillPointsMode?: boolean;
   data: ITreeOption;
 }
 
 const Tree: FC<ITreeProps> = (props) => {
-  const { data } = props;
+  const { data, skillPointsMode = false } = props;
+  const childProps = { ...data, type: ETreeType.ROOT };
 
   return (
-    <section className="tree">
-      <TreeNode data={{ ...data, type: ETreeType.ROOT }} />
-    </section>
+    <treeContext.Provider value={{ skillPointsMode }}>
+      <section className="tree">
+        <TreeNode {...childProps} />
+      </section>
+    </treeContext.Provider>
   );
 };
 

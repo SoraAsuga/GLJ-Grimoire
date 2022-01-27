@@ -26,11 +26,11 @@ const RenderTable = (props: IDescribeTableProps, state) => {
   };
 
   const stateGetter = (name: string) => {
-    console.log('stateGetter', state);
+    // console.log('stateGetter', state);
     return state[name];
   };
 
-  console.log('renderTableItem', stateGetter('level'));
+  // console.log('renderTableItem', stateGetter('level'));
 
   const { items } = props;
 

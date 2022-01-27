@@ -4,9 +4,16 @@ export enum ETreeType {
   BROTHER,
 }
 
+export interface ISkillNodeProps {
+  content: string;
+  icon?: React.ReactNode;
+  level?: number;
+}
+
 export interface ITreeOption {
-  content?: React.ReactNode;
+  type?: ETreeType;
+  /** 树节点需要的数据 */
+  data?: ISkillNodeProps;
   childList?: ITreeOption[];
   brotherList?: ITreeOption[];
-  type?: ETreeType;
 }

@@ -10,8 +10,10 @@
       padding-left: 40px;
 
       .tree-node__content {
+        position: relative;
         width: 40px;
         height: 40px;
+        z-index: 2;
       }
     }
   }
@@ -31,9 +33,9 @@
         background-color: @theme-color;
       }
 
-      .tree-node__content {
-        z-index: 2;
-      }
+      // .tree-node__content {
+      //   z-index: 2;
+      // }
     }
 
     &:not(:last-child) {

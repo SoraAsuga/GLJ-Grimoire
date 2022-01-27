@@ -86,7 +86,7 @@ const RoleFood: FC<IProps> = (props) => {
     choseFoodNumber: 0,
   });
 
-  /** 将当前选中料理上传到 store 中 */
+  /** 将当前选中料理更新到 store 中 */
   const [currentChoseFood, setCurrentChoseFood] = useRecoilState(currentFoodState);
 
   /** 暂存料理名称 */
@@ -115,7 +115,7 @@ const RoleFood: FC<IProps> = (props) => {
   /** 料理选择并存入暂存 */
   const handleChange = (value: string) => {
     const currentFood = foodConfiguration.filter((item) => item.id === value);
-    currentFood[0].foodList;
+
     setChoseItem(currentFood[0].choseFoodNumber);
     setCurrentConfiguration({
       name: currentFood[0].name,
@@ -187,6 +187,7 @@ const RoleFood: FC<IProps> = (props) => {
     const newFoodList = currentConfiguration.foodList.map((item) => {
       const { halfIncrement, max } = FOOD_DATA[item.foodData];
       const { chose } = item.userConfiguration;
+
       if (FOOD_DATA[item.foodData].name === name) {
         if (value <= HALF_MAX_LEVEL) {
           const newValue = halfIncrement * value;
@@ -200,15 +201,14 @@ const RoleFood: FC<IProps> = (props) => {
       }
       return item;
     });
+
     setCurrentConfiguration({
       name: currentConfiguration.name,
       id: currentConfiguration.id,
       foodList: newFoodList,
       choseFoodNumber: currentConfiguration.choseFoodNumber,
     });
-    setCurrentChoseFood(
-      currentConfiguration.foodList.filter((item) => item.userConfiguration.chose),
-    );
+    setCurrentChoseFood(newFoodList.filter((item) => item.userConfiguration.chose));
   };
 
   /** 动态生成已选列表 */
