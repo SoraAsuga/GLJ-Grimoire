@@ -7,7 +7,7 @@ import {
   FolderOutlined,
   FormOutlined,
 } from '@ant-design/icons';
-import { Input, InputNumber, Modal, Select } from 'antd';
+import { Button, Input, InputNumber, Modal, Select } from 'antd';
 import React, { FC, useState } from 'react';
 import { nanoid } from 'nanoid';
 
@@ -291,12 +291,8 @@ const RoleFood: FC<IProps> = (props) => {
   const modifyListName = () => {
     setFoodConfiguration((oldTodoList) =>
       oldTodoList.map((item) => {
-        console.log('item: ', item);
         const { id, foodList, choseFoodNumber } = item;
-        console.log('id: ', id);
-        console.log('currentId: ', currentConfiguration.id);
         if (id === currentConfiguration.id) {
-          currentConfiguration.name = newConfigurationName;
           return { name: newConfigurationName, id, foodList, choseFoodNumber };
         }
         return item;
@@ -304,6 +300,7 @@ const RoleFood: FC<IProps> = (props) => {
     );
     console.log('修改名称: ', foodConfiguration);
     setModifyWindow(false);
+    setCurrentConfiguration({ ...currentConfiguration, name: newConfigurationName });
     setNewConfigurationName('');
   };
 
@@ -374,27 +371,27 @@ const RoleFood: FC<IProps> = (props) => {
             {foodItems()}
           </Select>
           <div className="page-food__name-btn">
-            {currentConfiguration.id === '' || (
-              <button onClick={changeFoodConfiguration}>
-                <FolderOutlined style={{ padding: '0 3px' }} />
-                保存
-              </button>
-            )}
-            <button onClick={() => setNewWindow(true)}>
+            <Button type="primary" shape="round" onClick={() => setNewWindow(true)}>
               <FileAddOutlined style={{ padding: '0 3px' }} />
               新建
-            </button>
+            </Button>
             {currentConfiguration.id === '' || (
-              <button onClick={() => setModifyWindow(true)}>
-                <FormOutlined style={{ padding: '0 3px' }} />
-                改名
-              </button>
+              <Button type="primary" shape="round" onClick={changeFoodConfiguration}>
+                <FolderOutlined style={{ padding: '0 3px' }} />
+                保存
+              </Button>
             )}
             {currentConfiguration.id === '' || (
-              <button className="page-food__name-delete" onClick={() => setDeleteWindow(true)}>
+              <Button type="primary" shape="round" onClick={() => setModifyWindow(true)}>
+                <FormOutlined style={{ padding: '0 3px' }} />
+                改名
+              </Button>
+            )}
+            {currentConfiguration.id === '' || (
+              <Button type="primary" shape="round" onClick={() => setDeleteWindow(true)} danger>
                 <DeleteOutlined style={{ padding: '0 3px' }} />
                 删除
-              </button>
+              </Button>
             )}
           </div>
         </section>

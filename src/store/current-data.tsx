@@ -1,5 +1,6 @@
 import { EFoodData } from '@/constants/numericalValue';
 import { atom } from 'recoil';
+import { ISkillConfig } from './skill-configuration';
 
 export const currentSkillState = atom<string>({
   key: 'current-data/skill',
@@ -14,4 +15,9 @@ export const currentFoodState = atom<
 >({
   key: 'current-data/food',
   default: [],
+});
+
+export const currentSkillConfigState = atom<ISkillConfig>({
+  key: 'current-data/skill-config',
+  default: undefined,
 });

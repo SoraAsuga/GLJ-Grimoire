@@ -1,10 +1,13 @@
 import { Sword, Shoot } from '@/common/img/skill-icons';
 import SkillNode from '@/components/Tree/SkillNode';
-import React from 'react';
+import React, { FC } from 'react';
 import Tree from '../Tree';
 import { ITreeOption } from '../Tree/types';
 
 import './index.less';
+export interface ISkillTree {
+  skillPointsMode?: boolean;
+}
 
 /** 剑术技能 */
 const swordSkill: ITreeOption[] = [
@@ -96,14 +99,16 @@ const swordSkill: ITreeOption[] = [
   },
 ];
 
-export const SwordSkill = () => {
+export const SwordSkill: FC<ISkillTree> = (props) => {
+  const { skillPointsMode } = props;
   return (
     <div className="skill-tree__background">
       {swordSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} skillPointsMode={skillPointsMode}></Tree>
       ))}
       <div className="skill-tree__unique">
         <Tree
+          skillPointsMode={skillPointsMode}
           data={{
             data: {
               content: '快速蹴击',
@@ -128,7 +133,7 @@ const shortSkill: ITreeOption[] = [
             childList: [{ data: { content: '弱点狙击', icon: Shoot[2] } }],
           },
           {
-            data: { content: '剑雨', icon: Shoot[3] },
+            data: { content: '箭雨', icon: Shoot[3] },
             childList: [{ childList: [{ data: { content: '交叉火线', icon: Shoot[4] } }] }],
           },
         ],
@@ -170,14 +175,17 @@ const shortSkill: ITreeOption[] = [
   },
 ];
 
-export const ShortSkill = () => {
+export const ShortSkill: FC<ISkillTree> = (props) => {
+  const { skillPointsMode } = props;
+
   return (
     <div className="skill-tree__background">
       {shortSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} skillPointsMode={skillPointsMode}></Tree>
       ))}
       <div className="skill-tree__unique">
         <Tree
+          skillPointsMode={skillPointsMode}
           data={{
             data: {
               content: '破灭射击',

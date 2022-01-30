@@ -8,9 +8,9 @@ import React, {
   useState,
 } from 'react';
 import cls from 'classnames';
-import { currentSkillState } from '@/store/current-data';
-import { useSetRecoilState } from 'recoil';
-import { ITreeOption, ETreeType, ISkillNodeProps } from './types';
+import { currentSkillConfigState, currentSkillState } from '@/store/current-data';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { ITreeOption, ETreeType } from './types';
 import SkillNode from './SkillNode';
 import { treeContext } from '.';
 
@@ -38,7 +38,18 @@ const TreeNode = forwardRef<ISkillNodeRef, ITreeNodeProps>((props, ref) => {
 
   const setSkillState = useSetRecoilState(currentSkillState);
 
-  const [level, setLevel] = useState(0);
+  const [level, setLevel] = useState(
+    () =>
+      Object.values(currentConfig.data).map((item) => {
+        return item.map((items) => {
+          if (Boolean(data)) return items.skillData[data.content];
+        });
+      })[0][0],
+  );
+  () => {};
+
+  /** 当前配置 */
+  const [currentConfig, setCurrentConfig] = useRecoilState(currentSkillConfigState);
 
   /** 保存子节点引用，方便调用 reset 方法 */
   const childRefs = useRef<ISkillNodeRef[]>([]);
@@ -50,6 +61,7 @@ const TreeNode = forwardRef<ISkillNodeRef, ITreeNodeProps>((props, ref) => {
   };
 
   const context = useContext(treeContext);
+
   /** 加点模式 */
   const skillPointsMode = context.skillPointsMode;
 
@@ -83,7 +95,9 @@ const TreeNode = forwardRef<ISkillNodeRef, ITreeNodeProps>((props, ref) => {
     e.stopPropagation();
     e.preventDefault();
 
-    setLevel(Math.min(MAX_SKILL_LEVEL, level + 1));
+    const newLevel = Math.min(MAX_SKILL_LEVEL, level + 1);
+
+    setLevel(newLevel);
 
     console.log('click: left');
     onSkillPointIncrease?.();
@@ -102,7 +116,9 @@ const TreeNode = forwardRef<ISkillNodeRef, ITreeNodeProps>((props, ref) => {
       resetChildrenLevel();
     }
 
-    setLevel(Math.max(0, level - 1));
+    const newLevel = Math.max(0, level - 1);
+
+    setLevel(newLevel);
 
     console.log('click: right');
   };

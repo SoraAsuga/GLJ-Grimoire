@@ -16,7 +16,7 @@ import { useRecoilValue } from 'recoil';
 import { equipsState } from '@/store/equips';
 import { Header } from 'antd/lib/layout/layout';
 import { ENumericalNumber } from '@/constants/numericalValue';
-import EquipDetailCard from '../RoleSimulation/components/EquipDetailCard';
+import EquipDetailCard from '../components/EquipDetailCard';
 
 const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
