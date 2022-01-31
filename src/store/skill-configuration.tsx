@@ -4,10 +4,10 @@ import { ISkillTree, ShortSkill, SwordSkill } from '@/components/SkillTree';
 export interface ISkillConfig {
   name: string;
   id: string;
-  data: Record<string, ISkillList[]>;
+  data: Record<string, ISkillPointData[]>;
 }
 
-export interface ISkillList {
+export interface ISkillPointData {
   name: string;
   data: React.FC<ISkillTree>;
   chose: boolean;
@@ -27,7 +27,7 @@ export const skillConfigurationState = atom<ISkillConfig[]>({
             data: SwordSkill,
             chose: false,
             skillData: {
-              威力攻击: 0,
+              威力攻击: 5,
               迅捷攻击: 0,
               横扫千军: 0,
               爆气斩: 0,

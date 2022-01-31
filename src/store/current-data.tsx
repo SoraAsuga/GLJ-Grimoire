@@ -20,4 +20,5 @@ export const currentFoodState = atom<
 export const currentSkillConfigState = atom<ISkillConfig>({
   key: 'current-data/skill-config',
   default: undefined,
+  dangerouslyAllowMutability: true,
 });

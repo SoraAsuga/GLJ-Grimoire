@@ -1,13 +1,12 @@
 import { Sword, Shoot } from '@/common/img/skill-icons';
 import SkillNode from '@/components/Tree/SkillNode';
 import React, { FC } from 'react';
-import Tree from '../Tree';
+import Tree, { ITreeProps } from '../Tree';
 import { ITreeOption } from '../Tree/types';
 
 import './index.less';
-export interface ISkillTree {
-  skillPointsMode?: boolean;
-}
+
+export type ISkillTree = Pick<ITreeProps, 'skillPointsMode' | 'catalog' | 'name'>;
 
 /** 剑术技能 */
 const swordSkill: ITreeOption[] = [
@@ -100,15 +99,14 @@ const swordSkill: ITreeOption[] = [
 ];
 
 export const SwordSkill: FC<ISkillTree> = (props) => {
-  const { skillPointsMode } = props;
   return (
     <div className="skill-tree__background">
       {swordSkill.map((data, index) => (
-        <Tree key={index} data={data} skillPointsMode={skillPointsMode}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
       <div className="skill-tree__unique">
         <Tree
-          skillPointsMode={skillPointsMode}
+          {...props}
           data={{
             data: {
               content: '快速蹴击',
@@ -176,16 +174,14 @@ const shortSkill: ITreeOption[] = [
 ];
 
 export const ShortSkill: FC<ISkillTree> = (props) => {
-  const { skillPointsMode } = props;
-
   return (
     <div className="skill-tree__background">
       {shortSkill.map((data, index) => (
-        <Tree key={index} data={data} skillPointsMode={skillPointsMode}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
       <div className="skill-tree__unique">
         <Tree
-          skillPointsMode={skillPointsMode}
+          {...props}
           data={{
             data: {
               content: '破灭射击',
@@ -256,11 +252,11 @@ const magicSkill: ITreeOption[] = [
   },
 ];
 
-export const MagicSkill = () => {
+export const MagicSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {magicSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
       <div className="skill-tree__unique">
         <SkillNode content="法术/光护"></SkillNode>
@@ -327,11 +323,11 @@ const combatSkill: ITreeOption[] = [
   },
 ];
 
-export const CombatSkill = () => {
+export const CombatSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {combatSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
       <div className="skill-tree__unique">
         <SkillNode content="滑行"></SkillNode>
@@ -394,11 +390,11 @@ const dualSwordSkill: ITreeOption[] = [
   },
 ];
 
-export const DualSwordSkill = () => {
+export const DualSwordSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {dualSwordSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
     </div>
   );
@@ -458,11 +454,11 @@ const halberdSkill: ITreeOption[] = [
   },
 ];
 
-export const HalberdSkill = () => {
+export const HalberdSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {halberdSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
       <div className="skill-tree__unique">
         <SkillNode content="破坏矛"></SkillNode>
@@ -522,11 +518,11 @@ const samuraiSkill: ITreeOption[] = [
   },
 ];
 
-export const SamuraiSkill = () => {
+export const SamuraiSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {samuraiSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
       <div className="skill-tree__unique">
         <SkillNode content="弹刀"></SkillNode>
@@ -558,11 +554,11 @@ const smasherSkill: ITreeOption[] = [
   },
 ];
 
-export const SmasherSkill = () => {
+export const SmasherSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {smasherSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
     </div>
   );
@@ -586,11 +582,11 @@ const defenceSkill: ITreeOption[] = [
   },
 ];
 
-export const DefenceSkill = () => {
+export const DefenceSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {defenceSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
     </div>
   );
@@ -627,11 +623,11 @@ const protectSkill: ITreeOption[] = [
   },
 ];
 
-export const ProtectSkill = () => {
+export const ProtectSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {protectSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
     </div>
   );
@@ -668,11 +664,11 @@ const knifeSkill: ITreeOption[] = [
   },
 ];
 
-export const KnifeSkill = () => {
+export const KnifeSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {knifeSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
     </div>
   );
@@ -720,11 +716,11 @@ const knightSkill: ITreeOption[] = [
   },
 ];
 
-export const KnightSkill = () => {
+export const KnightSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {knightSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
     </div>
   );
@@ -762,11 +758,11 @@ const huntingSkill: ITreeOption[] = [
   },
 ];
 
-export const HuntingSkill = () => {
+export const HuntingSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {huntingSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
     </div>
   );
@@ -804,11 +800,11 @@ const priestsSkill: ITreeOption[] = [
   },
 ];
 
-export const PriestsSkill = () => {
+export const PriestsSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {priestsSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
     </div>
   );
@@ -850,11 +846,11 @@ const wizardSkill: ITreeOption[] = [
   },
 ];
 
-export const WizardSkill = () => {
+export const WizardSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       {wizardSkill.map((data, index) => (
-        <Tree key={index} data={data}></Tree>
+        <Tree key={index} data={data} {...props}></Tree>
       ))}
     </div>
   );
@@ -906,7 +902,7 @@ const auxiliarySkill: ITreeOption[] = [
   },
 ];
 
-export const AuxiliarySkill = () => {
+export const AuxiliarySkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background-unique">
       <div className="skill-tree__unique-first">
@@ -915,7 +911,7 @@ export const AuxiliarySkill = () => {
       <div>
         {' '}
         {auxiliarySkill.map((data, index) => (
-          <Tree key={index} data={data}></Tree>
+          <Tree key={index} data={data} {...props}></Tree>
         ))}
       </div>
     </div>
@@ -983,12 +979,12 @@ const militantsSkill: ITreeOption[] = [
   },
 ];
 
-export const MilitantsSkill = () => {
+export const MilitantsSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background">
       <div>
         {militantsSkill.map((data, index) => (
-          <Tree key={index} data={data}></Tree>
+          <Tree key={index} data={data} {...props}></Tree>
         ))}
       </div>
     </div>
@@ -1007,7 +1003,7 @@ const existenceSkill: ITreeOption[] = [
   },
 ];
 
-export const ExistenceSkill = () => {
+export const ExistenceSkill = (props: ISkillTree) => {
   return (
     <div className="skill-tree__background-unique">
       <div className="skill-tree__unique-first">
@@ -1023,7 +1019,7 @@ export const ExistenceSkill = () => {
       </div>
       <div>
         {existenceSkill.map((data, index) => (
-          <Tree key={index} data={data}></Tree>
+          <Tree key={index} data={data} {...props}></Tree>
         ))}
       </div>
     </div>

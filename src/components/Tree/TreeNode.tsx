@@ -8,8 +8,8 @@ import React, {
   useState,
 } from 'react';
 import cls from 'classnames';
-import { currentSkillConfigState, currentSkillState } from '@/store/current-data';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { currentSkillState } from '@/store/current-data';
+import { useSetRecoilState } from 'recoil';
 import { ITreeOption, ETreeType } from './types';
 import SkillNode from './SkillNode';
 import { treeContext } from '.';
@@ -36,20 +36,14 @@ const TreeNode = forwardRef<ISkillNodeRef, ITreeNodeProps>((props, ref) => {
     onSkillPointIncrease,
   } = props;
 
+  /** 加点模式 */
+  const { skillPointsMode, treeSkillData, updateLevel } = useContext(treeContext);
+
   const setSkillState = useSetRecoilState(currentSkillState);
 
-  const [level, setLevel] = useState(
-    () =>
-      Object.values(currentConfig.data).map((item) => {
-        return item.map((items) => {
-          if (Boolean(data)) return items.skillData[data.content];
-        });
-      })[0][0],
-  );
-  () => {};
-
-  /** 当前配置 */
-  const [currentConfig, setCurrentConfig] = useRecoilState(currentSkillConfigState);
+  const [level, setLevel] = useState(() => {
+    return treeSkillData?.skillData[data?.content] || 0;
+  });
 
   /** 保存子节点引用，方便调用 reset 方法 */
   const childRefs = useRef<ISkillNodeRef[]>([]);
@@ -60,14 +54,16 @@ const TreeNode = forwardRef<ISkillNodeRef, ITreeNodeProps>((props, ref) => {
     }
   };
 
-  const context = useContext(treeContext);
-
-  /** 加点模式 */
-  const skillPointsMode = context.skillPointsMode;
+  const updateLevelValue = (level: number) => {
+    if (data.content) {
+      updateLevel?.(data.content, level);
+      setLevel(level);
+    }
+  };
 
   /** 让父组件可以调用子组件的方法 */
   const reset = useCallback(() => {
-    setLevel(0);
+    updateLevelValue(0);
     resetChildrenLevel();
   }, []);
 
@@ -97,9 +93,8 @@ const TreeNode = forwardRef<ISkillNodeRef, ITreeNodeProps>((props, ref) => {
 
     const newLevel = Math.min(MAX_SKILL_LEVEL, level + 1);
 
-    setLevel(newLevel);
+    updateLevelValue(newLevel);
 
-    console.log('click: left');
     onSkillPointIncrease?.();
   };
 
@@ -118,17 +113,17 @@ const TreeNode = forwardRef<ISkillNodeRef, ITreeNodeProps>((props, ref) => {
 
     const newLevel = Math.max(0, level - 1);
 
-    setLevel(newLevel);
+    updateLevelValue(newLevel);
 
     console.log('click: right');
   };
 
-  const handleChildSkillPointIncrease = () => {
+  const handleChildSkillPointIncrease = useCallback(() => {
     if (level < MIN_PRE_SKILL_LEVEL) {
-      setLevel(MIN_PRE_SKILL_LEVEL);
+      updateLevelValue(MIN_PRE_SKILL_LEVEL);
       onSkillPointIncrease?.();
     }
-  };
+  }, [level]);
 
   const hasChildren = childList.length !== 0;
   const hasBrother = brotherList.length !== 0;
@@ -148,8 +143,14 @@ const TreeNode = forwardRef<ISkillNodeRef, ITreeNodeProps>((props, ref) => {
   };
 
   /** react 每次更新会触发子节点重新渲染，导致 ref 改变，存起来就行 */
-  const renderChildren = useMemo(() => renderTreeNode(childList, ETreeType.CHILD), []);
-  const renderBrothers = useMemo(() => renderTreeNode(brotherList, ETreeType.BROTHER), []);
+  const renderChildren = useMemo(() => {
+    childRefs.current = [];
+    return renderTreeNode(childList, ETreeType.CHILD);
+  }, [level]);
+  const renderBrothers = useMemo(() => {
+    childRefs.current = [];
+    return renderTreeNode(brotherList, ETreeType.BROTHER);
+  }, [level]);
 
   return (
     <>

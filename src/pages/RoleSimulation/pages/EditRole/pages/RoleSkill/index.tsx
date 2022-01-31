@@ -16,7 +16,7 @@ import { nanoid } from 'nanoid';
 
 import './index.less';
 import { useRecoilState } from 'recoil';
-import { ISkillList, skillConfigurationState } from '@/store/skill-configuration';
+import { ISkillPointData, skillConfigurationState } from '@/store/skill-configuration';
 import { currentSkillConfigState } from '@/store/current-data';
 import SplitLine from '../../components/SplitLine';
 const { Option } = Select;
@@ -163,7 +163,7 @@ const RoleSkill: FC<IProps> = (props) => {
 
   /** 动态生成技能树 */
   const skillTree = () => {
-    return Object.values(currentConfig.data).map((item) => {
+    return Object.entries(currentConfig.data).map(([catalog, item]) => {
       const skills = item.filter((skill) => skill.chose);
       if (skills) {
         return skills.map((skill) => {
@@ -171,7 +171,7 @@ const RoleSkill: FC<IProps> = (props) => {
           return (
             <section className="skill-tree__container" key={skill.name}>
               <SplitLine icon={<NodeExpandOutlined />} title={skill.name}></SplitLine>
-              <Skill skillPointsMode={true} />
+              <Skill skillPointsMode catalog={catalog} name={skill.name} />
             </section>
           );
         });
@@ -182,17 +182,23 @@ const RoleSkill: FC<IProps> = (props) => {
   /** 改变技能树状态 */
   const changeSkillChose = (skillName: string) => {
     let skillTreeName;
+
     const newData = Object.entries(currentConfig.data).map(([name, item]) => {
       skillTreeName = name;
-      const newItemData = item.map((items: ISkillList) => {
+
+      const newItemData = item.map((items: ISkillPointData) => {
         const { chose } = items;
+
         if (skillName === items.name) {
           return { data: items.data, name: items.name, chose: !chose, skillData: items.skillData };
         }
+
         return items;
       });
+
       return newItemData;
     });
+
     setCurrentConfig({
       ...currentConfig,
       data: { ...currentConfig.data, [skillTreeName]: newData[0] },
@@ -202,7 +208,7 @@ const RoleSkill: FC<IProps> = (props) => {
   /** 动态生成技能选择菜单 */
   const skillChoseMenu = () => {
     /** 动态生成技能选择按钮 */
-    const skillChoseButton = (skill: ISkillList[]) => {
+    const skillChoseButton = (skill: ISkillPointData[]) => {
       return (
         <Menu>
           {skill.map(({ name, chose }) => {
