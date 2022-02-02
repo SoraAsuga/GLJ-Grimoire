@@ -20,9 +20,9 @@ export const treeContext = createContext<ITreeContext>({
 export interface ITreeProps extends Partial<ITreeContext> {
   data: ITreeOption;
   /** 类目 */
-  catalog: string;
+  catalog?: string;
   /** name */
-  name: string;
+  name?: string;
 }
 
 const Tree: FC<ITreeProps> = (props) => {
@@ -32,7 +32,7 @@ const Tree: FC<ITreeProps> = (props) => {
   /** 当前配置 */
   const [currentConfig, setCurrentConfig] = useRecoilState(currentSkillConfigState);
   const treeSkillData = useMemo(
-    () => currentConfig.data[catalog].find((skillTree) => skillTree.name === name),
+    () => currentConfig?.data[catalog]?.find((skillTree) => skillTree.name === name),
     [currentConfig],
   );
 

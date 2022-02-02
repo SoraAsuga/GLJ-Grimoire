@@ -66,7 +66,6 @@ const Dialog: FC<IProps> = (props) => {
    * 这个函数
    */
   useEffect(() => {
-    console.log('updated', dialog);
     if (show) {
       /** 先渲染一个隐藏状态的 Dialog */
       setDialog(ReactDOM.createPortal(renderDialog(false), element));

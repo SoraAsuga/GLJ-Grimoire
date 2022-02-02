@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { IDescribeTableProps, IDescription } from '../SkillDescribe/types';
+import { IDescribeTableProps, IDescription } from '../../types';
 
 import './index.less';
 
@@ -36,8 +36,8 @@ const RenderTable = (props: IDescribeTableProps, state) => {
 
   return (
     <div className="render-table">
-      {items.map((item) => (
-        <div className="render-table__item" key={item.name}>
+      {items.map((item, index) => (
+        <div className="render-table__item" key={index}>
           <div className="render-table__item-icon ">{item.icon}</div>
           <div className="render-table__item-title">{item.name}</div>
           <div className="render-table__item-content">{descInterpreter(item.desc)}</div>

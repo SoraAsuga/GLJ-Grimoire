@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { IDescribeBlockProps, IDescription } from '../SkillDescribe/types';
+import { IDescribeBlockProps, IDescription } from '../../types';
 
 import './index.less';
 
@@ -7,7 +7,6 @@ const RenderBlock = (props: IDescribeBlockProps, state) => {
   const { icon, name, type, properties, effects, additional } = props;
 
   const stateGetter = (name: string) => {
-    // console.log('stateGetter', state);
     return state[name];
   };
 
@@ -33,12 +32,12 @@ const RenderBlock = (props: IDescribeBlockProps, state) => {
   };
 
   const renderType = () => {
-    return type.map((typeName) => <span key={typeName}>{typeName}</span>);
+    return type.map((typeName, index) => <span key={index}>{typeName}</span>);
   };
 
   const renderProperties = () => {
-    return properties.map((property) => (
-      <div className="render-block__properties-item" key={property.desc}>
+    return properties.map((property, index) => (
+      <div className="render-block__properties-item" key={index}>
         {property.icon}
         <div className="properties-item__name">{property.desc}</div>
       </div>
@@ -46,15 +45,17 @@ const RenderBlock = (props: IDescribeBlockProps, state) => {
   };
 
   const renderEffects = () => {
-    return effects.map((description) => (
-      <div className="render-block__effects-content">{descInterpreter(description)}</div>
+    return effects.map((description, index) => (
+      <div className="render-block__effects-content" key={index}>
+        {descInterpreter(description)}
+      </div>
     ));
   };
 
   const renderAdditional = () => {
-    return additional.map((description) => {
+    return additional.map((description, index) => {
       return (
-        <section className="render-block__additional">
+        <section className="render-block__additional" key={index}>
           <div className="render-block__additional-header">
             <div className="additional-header__icon">{description.icon}</div>
             <div className="additional-header__name">{description.name}</div>

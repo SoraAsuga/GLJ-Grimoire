@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
-import { IDescribeDescProps } from '../SkillDescribe/types';
+import { IDescribeDescProps } from '../../types';
 
 import './index.less';
 
 const RenderDesc = (props: IDescribeDescProps) => {
   const { items } = props;
   const renderItem = () =>
-    items.map((item) => (
-      <Fragment key={item.name}>
+    items.map((item, index) => (
+      <Fragment key={index}>
         <div className="render-desc__inertia-title">{item.name}</div>
         <div className="render-desc__inertia-value">{item.value}</div>
       </Fragment>

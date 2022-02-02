@@ -175,10 +175,10 @@ const ForgingCrystalQuery: FC = () => {
   /** 动态生成装备菜单 */
   const menuItem = () => {
     if (currentMenu) {
-      return menu.map((item) => {
+      return menu.map((item, index) => {
         return (
           <Menu.Item
-            key={item.name}
+            key={index}
             icon={<TagsOutlined />}
             onClick={() => {
               setCurrentItemType(item.name);

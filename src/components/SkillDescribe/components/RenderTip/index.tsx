@@ -1,14 +1,14 @@
 import React from 'react';
-import { IDescribeTipProps } from '../SkillDescribe/types';
+import { IDescribeTipProps } from '../../types';
 
 import './index.less';
 
 const RenderTip = (props: IDescribeTipProps[]) => {
   /** 动态生成提示 */
   const renderTips = () => {
-    return props.map((item) => {
+    return props.map((item, index) => {
       return (
-        <div className="render-tips__item">
+        <div className="render-tips__item" key={index}>
           <div className="render-tips__item-icon">{item.icon}</div>
           <div className="render-tips__item-content">{item.content}</div>
         </div>

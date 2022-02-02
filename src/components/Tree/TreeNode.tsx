@@ -55,7 +55,7 @@ const TreeNode = forwardRef<ISkillNodeRef, ITreeNodeProps>((props, ref) => {
   };
 
   const updateLevelValue = (level: number) => {
-    if (data.content) {
+    if (data?.content) {
       updateLevel?.(data.content, level);
       setLevel(level);
     }

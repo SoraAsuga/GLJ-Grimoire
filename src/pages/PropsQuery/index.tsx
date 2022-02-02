@@ -16,7 +16,7 @@ import { useRecoilValue } from 'recoil';
 import { equipsState } from '@/store/equips';
 import { Header } from 'antd/lib/layout/layout';
 import { ENumericalNumber } from '@/constants/numericalValue';
-import EquipDetailCard from '../components/EquipDetailCard';
+import EquipDetailCard from '../RoleSimulation/components/EquipDetailCard';
 
 const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -196,10 +196,10 @@ const PropsQuery: FC = () => {
   /** 动态生成装备菜单 */
   const menuItem = () => {
     if (currentMenu) {
-      return equipMenu.map((item) => {
+      return equipMenu.map((item, index) => {
         if (item.equipList.length !== 1) {
           return (
-            <SubMenu key={item.name} icon={<TagOutlined />} title={item.name}>
+            <SubMenu key={index} icon={<TagOutlined />} title={item.name}>
               {item.equipList.map((items) => (
                 <Menu.Item
                   key={items + 'skill'}
@@ -217,7 +217,7 @@ const PropsQuery: FC = () => {
         }
         return (
           <Menu.Item
-            key={item.name}
+            key={index}
             icon={<TagsOutlined />}
             onClick={() => {
               setCurrentItemType(item.equipList[0]);

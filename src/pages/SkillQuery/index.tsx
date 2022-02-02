@@ -100,11 +100,11 @@ const SkillQuery: FC = () => {
 
   /** 动态生成技能菜单 */
   const menuItem = () =>
-    skillMenu.map((item) => (
-      <SubMenu key={item.name} icon={<FireOutlined />} title={item.name}>
-        {item.skillTree.map((skills) => (
+    skillMenu.map((item, index) => (
+      <SubMenu key={index} icon={<FireOutlined />} title={item.name}>
+        {item.skillTree.map((skills, index) => (
           <Menu.Item
-            key={skills.name + 'skill'}
+            key={index}
             icon={<ApartmentOutlined />}
             onClick={() => setCurrentTree(skills)}
           >

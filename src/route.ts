@@ -1,6 +1,6 @@
 import { WEBSITE_NAME } from './common/constance';
 import HomePage from './pages/HomePage';
-import PropsQuery from './pages/RoleSimulation/PropsQuery';
+import PropsQuery from './pages/PropsQuery';
 import RoleSimulation from './pages/RoleSimulation';
 import EditRole from './pages/RoleSimulation/pages/EditRole';
 import SkillQuery from './pages/SkillQuery';

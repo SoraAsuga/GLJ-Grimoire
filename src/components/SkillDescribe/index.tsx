@@ -1,16 +1,16 @@
 import { EWeaponType } from '@/typings/equipment';
 import { BookOutlined } from '@ant-design/icons';
-import React, { FC, useMemo } from 'react';
+import React, { FC, Fragment, useMemo } from 'react';
 
 import './index.less';
 import useRefState from '@/hooks/useRefState';
 import { InputNumber, Select } from 'antd';
 import { SECONDARY_WEAPON_ALLOWED_MAP } from '@/constants/numericalValue';
-import RenderTable from '../RenderTable';
-import RenderDesc from '../RenderDesc';
-import RenderBlock from '../RenderBlock';
-import RenderTip from '../RenderTip';
+import RenderBlock from './components/RenderBlock';
 import { ESkillEffectType, IDescribeSkillData } from './types';
+import RenderDesc from './components/RenderDesc';
+import RenderTable from './components/RenderTable';
+import RenderTip from './components/RenderTip';
 
 const { Option } = Select;
 
@@ -41,16 +41,18 @@ const Describe: FC<IDescribe> = (props) => {
   );
 
   const renderSkillEffects = () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return skillData.effects.map(({ type, data }) => skillEffectsHandler[type](data, state));
+    return skillData.effects.map(({ type, data }, index) => (
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      <Fragment key={index}>{skillEffectsHandler[type](data, state)}</Fragment>
+    ));
   };
 
   /** 动态生成选项 */
   const menuItem = (item: EWeaponType[]) => {
     if (item)
-      return item.map((item) => (
-        <Option value={item} key={item}>
+      return item.map((item, index) => (
+        <Option value={item} key={index}>
           {item}
         </Option>
       ));
@@ -58,14 +60,6 @@ const Describe: FC<IDescribe> = (props) => {
 
   /** 主手变更 */
   const changeWeapon = (value: EWeaponType) => {
-    console.log(
-      'changeWeapon',
-      SECONDARY_WEAPON_ALLOWED_MAP[value].some(
-        (item: EWeaponType) => item === state.secondaryWeaponType,
-      ),
-      state.weaponType,
-      state.secondaryWeaponType,
-    );
     if (
       SECONDARY_WEAPON_ALLOWED_MAP[value].some(
         (item: EWeaponType) => item === state.secondaryWeaponType,
@@ -78,12 +72,6 @@ const Describe: FC<IDescribe> = (props) => {
 
   /** 副手变更 */
   const changeSecondaryWeapon = (value: EWeaponType) => {
-    console.log(
-      'changeWeapon',
-      SECONDARY_WEAPON_ALLOWED_MAP[state.weaponType].some((item: EWeaponType) => item === value),
-      state.weaponType,
-      state.secondaryWeaponType,
-    );
     if (
       SECONDARY_WEAPON_ALLOWED_MAP[state.weaponType].some((item: EWeaponType) => item === value)
     ) {
