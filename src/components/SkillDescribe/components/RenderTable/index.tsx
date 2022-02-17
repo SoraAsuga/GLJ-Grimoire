@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { IDescribeTableProps, IDescription } from '../../types';
+import { IDescribeTableProps, IDescription } from '../../../../constants/types';
 
 import './index.less';
 

@@ -1,4 +1,4 @@
-import { ENumericalNumber } from '@/constants/numericalValue';
+import { ENumericalNumber } from '@/components/numericalValue';
 import { EWeaponType } from '@/typings/equipment';
 
 export enum ESkillEffectType {

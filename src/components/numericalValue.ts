@@ -1,14 +1,10 @@
-import { type } from 'os';
-import { IDescribeSkillData, ESkillEffectType } from '@/components/SkillDescribe/types';
 import {
   IEquipment,
   EWeaponType,
   EEquipmentLocation,
   EModificationState,
-  IEnchanting,
   IXtal,
 } from '@/typings/equipment';
-import { AimOutlined, FireOutlined } from '@ant-design/icons';
 
 /** 数值枚举类型 */
 export enum ENumericalNumberType {

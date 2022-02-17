@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { IDescribeDescProps } from '../../types';
+import { IDescribeDescProps } from '../../../../constants/types';
 
 import './index.less';
 

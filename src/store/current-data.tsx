@@ -1,4 +1,4 @@
-import { EFoodData } from '@/constants/numericalValue';
+import { EFoodData } from '@/components/numericalValue';
 import { atom } from 'recoil';
 import { ISkillConfig } from './skill-configuration';
 

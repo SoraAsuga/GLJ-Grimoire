@@ -3,7 +3,7 @@ import {
   ENumericalNumberType,
   FOOD_DATA,
   NUMERICAL_NUMBER,
-} from '@/constants/numericalValue';
+} from '@/components/numericalValue';
 import { currentFoodState } from '@/store/current-data';
 import { getRoleSelector } from '@/store/role-simulation';
 import { EWeaponType, IEnchanting, IEquipment } from '@/typings/equipment';

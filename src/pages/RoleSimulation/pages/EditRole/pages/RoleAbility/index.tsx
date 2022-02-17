@@ -10,7 +10,7 @@ import {
 import { Cascader, Col, Input, InputNumber, Row, Slider } from 'antd';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { ENumericalNumber } from '@/constants/numericalValue';
+import { ENumericalNumber } from '@/components/numericalValue';
 
 import { IRoleAbilityEx } from '@/typings/role';
 import SplitLine from '../../components/SplitLine';

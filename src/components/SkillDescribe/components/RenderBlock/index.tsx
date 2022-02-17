@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { IDescribeBlockProps, IDescription } from '../../types';
+import { IDescribeBlockProps, IDescription } from '../../../../constants/types';
 
 import './index.less';
 

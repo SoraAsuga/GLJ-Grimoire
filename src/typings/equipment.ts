@@ -1,4 +1,4 @@
-import { EForgingCrystal, ENumericalNumber } from '../constants/numericalValue';
+import { EForgingCrystal, ENumericalNumber } from '../components/numericalValue';
 
 /** 装备位置 */
 

@@ -1,7 +1,7 @@
 import { atom, selector, useSetRecoilState } from 'recoil';
 import { IRoleItem } from '@/typings/role';
 import { EEquipmentLocation, EWeaponType, IEquipment } from '@/typings/equipment';
-import { ENumericalNumber } from '@/constants/numericalValue';
+import { ENumericalNumber } from '@/components/numericalValue';
 
 const defaultRole: IRoleItem = {
   id: 'default',

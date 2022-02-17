@@ -1,4 +1,4 @@
-import { EQUIPS } from '@/constants/numericalValue';
+import { EQUIPS } from '@/components/numericalValue';
 import { IEquipment } from '@/typings/equipment';
 import { atom } from 'recoil';
 

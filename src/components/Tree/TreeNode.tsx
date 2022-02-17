@@ -84,7 +84,7 @@ const TreeNode = forwardRef<ISkillNodeRef, ITreeNodeProps>((props, ref) => {
   /** 鼠标左键 */
   const handleLeftClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!skillPointsMode) {
-      setSkillState(data.content);
+      setSkillState(data?.content);
       return;
     }
 

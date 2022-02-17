@@ -22,11 +22,6 @@ const routes: IRoute[] = [
     hide: true,
   },
   {
-    name: '技能查询',
-    path: '/SkillQuery',
-    component: SkillQuery,
-  },
-  {
     name: '角色模拟',
     path: '/RoleSimulation',
     component: RoleSimulation,
@@ -39,7 +34,13 @@ const routes: IRoute[] = [
     ],
   },
   {
-    name: '道具查询',
+    name: '技能查询',
+    path: '/SkillQuery',
+    component: SkillQuery,
+  },
+
+  {
+    name: '装备查询',
     path: '/PropsQuery',
     component: PropsQuery,
   },

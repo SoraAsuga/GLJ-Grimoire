@@ -3,13 +3,13 @@ import { UserAddOutlined } from '@ant-design/icons';
 import { Card } from 'antd';
 import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
 
 import './index.less';
 import { EWeaponType, EEquipmentLocation } from '@/typings/equipment';
-import { ENumericalNumber } from '@/constants/numericalValue';
+import { ENumericalNumber } from '@/components/numericalValue';
 
 const RoleItemAdder: FC = () => {
   const history = useHistory();
@@ -39,7 +39,7 @@ const RoleItemAdder: FC = () => {
             id: 'empty-handed',
             name: '空',
             weaponType: EWeaponType.EmptyHanded,
-            location: EEquipmentLocation.BothHandWeapon,
+            location: EEquipmentLocation.MainWeapon,
             mainValueType: ENumericalNumber.WEAPON_ATK,
             mainValue: 0,
             allowedSecondaryWeapon: [
@@ -56,7 +56,7 @@ const RoleItemAdder: FC = () => {
             id: 'empty-handed',
             name: '空',
             weaponType: EWeaponType.EmptyHanded,
-            location: EEquipmentLocation.BothHandWeapon,
+            location: EEquipmentLocation.MainWeapon,
             mainValueType: ENumericalNumber.WEAPON_ATK,
             mainValue: 0,
             allowedSecondaryWeapon: [

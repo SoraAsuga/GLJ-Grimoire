@@ -1,4 +1,4 @@
-import { NUMERICAL_NUMBER } from '@/constants/numericalValue';
+import { NUMERICAL_NUMBER } from '@/components/numericalValue';
 import EquipEdit from '@/pages/RoleSimulation/components/EquipEdit';
 import { IXtal } from '@/typings/equipment';
 import { AimOutlined, StarOutlined } from '@ant-design/icons';

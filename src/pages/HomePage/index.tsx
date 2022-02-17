@@ -28,7 +28,7 @@ export default (props) => {
 
       return (
         <Link key={index} className="main-content__button default-color" to={route.path}>
-          <div>{route.name}</div>
+          <div className="main-content__button-title">{route.name}</div>
         </Link>
       );
     });
@@ -36,7 +36,7 @@ export default (props) => {
 
   return (
     <article className="main-content__container">
-      <h1 className="main-content__title">GLJ's Grimoire</h1>
+      <h1 className="main-content__title">Sora's Grimoire</h1>
       <section className="main-content__functions">{renderFunctionsItem(routes)}</section>
     </article>
   );

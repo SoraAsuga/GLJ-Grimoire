@@ -15,7 +15,7 @@ import {
 import { useRecoilValue } from 'recoil';
 import { equipsState } from '@/store/equips';
 import { Header } from 'antd/lib/layout/layout';
-import { ENumericalNumber } from '@/constants/numericalValue';
+import { ENumericalNumber } from '@/components/numericalValue';
 import EquipDetailCard from '../RoleSimulation/components/EquipDetailCard';
 
 const { Content, Sider } = Layout;
@@ -269,27 +269,41 @@ const PropsQuery: FC = () => {
         </div>
       ) : (
         newItem.map((item, index) => {
-          return (
-            <button className="props-query__item" key={index} onClick={() => setCurrentItem(item)}>
-              <span className="props-query__item-name">
-                <StarOutlined style={{ margin: '5px' }} />
-                {item.name}
-              </span>
-            </button>
-          );
+          if (item.name !== '空') {
+            return (
+              <button
+                className="props-query__item"
+                key={index}
+                onClick={() => setCurrentItem(item)}
+              >
+                <span className="props-query__item-name">
+                  <StarOutlined style={{ margin: '5px' }} />
+                  {item.name}
+                </span>
+              </button>
+            );
+          }
         })
       );
     } else if (currentMenu) {
       return equipList
         .filter((item) => item.weaponType === currentItemType)
-        .map((item, index) => (
-          <button className="props-query__item" key={index} onClick={() => setCurrentItem(item)}>
-            <span className="props-query__item-name">
-              <StarOutlined style={{ margin: '5px' }} />
-              {item.name}
-            </span>
-          </button>
-        ));
+        .map((item, index) => {
+          if (item.name !== '空') {
+            return (
+              <button
+                className="props-query__item"
+                key={index}
+                onClick={() => setCurrentItem(item)}
+              >
+                <span className="props-query__item-name">
+                  <StarOutlined style={{ margin: '5px' }} />
+                  {item.name}
+                </span>
+              </button>
+            );
+          }
+        });
     }
     return equipList
       .filter((item) => {
@@ -301,14 +315,16 @@ const PropsQuery: FC = () => {
         return includes(enchants, currentEnchant);
       })
       .map((item, index) => {
-        return (
-          <button className="props-query__item" key={index} onClick={() => setCurrentItem(item)}>
-            <span className="props-query__item-name">
-              <StarOutlined style={{ margin: '5px' }} />
-              {item.name}
-            </span>
-          </button>
-        );
+        if (item.name !== '空') {
+          return (
+            <button className="props-query__item" key={index} onClick={() => setCurrentItem(item)}>
+              <span className="props-query__item-name">
+                <StarOutlined style={{ margin: '5px' }} />
+                {item.name}
+              </span>
+            </button>
+          );
+        }
       });
   };
 

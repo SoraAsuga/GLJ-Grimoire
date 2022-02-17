@@ -4,7 +4,7 @@ import {
   FORGING_CRYSTAL,
   FORGING_TYPE,
   SECONDARY_WEAPON_ALLOWED_MAP,
-} from '@/constants/numericalValue';
+} from '@/components/numericalValue';
 import EquipChoiceCard from '@/pages/RoleSimulation/components/EquipChoiceCard';
 import EquipDetailCard from '@/pages/RoleSimulation/components/EquipDetailCard';
 import { equipsState } from '@/store/equips';
@@ -179,19 +179,21 @@ const RoleEquip: FC<IProps> = (props) => {
         // return { backgroundColor: '#4e8eee34' };
       };
 
-      return (
-        <button
-          className="role-list_item"
-          key={item.id}
-          style={typeJudge()}
-          onClick={changeCurrentEquip(item)}
-        >
-          <span className="role-list_item-name">
-            <StarOutlined style={{ margin: '5px' }} />
-            {item.name}
-          </span>
-        </button>
-      );
+      if (item.name !== '空') {
+        return (
+          <button
+            className="role-list_item"
+            key={item.id}
+            style={typeJudge()}
+            onClick={changeCurrentEquip(item)}
+          >
+            <span className="role-list_item-name">
+              <StarOutlined style={{ margin: '5px' }} />
+              {item.name}
+            </span>
+          </button>
+        );
+      }
     });
   };
 

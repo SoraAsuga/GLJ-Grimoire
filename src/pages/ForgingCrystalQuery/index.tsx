@@ -12,7 +12,7 @@ import {
 } from '@ant-design/icons';
 import { useRecoilValue } from 'recoil';
 import { Header } from 'antd/lib/layout/layout';
-import { EForgingCrystal, ENumericalNumber } from '@/constants/numericalValue';
+import { EForgingCrystal, ENumericalNumber } from '@/components/numericalValue';
 import { forgingCrystalState } from '@/store/forging-crystal';
 import ForgingCrystalCard from '@/components/ForgingCrystalCard';
 

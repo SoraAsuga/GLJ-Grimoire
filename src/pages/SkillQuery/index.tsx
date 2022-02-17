@@ -104,7 +104,7 @@ const SkillQuery: FC = () => {
       <SubMenu key={index} icon={<FireOutlined />} title={item.name}>
         {item.skillTree.map((skills, index) => (
           <Menu.Item
-            key={index}
+            key={index + '*'}
             icon={<ApartmentOutlined />}
             onClick={() => setCurrentTree(skills)}
           >

@@ -1,4 +1,4 @@
-import { ENumericalNumber } from '@/constants/numericalValue';
+import { ENumericalNumber } from '@/components/numericalValue';
 import { IEquipment } from './equipment';
 
 /** 角色信息 */

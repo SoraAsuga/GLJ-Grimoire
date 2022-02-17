@@ -18,7 +18,7 @@ import {
   ENumericalNumberType,
   FOOD_DATA,
   NUMERICAL_NUMBER,
-} from '@/constants/numericalValue';
+} from '@/components/numericalValue';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { foodConfigurationState } from '@/store/food-configuration';
 import _ from 'lodash';

@@ -1,4 +1,4 @@
-import { EFoodData, ENumericalNumber } from '@/constants/numericalValue';
+import { EFoodData, ENumericalNumber } from '@/components/numericalValue';
 
 export interface SkillListItem {
   name: string;

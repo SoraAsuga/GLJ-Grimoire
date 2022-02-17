@@ -3,7 +3,7 @@ import {
   ENumericalNumber,
   FORGING_TYPE,
   NUMERICAL_NUMBER,
-} from '@/constants/numericalValue';
+} from '@/components/numericalValue';
 import { EEquipmentLocation, EWeaponType, IEquipment, IXtal } from '@/typings/equipment';
 import {
   AimOutlined,

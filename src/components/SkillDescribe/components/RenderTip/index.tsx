@@ -1,5 +1,5 @@
 import React from 'react';
-import { IDescribeTipProps } from '../../types';
+import { IDescribeTipProps } from '../../../../constants/types';
 
 import './index.less';
 

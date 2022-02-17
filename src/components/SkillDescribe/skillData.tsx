@@ -1,4 +1,4 @@
-import { ENumericalNumber } from '@/constants/numericalValue';
+import { ENumericalNumber } from '@/components/numericalValue';
 import { EWeaponType } from '@/typings/equipment';
 import {
   AimOutlined,
@@ -13,7 +13,7 @@ import {
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 import React from 'react';
-import { ESkillEffectType, IDescribeSkillData } from './types';
+import { ESkillEffectType, IDescribeSkillData } from '../../constants/types';
 
 export const SkillData: IDescribeSkillData[] = [
   {
