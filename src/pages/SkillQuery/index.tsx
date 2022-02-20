@@ -24,7 +24,6 @@ import {
   SwordSkill,
   // WizardSkill,
 } from '@/components/SkillTree';
-import useRefState from '@/hooks/useRefState';
 import { SkillData } from '@/components/SkillDescribe/skillData';
 import { currentSkillState } from '@/store/current-data';
 import { useRecoilValue } from 'recoil';
@@ -129,7 +128,7 @@ const SkillQuery: FC = () => {
         </Sider>
         <Layout className="site-layout el-menu-vertical">
           <Content style={{ margin: '0 16px' }}>
-            <CurrentTree></CurrentTree>
+            <CurrentTree mode="readonly"></CurrentTree>
             <div className="site-layout-background skill-query__content">
               {skillData && <SkillDescribe item={skillData}></SkillDescribe>}
             </div>

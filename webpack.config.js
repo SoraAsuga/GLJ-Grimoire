@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 // const CopyWebpackPlugin = require('copy-webpack-plugin');
 const {
   merge
@@ -74,6 +75,7 @@ const commonConfig = {
       minify: false,
       template: path.resolve(__dirname, './src/index.html'),
     }),
+    new ForkTsCheckerWebpackPlugin(),
     new FriendlyErrorsWebpackPlugin(),
   ],
 };

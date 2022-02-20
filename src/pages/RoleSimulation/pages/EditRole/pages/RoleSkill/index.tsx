@@ -171,7 +171,7 @@ const RoleSkill: FC<IProps> = (props) => {
           return (
             <section className="skill-tree__container" key={skill.name}>
               <SplitLine icon={<NodeExpandOutlined />} title={skill.name}></SplitLine>
-              <Skill skillPointsMode catalog={catalog} name={skill.name} />
+              <Skill mode="writable" catalog={catalog} treeName={skill.name} />
             </section>
           );
         });

@@ -6,7 +6,7 @@ import { ITreeOption } from '../Tree/types';
 
 import './index.less';
 
-export type ISkillTree = Pick<ITreeProps, 'skillPointsMode' | 'catalog' | 'name'>;
+export type ISkillTree = Pick<ITreeProps, 'mode' | 'catalog' | 'treeName'>;
 
 /** 剑术技能 */
 const swordSkill: ITreeOption[] = [

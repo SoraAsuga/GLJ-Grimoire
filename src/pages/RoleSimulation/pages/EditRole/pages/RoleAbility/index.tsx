@@ -181,7 +181,7 @@ const RoleAbility: FC<IProps> = (props) => {
       <div className="page-ability__container">
         <SplitLine icon={<StarOutlined />} title="角色能力" />
         {abilityInputTab()}
-        <section key={name} className="edit-role__ability">
+        <section className="edit-role__ability">
           <DeploymentUnitOutlined style={{ marginRight: '5px' }} />
           <span className="edit-role__ability-name">
             <Cascader

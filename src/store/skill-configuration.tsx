@@ -27,7 +27,7 @@ export const skillConfigurationState = atom<ISkillConfig[]>({
             data: SwordSkill,
             chose: false,
             skillData: {
-              威力攻击: 5,
+              威力攻击: 0,
               迅捷攻击: 0,
               横扫千军: 0,
               爆气斩: 0,
