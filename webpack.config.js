@@ -171,6 +171,15 @@ module.exports = (env, {
             {
               loader: 'less-loader',
             },
+            {
+              loader: 'style-resources-loader',
+              options: {
+                patterns: [
+                  path.resolve(__dirname, './src/common/css/var.less'),
+                ],
+                injector: 'append'
+              }
+            }
           ],
         },
         {
