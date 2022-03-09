@@ -8,7 +8,7 @@ import { currentFoodState } from '@/store/current-data';
 import { getRoleSelector } from '@/store/role-simulation';
 import { EWeaponType, IEnchanting, IEquipment } from '@/typings/equipment';
 import { Tooltip } from 'antd';
-import { constant, toNumber } from 'lodash';
+import { toNumber } from 'lodash';
 import React, { FC, useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 import { IProps } from '../types';
@@ -21,7 +21,7 @@ const RoleData: FC<IProps> = (props) => {
 
   /** 当前角色数据 */
   const roleSelector = useMemo(() => getRoleSelector(id), [id]);
-  const [role, setRole] = useRecoilState(roleSelector);
+  const [role] = useRecoilState(roleSelector);
 
   /** 当前料理数据 */
   const [currentChoseFood] = useRecoilState(currentFoodState);

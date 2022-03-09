@@ -9,7 +9,7 @@ import {
   NodeExpandOutlined,
   PlusCircleOutlined,
 } from '@ant-design/icons';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button, Dropdown, Input, Menu, Modal, Select } from 'antd';
 import { ShortSkill, SwordSkill } from '@/components/SkillTree';
 import { nanoid } from 'nanoid';
@@ -89,7 +89,6 @@ const RoleSkill: FC<IProps> = (props) => {
 
   /** 当前配置 */
   const [currentConfig, setCurrentConfig] = useRecoilState(currentSkillConfigState);
-  console.log('currentConfig: ', currentConfig);
 
   const hasConfig = Boolean(currentConfig);
 
@@ -169,7 +168,7 @@ const RoleSkill: FC<IProps> = (props) => {
         return skills.map((skill) => {
           const Skill = skill.data;
           return (
-            <section className="skill-tree__container" key={skill.name}>
+            <section className="skill-tree__container" key={nanoid()}>
               <SplitLine icon={<NodeExpandOutlined />} title={skill.name}></SplitLine>
               <Skill mode="writable" catalog={catalog} treeName={skill.name} />
             </section>

@@ -9,13 +9,13 @@ import {
 import { Card, Descriptions, Layout, Menu } from 'antd';
 import { Header, Content } from 'antd/lib/layout/layout';
 import React, { FC, useMemo, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { IEditRoleRouteParam } from '../../types';
 
 import './index.less';
 import RoleAbility from './pages/RoleAbility';
-import RoleData from './pages/RoleData';
+import RoleData from './pages/roleData';
 import RoleEquip from './pages/RoleEquip';
 import RoleFood from './pages/RoleFood';
 import RoleSkill from './pages/RoleSkill';
@@ -24,7 +24,7 @@ const EditRole: FC = () => {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const params = useParams<IEditRoleRouteParam>();
   const roleSelector = useMemo(() => getRoleSelector(params.id), [params.id]);
-  const [role, setRole] = useRecoilState(roleSelector);
+  const [role] = useRecoilState(roleSelector);
   // const roleData = useRecoilState();
 
   console.log(params.id);
